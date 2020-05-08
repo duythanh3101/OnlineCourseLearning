@@ -20,8 +20,15 @@ const Login = () => {
     return (
         <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}>
             <View style={[globalStyles.container, styles.container]}>
-                <Input label='Username (or Email)' style={styles.textInput} placeholder='Username' mode='flat'></Input>
-                
+                <Input
+                    label="Username (or Email)"
+                    maxLength={100}
+                    onChangeText={setUsername}
+                    value={username}
+                    placeholder='Username (or Email)'
+                    style={styles.textInput}
+                />
+
                 <Input
                     icon={showPasswordIcon}
                     label="Password"
@@ -37,12 +44,12 @@ const Login = () => {
                     <Text style={styles.signInText}>SIGN IN</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.roundCornerButtonGray}>
-                    <Text style={styles.signInText}>FORGOT PASSWORD?</Text>
+                <TouchableOpacity style={styles.forgot}>
+                    <Text style={styles.forgotText}>FORGOT PASSWORD?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.roundCornerButtonGray}>
-                    <Text style={styles.signInText}>SIGN UP FREE</Text>
+                <TouchableOpacity style={styles.forgot}>
+                    <Text style={styles.forgotText}>SIGN UP FREE</Text>
                 </TouchableOpacity>
             </View>
 
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     textInput: {
         fontSize: 24,
@@ -79,8 +86,12 @@ const styles = StyleSheet.create({
         paddingTop: 15
     },
     signInText: {
-        fontSize: 25,
+        fontSize: 22,
         color: colors.white
+    },
+    forgotText: {
+        fontSize: 18,
+        color: colors.blue
     },
     roundCornerButtonGray: {
         backgroundColor: colors.gray,
@@ -91,5 +102,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5
+    },
+    forgot: {
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })
