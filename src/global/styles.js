@@ -14,6 +14,8 @@ const colors = {
     gray2: "#1F242A",
     gray3: "#F0F0F0",
     gray4: "#F7F8FA",
+    darkgray: '#181B20',
+    darkgray2: '#21242B',
   };
 
 
@@ -24,42 +26,25 @@ const globalStyles = StyleSheet.create({
     },
     titleText: {
         fontSize: 18,
+        color: colors.white,
+        fontWeight: 'bold',
+        margin: 10
     },
     headerText: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: "center",
+        color: colors.white
     },
-    paragraph: {
-        lineHeight: 20,
-        marginVertical: 8,
+    normalText: {
+        color: colors.white,
+        alignSelf: 'center'
     },
-    input: {
-        borderWidth: 2,
-        borderColor: '#ddd',
-        padding: 10,
-        fontSize: 18,
-        borderRadius: 6,
-        width: '80%'
-    },
-    buttonStyle: {
-        backgroundColor: 'red',
-        width: 100,
-    },
-    errorText: {
-        color: 'crimson',
-        fontWeight: 'bold',
-        marginTop: 6,
-        marginBottom: 10,
-    },
-    modalContent: {
-        flex: 1,
-    },
-    modalContainer: {
-        height: '30%',
-        padding: 20,
-        flex: 1
-
+    roundCornerButtonGray: {
+        backgroundColor: colors.gray,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
     }
 });
 

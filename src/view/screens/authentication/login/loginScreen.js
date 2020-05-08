@@ -6,7 +6,7 @@ import { Icon, Input } from "@ui-kitten/components";
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
-const Login = () => {
+const LoginScreen = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -57,7 +57,7 @@ const Login = () => {
     )
 }
 
-export default Login
+export default LoginScreen
 
 const styles = StyleSheet.create({
     container: {
