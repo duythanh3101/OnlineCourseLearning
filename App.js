@@ -12,6 +12,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from './src/redux/store';
 import BrowseScreen from './src/view/screens/browse/browseScreen';
 import HomeScreen from './src/view/screens/home/homeScreen';
+import ForgotPassword from './src/view/screens/authentication/forgot-password/forgot-password';
 
 export default function App() {
   return (
@@ -19,7 +20,7 @@ export default function App() {
         <PersistGate loading={<AppLoading />} persistor={persistor}>
           <IconRegistry icons={EvaIconsPack}/>
           <ApplicationProvider mapping={mapping} theme={light}>
-              <HomeScreen/>
+              <LoginScreen/>
           </ApplicationProvider>
         </PersistGate>
       </ReduxProvider>

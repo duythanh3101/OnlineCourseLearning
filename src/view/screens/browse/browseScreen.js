@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity, Image } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import ImageButtonTwoLines from '../../components/common/image-button-two-lines'
-import RoundCornerButton from '../../components/common/round-corner-button'
+import RoundCornerTag from '../../components/common/round-corner-tag'
 
 const BrowseScreen = () => {
 
@@ -57,7 +57,7 @@ const BrowseScreen = () => {
     ];
 
     const renderPopularItem = (item, index) => {
-        return <RoundCornerButton
+        return <RoundCornerTag
             title={item.skillName}
             key={index}
             style={{ padding: 12, height: 30, margin: 5, marginBottom: 10 }}
@@ -128,7 +128,7 @@ const BrowseScreen = () => {
                 <View style={styles.lineText}>
                     <Text style={globalStyles.titleText}>Paths</Text>
                     <TouchableOpacity onPress={onPressSeeAll}>
-                        <Text style={globalStyles.normalText}>See all ></Text>
+                        <Text style={globalStyles.normalCenterText}>See all ></Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
@@ -138,7 +138,7 @@ const BrowseScreen = () => {
                         </View>
                         <View style={styles.infoPath}>
                             <Text style={[globalStyles.titleText, { marginBottom: 5, maxWidth: 210, fontSize: 16 }]}>Building Web Applications with Blazor</Text>
-                            <Text style={[globalStyles.normalText, { alignSelf: 'flex-start', marginLeft: 10 }]}>6 courses</Text>
+                            <Text style={[globalStyles.normalCenterText, { alignSelf: 'flex-start', marginLeft: 10 }]}>6 courses</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -148,7 +148,7 @@ const BrowseScreen = () => {
                         </View>
                         <View style={styles.infoPath}>
                             <Text style={[globalStyles.titleText, { marginBottom: 5, maxWidth: 210, fontSize: 16 }]}>Building WPF with Blazor</Text>
-                            <Text style={[globalStyles.normalText, { alignSelf: 'flex-start', marginLeft: 10 }]}>5 courses</Text>
+                            <Text style={[globalStyles.normalCenterText, { alignSelf: 'flex-start', marginLeft: 10 }]}>5 courses</Text>
                         </View>
                     </TouchableOpacity>
 

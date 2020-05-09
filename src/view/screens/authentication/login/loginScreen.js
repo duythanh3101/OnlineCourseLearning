@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
+import RoundCornerButton from '../../../components/common/round-corner-button';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -18,7 +19,7 @@ const LoginScreen = () => {
     );
 
     return (
-        <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={[globalStyles.container, styles.container]}>
                 <Input
                     label="Username (or Email)"
@@ -40,9 +41,10 @@ const LoginScreen = () => {
                     placeholder='Password'
                     style={styles.textInput}
                 />
-                <TouchableOpacity style={styles.roundCornerButtonGray}>
-                    <Text style={styles.signInText}>SIGN IN</Text>
-                </TouchableOpacity>
+                <RoundCornerButton
+                    title='SIGN IN'
+                    backgroundStyle={{ marginTop: 20 }}
+                />
 
                 <TouchableOpacity style={styles.forgot}>
                     <Text style={styles.forgotText}>FORGOT PASSWORD?</Text>
@@ -87,21 +89,12 @@ const styles = StyleSheet.create({
     },
     signInText: {
         fontSize: 22,
-        color: colors.white
+        color: colors.white,
+        padding: 10
     },
     forgotText: {
         fontSize: 18,
         color: colors.blue
-    },
-    roundCornerButtonGray: {
-        backgroundColor: colors.gray,
-        width: screenWidth * 8 / 9,
-        marginLeft: '5%',
-        marginRight: '5%',
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5
     },
     forgot: {
         marginTop: 20,

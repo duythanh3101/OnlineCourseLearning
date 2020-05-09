@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 const colors = {
     mainColor: '#0E0F13',
@@ -49,7 +50,32 @@ const globalStyles = StyleSheet.create({
         backgroundColor: colors.gray,
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 10,
+    },
+    roundCornerButtonDefault: {
+        backgroundColor: colors.gray,
+        width: screenWidth * 8 / 9,
+        marginLeft: '5%',
+        marginRight: '5%',
+        justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 10
+    },
+    roundCornerButtonBlue: {
+        backgroundColor: colors.blue,
+        width: screenWidth * 8 / 9,
+        marginLeft: '5%',
+        marginRight: '5%',
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    
+    roundCornerButtonText: {
+        fontSize: 22,
+        color: colors.white,
+        padding: 10
     },
     lineText: {
         flexDirection: 'row',
