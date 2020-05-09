@@ -4,7 +4,7 @@ import { globalStyles } from '../../../global/styles'
 
 const RoundCornerButton = (props) => {
     return (
-        <TouchableOpacity style={[globalStyles.roundCornerButtonDefault, props.backgroundStyle]}>
+        <TouchableOpacity style={[globalStyles.roundCornerButtonDefault, props.backgroundStyle]} onPress={props.onPress}>
                 <Text style={[globalStyles.roundCornerButtonText, props.titleStyle]}>{props.title}</Text>
         </TouchableOpacity>
     )

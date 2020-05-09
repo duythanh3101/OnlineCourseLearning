@@ -20,7 +20,7 @@ export default function App() {
         <PersistGate loading={<AppLoading />} persistor={persistor}>
           <IconRegistry icons={EvaIconsPack}/>
           <ApplicationProvider mapping={mapping} theme={light}>
-              <LoginScreen/>
+              <ForgotPassword/>
           </ApplicationProvider>
         </PersistGate>
       </ReduxProvider>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles';
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
@@ -7,6 +7,13 @@ import RoundCornerButton from '../../../components/common/round-corner-button';
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 const ForgotPassword = () => {
+    const onPressSendEmail = () => {
+        Alert.alert('Đang cập nhập');
+    }
+
+    const onPressCancel = () => {
+        Alert.alert('Đang cập nhập');
+    }
     return (
         <View style={[globalStyles.container, {justifyContent: 'center'}]}>
             <Text style={globalStyles.headerText}>
@@ -25,8 +32,14 @@ const ForgotPassword = () => {
             <RoundCornerButton
                 title='SEND EMAIL'
                 backgroundStyle={{backgroundColor: colors.blue, marginTop: 20}}
-            />
+                onPress={onPressSendEmail}
+           />
 
+            <RoundCornerButton
+                title='Cancel'
+                backgroundStyle={{ marginTop: 20}}
+                onPress={onPressCancel}
+            />
         </View>
     )
 }
