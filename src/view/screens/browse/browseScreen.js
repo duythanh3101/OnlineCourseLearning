@@ -60,7 +60,7 @@ const BrowseScreen = () => {
         return <RoundCornerTag
             title={item.skillName}
             key={index}
-            style={{ padding: 12, height: 30, margin: 5, marginBottom: 10 }}
+            style={{ padding: 5, height: 30, margin: 5, marginBottom: 10 }}
         />
 
     }
