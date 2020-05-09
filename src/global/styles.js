@@ -36,16 +36,26 @@ const globalStyles = StyleSheet.create({
         textAlign: "center",
         color: colors.white
     },
-    normalText: {
+    normalCenterText: {
         color: colors.white,
         alignSelf: 'center'
+    },
+    normalText: {
+        color: colors.white,
+        fontSize: 13,
+        marginLeft: 5
     },
     roundCornerButtonGray: {
         backgroundColor: colors.gray,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
-    }
+    },
+    lineText: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
 });
 
 
