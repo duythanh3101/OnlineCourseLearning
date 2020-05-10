@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native'
 import { globalStyles } from '../../../global/styles'
 import CourseItem from '../../components/course-list/course-item'
 
@@ -8,36 +8,91 @@ import CourseItem from '../../components/course-list/course-item'
 const CourseListScreen = (props) => {
     const courses = [
         {
-            id: '1',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
+            title: 'Software developer',
+            data: [
+                {
+                    id: '1',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+                {
+                    id: '2',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+                {
+                    id: '3',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+            ]
         },
         {
-            id: '2',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
+            title: 'Soft skills',
+            data: [
+                {
+                    id: '1',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+                {
+                    id: '2',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+                {
+                    id: '3',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+            ]
         },
         {
-            id: '3',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-        {
-            id: '4',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
+            title: 'IT skills',
+            data: [
+                {
+                    id: '1',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+                {
+                    id: '2',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+                {
+                    id: '3',
+                    courseName: 'Java',
+                    author: 'John',
+                    level: 'Advanced',
+                    date: 'Feb 2019',
+                    duration: '9h 35mins'
+                },
+            ]
         },
     ]
 
@@ -56,11 +111,14 @@ const CourseListScreen = (props) => {
 
     return (
         <View style={globalStyles.container}>
-            <Text style={[globalStyles.headerText, { marginBottom: 50 }]}>Course List Screen</Text>
-            <FlatList
-                data={courses}
-                renderItem={({item, index}) => renderCourse(item, index)}
-                keyExtractor={(item, index) => index.toString()}
+            <Text style={[globalStyles.headerCenterText, { marginTop: 50, marginLeft: 20 }]}>Course List Screen</Text>
+            <SectionList
+                sections={courses}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({ item, index }) => renderCourse(item, index)}
+                renderSectionHeader={({ section: { title } }) => (
+                    <Text style={globalStyles.headerText}>{title}</Text>
+                  )}
             />
         </View>
     )

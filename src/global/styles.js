@@ -31,10 +31,15 @@ const globalStyles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 10
     },
-    headerText: {
+    headerCenterText: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: "center",
+        color: colors.white
+    },
+    headerText: {
+        fontSize: 24,
+        fontWeight: 'bold',
         color: colors.white
     },
     normalCenterText: {
