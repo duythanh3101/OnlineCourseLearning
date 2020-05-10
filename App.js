@@ -16,6 +16,7 @@ import ForgotPassword from './src/view/screens/authentication/forgot-password/fo
 import DownloadScreen from './src/view/screens/downloads/downloadScreen';
 import ProfileScreen from './src/view/screens/profile/profileScreen';
 import CourseListScreen from './src/view/screens/course/courseListScreen';
+import SearchScreen from './src/view/screens/search/searchScreen';
 
 export default function App() {
   return (
@@ -23,7 +24,7 @@ export default function App() {
         <PersistGate loading={<AppLoading />} persistor={persistor}>
           <IconRegistry icons={EvaIconsPack}/>
           <ApplicationProvider mapping={mapping} theme={light}>
-              <CourseListScreen/>
+              <SearchScreen/>
           </ApplicationProvider>
         </PersistGate>
       </ReduxProvider>
