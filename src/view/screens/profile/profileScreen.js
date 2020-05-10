@@ -3,22 +3,35 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'react-native-svg';
+import RoundCornerTag from '../../components/common/round-corner-tag';
 
 const ProfileScreen = () => {
     return (
         <View style={globalStyles.container}>
+
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image style={styles.imageProfile} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
                 <Text style={[globalStyles.titleText, styles.nameProfile]}>Bich Chieu</Text>
             </View>
-            <View>
+            <View style={{}}>
                 <Text style={globalStyles.titleText}>Interests</Text>
 
-                <TouchableOpacity style={[globalStyles.roundCornerButtonGray, { flexDirection: 'row',padding: 5, height: 30, margin: 5, marginBottom: 10 }]}>
-                    <FontAwesome name="check-circle" size={24} color='red' />
-                    <Text style={globalStyles.normalCenterText}>Javascript</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <RoundCornerTag
+                        isHasIcon
+                        title='Javascript'
+                        style={{ padding: 5, margin: 3, borderRadius: 15 }}
+                        textStyle={{ marginLeft: 5 }}
+                    />
 
-                </TouchableOpacity>
+                    <RoundCornerTag
+                        isHasIcon
+                        title='C#'
+                        style={{ padding: 5, margin: 3, borderRadius: 15 }}
+                        textStyle={{ marginLeft: 5 }}
+                    />
+                </View>
+
 
             </View>
 

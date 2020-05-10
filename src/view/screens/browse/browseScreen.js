@@ -9,23 +9,28 @@ const BrowseScreen = () => {
     const popularSkills = [
         {
             key: 1,
-            skillName: 'Angular'
+            skillName: 'Angular',
+            isHasIcon: false
         },
         {
             key: 2,
-            skillName: 'C#'
+            skillName: 'C#',
+            isHasIcon: true
         },
         {
             key: 3,
-            skillName: 'JavaScript'
+            skillName: 'JavaScript',
+            isHasIcon: false
         },
         {
             key: 4,
-            skillName: 'Java'
+            skillName: 'Java',
+            isHasIcon: true
         },
         {
             key: 5,
-            skillName: 'Data Analysist'
+            skillName: 'Data Analysist',
+            isHasIcon: false
         },
     ];
 
@@ -58,9 +63,11 @@ const BrowseScreen = () => {
 
     const renderPopularItem = (item, index) => {
         return <RoundCornerTag
+            isHasIcon={item.isHasIcon}
             title={item.skillName}
             key={index}
-            style={{ padding: 5, height: 30, margin: 5, marginBottom: 10 }}
+            style={{ padding: 5, margin: 3, borderRadius: 15 }}
+            textStyle={{marginLeft: 5, marginRight: 5}}
         />
 
     }

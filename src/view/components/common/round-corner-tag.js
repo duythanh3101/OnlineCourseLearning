@@ -1,11 +1,17 @@
 import React from 'react'
-import { Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { globalStyles } from '../../../global/styles'
+import { FontAwesome } from '@expo/vector-icons';
 
 const RoundCornerTag = (props) => {
     return (
         <TouchableOpacity style={[globalStyles.roundCornerButtonGray, props.style]} onPress={props.onPress}>
-            <Text style={[globalStyles.normalCenterText, props.style]}>{props.title}</Text>
+            {
+                props.isHasIcon ?
+                  <FontAwesome name="check-circle" size={24} color='red'/> 
+                : null
+            }
+            <Text style={[globalStyles.normalCenterText, props.textStyle]}>{props.title}</Text>
         </TouchableOpacity>
     )
 }

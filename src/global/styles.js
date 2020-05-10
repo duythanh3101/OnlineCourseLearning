@@ -50,7 +50,8 @@ const globalStyles = StyleSheet.create({
         backgroundColor: colors.gray,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 5,
+        flexDirection: 'row'
     },
     roundCornerButtonDefault: {
         backgroundColor: colors.gray,
