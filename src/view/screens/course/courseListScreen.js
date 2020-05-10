@@ -59,7 +59,7 @@ const CourseListScreen = (props) => {
             <Text style={[globalStyles.headerText, { marginBottom: 50 }]}>Course List Screen</Text>
             <FlatList
                 data={courses}
-                renderItem={(item, index) => renderCourse(item, index)}
+                renderItem={({item, index}) => renderCourse(item, index)}
                 keyExtractor={(item, index) => index.toString()}
             />
         </View>
