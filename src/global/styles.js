@@ -83,6 +83,14 @@ const globalStyles = StyleSheet.create({
         color: colors.white,
         padding: 10
     },
+    roundCornerTagGray: {
+        backgroundColor: colors.gray,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: 5, 
+        borderRadius: 15
+    },
     lineText: {
         flexDirection: 'row',
         justifyContent: 'space-between',

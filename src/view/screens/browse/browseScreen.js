@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity, Image } fr
 import { globalStyles, colors } from '../../../global/styles'
 import ImageButtonTwoLines from '../../components/common/image-button-two-lines'
 import RoundCornerTag from '../../components/common/round-corner-tag'
+import PathCourseItem from '../../components/browse/path-course-item/path-course-item'
 
 const BrowseScreen = () => {
 
@@ -66,8 +67,8 @@ const BrowseScreen = () => {
             isHasIcon={item.isHasIcon}
             title={item.skillName}
             key={index}
-            style={{ padding: 5, margin: 3, borderRadius: 15 }}
-            textStyle={{marginLeft: 5, marginRight: 5}}
+            style={styles.roundCornerTag}
+            textStyle={styles.roundCornerTagText}
         />
 
     }
@@ -107,14 +108,14 @@ const BrowseScreen = () => {
 
             <ScrollView horizontal={true}>
 
-                <View style={styles.containerSrollView}>
-                    <View style={styles.scrollView}>
+                <View style={styles.containerGroupTwoLineSmallImages}>
+                    <View style={styles.containerLineSmallImages}>
                         {
                             smallImages.map((item, i) => renderSmallImageButton(item, i))
                         }
                     </View>
 
-                    <View style={styles.scrollView}>
+                    <View style={styles.containerLineSmallImages}>
                         {
                             smallImages.map((item, i) => renderSmallImageButton(item, i))
                         }
@@ -124,7 +125,7 @@ const BrowseScreen = () => {
 
             <View style={styles.containerPopularSkills}>
                 <Text style={globalStyles.titleText}>Popular Skills</Text>
-                <ScrollView horizontal={true} style={{ flex: 1, flexDirection: 'row' }}>
+                <ScrollView horizontal={true} style={styles.containerLinePopularSkills}>
                     {
                         popularSkills.map((item, index) => renderPopularItem(item, index))
                     }
@@ -139,25 +140,19 @@ const BrowseScreen = () => {
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={styles.pathItem} onPress={onPressPathItem}>
-                        <View style={styles.imagePathItem}>
-                            <Image style={{ width: 60, height: 40 }} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                        </View>
-                        <View style={styles.infoPath}>
-                            <Text style={[globalStyles.titleText, { marginBottom: 5, maxWidth: 210, fontSize: 16 }]}>Building Web Applications with Blazor</Text>
-                            <Text style={[globalStyles.normalCenterText, { alignSelf: 'flex-start', marginLeft: 10 }]}>6 courses</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <PathCourseItem
+                        source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
+                        title='Building Web Applications with Blazor'
+                        course='5 courses'
+                        onPress={onPressPathItem}
+                    />
 
-                    <TouchableOpacity style={styles.pathItem} onPress={onPressPathItem}>
-                        <View style={styles.imagePathItem}>
-                            <Image style={{ width: 60, height: 40 }} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                        </View>
-                        <View style={styles.infoPath}>
-                            <Text style={[globalStyles.titleText, { marginBottom: 5, maxWidth: 210, fontSize: 16 }]}>Building WPF with Blazor</Text>
-                            <Text style={[globalStyles.normalCenterText, { alignSelf: 'flex-start', marginLeft: 10 }]}>5 courses</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <PathCourseItem
+                        source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
+                        title='Building WPF with Blazor'
+                        course='5 courses'
+                        onPress={onPressPathItem}
+                    />
 
                 </ScrollView>
 
@@ -167,7 +162,7 @@ const BrowseScreen = () => {
                 <Text style={globalStyles.titleText}>Top authors</Text>
 
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
-                    <View style={{ alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={styles.containerLineAuthors}>
                         <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
                             <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
                             <Text style={[globalStyles.titleText, styles.authorName]}>Deborah Kurata</Text>
@@ -225,7 +220,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkgray2,
         height: 80
     },
-    imagePathItem: {
+    pathImageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         width: 200,
@@ -246,7 +241,11 @@ const styles = StyleSheet.create({
     },
     containerPopularSkills: {
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 20
+    },
+    containerLinePopularSkills: {
+        flex: 1,
+        flexDirection: 'row'
     },
     imageStyle: {
         marginTop: 20,
@@ -257,11 +256,36 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10
     },
-    scrollView: {
+    containerLineSmallImages: {
         flexDirection: 'row'
     },
-    containerSrollView: {
+    containerGroupTwoLineSmallImages: {
         flex: 1,
         flexDirection: 'column'
+    },
+    roundCornerTag: {
+        marginLeft: 5
+    },
+    roundCornerTagText: {
+        marginLeft: 5,
+        marginRight: 5
+    },
+    smallImagePath: {
+        width: 60,
+        height: 40
+    },
+    containerLineAuthors: {
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    pathTitle: {
+        marginBottom: 5,
+        maxWidth: 210,
+        fontSize: 16
+    },
+    pathCourseText: {
+        alignSelf: 'flex-start',
+        marginLeft: 10
     }
 })

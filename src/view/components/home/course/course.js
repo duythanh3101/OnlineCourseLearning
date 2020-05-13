@@ -43,7 +43,7 @@ const Course = (props) => {
             date={item.date}
             duration={item.duration}
             key={index}
-            style={{ margin: 5 }} />
+            style={styles.courseList} />
     }
 
     const onPressSeeAll = () => {
@@ -51,7 +51,7 @@ const Course = (props) => {
     }
 
     return (
-        <View style={styles.courseContainer}>
+        <ScrollView style={styles.courseContainer}>
             <View style={styles.course}>
                 <View style={globalStyles.lineText}>
                     <Text style={globalStyles.titleText}>Software development</Text>
@@ -59,7 +59,7 @@ const Course = (props) => {
                         <Text style={globalStyles.normalCenterText}>See all ></Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView horizontal={true} style={{ margin: 10 }}>
+                <ScrollView horizontal={true} style={styles.courseList}>
                     {
                         courses.map((item, i) => renderItem(item, i))
                     }
@@ -73,13 +73,27 @@ const Course = (props) => {
                         <Text style={globalStyles.normalCenterText}>See all ></Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView horizontal={true} style={{ margin: 10 }}>
+                <ScrollView horizontal={true} style={styles.courseList}>
                     {
                         courses.map((item, i) => renderItem(item, i))
                     }
                 </ScrollView>
             </View>
-        </View>
+
+            <View style={styles.course}>
+                <View style={globalStyles.lineText}>
+                    <Text style={globalStyles.titleText}>Soft skills</Text>
+                    <TouchableOpacity onPress={onPressSeeAll}>
+                        <Text style={globalStyles.normalCenterText}>See all ></Text>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView horizontal={true} style={styles.courseList}>
+                    {
+                        courses.map((item, i) => renderItem(item, i))
+                    }
+                </ScrollView>
+            </View>
+        </ScrollView>
 
     )
 }
@@ -94,5 +108,11 @@ const styles = StyleSheet.create({
     course: {
         flexDirection: 'column',
         marginTop: 20
+    },
+    courseList: {
+        margin: 10
+    },
+    courseItemInfo: {
+        margin: 5
     }
 })

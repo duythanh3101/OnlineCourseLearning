@@ -24,7 +24,7 @@ export default function App() {
         <PersistGate loading={<AppLoading />} persistor={persistor}>
           <IconRegistry icons={EvaIconsPack}/>
           <ApplicationProvider mapping={mapping} theme={light}>
-              <SearchScreen/>
+              <BrowseScreen/>
           </ApplicationProvider>
         </PersistGate>
       </ReduxProvider>

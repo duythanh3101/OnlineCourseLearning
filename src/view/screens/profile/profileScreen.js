@@ -20,15 +20,15 @@ const ProfileScreen = () => {
                     <RoundCornerTag
                         isHasIcon
                         title='Javascript'
-                        style={{ padding: 5, margin: 3, borderRadius: 15 }}
-                        textStyle={{ marginLeft: 5 }}
+                        style={{ margin: 3 }}
+                        textStyle={styles.roundCornerTag}
                     />
 
                     <RoundCornerTag
                         isHasIcon
                         title='C#'
-                        style={{ padding: 5, margin: 3, borderRadius: 15 }}
-                        textStyle={{ marginLeft: 5 }}
+                        style={{ margin: 3 }}
+                        textStyle={styles.roundCornerTag}
                     />
                 </View>
 
@@ -56,5 +56,8 @@ const styles = StyleSheet.create({
     },
     nameProfile: {
         fontSize: 24
+    },
+    roundCornerTag: {
+        marginLeft: 5
     }
 })
