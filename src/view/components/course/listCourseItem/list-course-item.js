@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { globalStyles, colors } from '../../../global/styles'
-import { constants } from '../../../global/constants'
+import { globalStyles, colors } from '../../../../global/styles'
+import { constants } from '../../../../global/constants'
 
-const CourseItem = (props) => {
+const ListCourseItem = (props) => {
     return (
         <TouchableOpacity>
             <View style={styles.container}>
@@ -28,7 +28,7 @@ const CourseItem = (props) => {
     )
 }
 
-export default CourseItem
+export default ListCourseItem
 
 const styles = StyleSheet.create({
     container: {

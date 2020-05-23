@@ -10,18 +10,20 @@ const SearchScreen = () => {
     return (
         <View style={globalStyles.container}>
             <Text style={globalStyles.headerCenterText}> SearchScreen </Text>
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <SearchBar
                   lightTheme round
                   value={searchText}
                   onClear={setSearchText('')}
                   onChangeText={setSearchText}
                 />
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
         </View>
     )
 }
 
 export default SearchScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+})

@@ -3,12 +3,9 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableW
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
-import { ImageKey, ScreenKey } from '../../../../global/constants';
+import { ImageKey, constants } from '../../../../global/constants';
 
-const screenWidth = Math.round(Dimensions.get('window').width);
-const screenHeight = Math.round(Dimensions.get('window').height);
-
-const LoginScreen = (props) => {
+const RegisterScreen = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -18,10 +15,6 @@ const LoginScreen = (props) => {
     const showPasswordIcon = style => (
         <Icon {...style} name={isHidingPassword ? "eye-off" : "eye"} />
     );
-
-    const onHandleSigninPress = () => {
-        props.navigation.navigate(ScreenKey.MainTab)
-    }
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -52,18 +45,24 @@ const LoginScreen = (props) => {
                         placeholder='Password'
                         style={styles.textInput}
                     />
-                    <RoundCornerButton
-                        title='SIGN IN'
-                        backgroundStyle={{ marginTop: 20 }}
-                        onPress={onHandleSigninPress}
+
+                    <Input
+                        icon={showPasswordIcon}
+                        label="Confirm Password"
+                        maxLength={100}
+                        onChangeText={setPassword}
+                        onIconPress={() => setIsHidingPassword(!isHidingPassword)}
+                        secureTextEntry={isHidingPassword}
+                        value={password}
+                        placeholder='Confirm Password'
+                        style={styles.textInput}
                     />
-
+                    <RoundCornerButton
+                        title='SIGN UP'
+                        backgroundStyle={{ marginTop: 20 }}
+                    />
                     <TouchableOpacity style={styles.forgot}>
-                        <Text style={styles.forgotText}>FORGOT PASSWORD?</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.forgot}>
-                        <Text style={styles.forgotText}>SIGN UP FREE</Text>
+                        <Text style={styles.forgotText}>LOGIN WITH EXISTING ACCOUNT</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -73,7 +72,7 @@ const LoginScreen = (props) => {
     )
 }
 
-export default LoginScreen
+export default RegisterScreen
 
 const styles = StyleSheet.create({
     textInputContainer: {
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: colors.white,
         margin: 10,
-        width: screenWidth * 8 / 9,
+        width: constants.screenWidth * 8 / 9,
         marginRight: '5%',
         marginLeft: '5%',
         justifyContent: 'center',

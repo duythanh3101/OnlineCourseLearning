@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native'
 import { globalStyles } from '../../../global/styles'
-import CourseItem from '../../components/course-list/course-item'
+import ListCourseItem from '../../components/course/listCourseItem/list-course-item'
 
 
 
@@ -98,7 +98,7 @@ const CourseListScreen = (props) => {
 
 
     const renderCourse = (item, index) => {
-        return <CourseItem
+        return <ListCourseItem
             source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
             courseName={item.courseName}
             author={item.author}
