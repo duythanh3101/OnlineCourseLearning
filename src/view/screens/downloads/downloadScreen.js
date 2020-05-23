@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Layout, Text } from '@ui-kitten/components'
-import { globalStyles } from '../../../global/styles'
+import { globalStyles, colors } from '../../../global/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { globalActionTypes } from '../../../redux/actions/actionTypes';
 import { FlatList } from 'react-native-gesture-handler';
@@ -59,7 +59,6 @@ const DownloadScreen = (props) => {
                             <MaterialCommunityIcons style={{ alignSelf: 'center' }} name="progress-download" size={100} color="gray" />
                             <Text style={[globalStyles.headerCenterText, styles.noDownloadText]}>No downloads</Text>
                             <Text style={[globalStyles.headerCenterText, styles.appearHereText]}>Courses you download will appear here</Text>
-
                         </View>
                     )
                     :
@@ -67,7 +66,7 @@ const DownloadScreen = (props) => {
                         <View>
                             <View style={styles.headerDownContainer}>
                                 <Text style={globalStyles.titleText}>{data.length} courses</Text>
-                                <Text style={globalStyles.titleText}>REMOVE ALL</Text>
+                                <Text style={[globalStyles.titleText,  styles.removeText]}>REMOVE ALL</Text>
                             </View>
 
                             <FlatList
@@ -99,5 +98,8 @@ const styles = StyleSheet.create({
     headerDownContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    removeText: {
+        color: colors.blue
     }
 })
