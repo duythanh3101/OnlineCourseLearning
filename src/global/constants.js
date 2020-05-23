@@ -10,6 +10,8 @@ export const ScreenKey = {
     HomeScreen: 'homeScreen',
     DownloadScreen: 'downloadScreen',
     ProfileScreen: 'profileScreen',
+    CourseListScreen: 'courseListScreen',
+    CourseListByTopicScreen: 'courseListByTopicScreen',
     LoginScreen: 'loginScreen',
     ForgotPasswordScreen: 'forgotPasswordScreen',
     RegisterScreen: 'registerScreen',

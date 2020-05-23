@@ -4,8 +4,9 @@ import { globalStyles } from '../../../global/styles'
 import ListCourseItem from '../../components/course/listCourseItem/list-course-item'
 import SearchPathCourseItem from '../../components/search/search-path-course-item/search-path-course-item'
 import SearchAuthorItem from '../../components/search/search-author-item/search-author-item'
+import { ScreenKey } from '../../../global/constants'
 
-const SearchAllSectionsScreen = () => {
+const SearchAllSectionsScreen = (props) => {
     const searchResults = [
         {
             title: 'Courses',
@@ -108,11 +109,24 @@ const SearchAllSectionsScreen = () => {
         }
     }
 
+    const onHandleTabPress = (index) => {
+        if (index == 0) {
+            props.navigation.navigate(ScreenKey.SearchCoursesScreen)
+
+        } else if (index == 1) {
+            props.navigation.navigate(ScreenKey.SearchPathsScreen)
+
+        } else if (index == 2) {
+            props.navigation.navigate(ScreenKey.SearchAuthorsScreen)
+
+        }
+    }
+
     const renderSectionHeader = (section) => {
         return <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={globalStyles.titleText}>{section.title}</Text>
 
-            <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => { Alert.alert('Đang cập nhật') }}>
+            <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => { onHandleTabPress(section.index) }}>
                 <Text style={globalStyles.normalCenterText}>{section.data.length} results ></Text>
 
             </TouchableOpacity>

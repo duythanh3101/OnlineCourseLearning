@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import CourseItemInfo from './course-item-info'
 import { globalStyles } from '../../../../global/styles'
+import { ScreenKey } from '../../../../global/constants'
 
 const Course = (props) => {
     const [courses, setCourses] = useState([
@@ -46,8 +47,14 @@ const Course = (props) => {
             style={styles.courseList} />
     }
 
-    const onPressSeeAll = () => {
-        Alert.alert('Đang cập nhật')
+    const onPressSeeAll = (title) => {
+        //Alert.alert('Đang cập nhật')
+        props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
+            item: {
+                title: title,
+                courses: courses
+            }
+        })
     }
 
     return (
@@ -55,7 +62,7 @@ const Course = (props) => {
             <View style={styles.course}>
                 <View style={globalStyles.lineText}>
                     <Text style={globalStyles.titleText}>Software development</Text>
-                    <TouchableOpacity onPress={onPressSeeAll}>
+                    <TouchableOpacity onPress={() => onPressSeeAll('Software development')}>
                         <Text style={globalStyles.normalCenterText}>See all ></Text>
                     </TouchableOpacity>
                 </View>
@@ -69,7 +76,7 @@ const Course = (props) => {
             <View style={styles.course}>
                 <View style={globalStyles.lineText}>
                     <Text style={globalStyles.titleText}>IT development</Text>
-                    <TouchableOpacity onPress={onPressSeeAll}>
+                    <TouchableOpacity onPress={() => onPressSeeAll('IT development')}>
                         <Text style={globalStyles.normalCenterText}>See all ></Text>
                     </TouchableOpacity>
                 </View>
@@ -83,7 +90,7 @@ const Course = (props) => {
             <View style={styles.course}>
                 <View style={globalStyles.lineText}>
                     <Text style={globalStyles.titleText}>Soft skills</Text>
-                    <TouchableOpacity onPress={onPressSeeAll}>
+                    <TouchableOpacity onPress={() => onPressSeeAll('Soft skills')}>
                         <Text style={globalStyles.normalCenterText}>See all ></Text>
                     </TouchableOpacity>
                 </View>

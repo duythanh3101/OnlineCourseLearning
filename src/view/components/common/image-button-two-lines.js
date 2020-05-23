@@ -1,13 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native'
 import { colors } from '../../../global/styles'
 
 const ImageButtonTwoLines = (props) => {
     return (
-        <ImageBackground source={{uri: props.uri}} style={[styles.image, props.imageStyle]}>
-            <Text style={[styles.firstText, props.styleFirstText]}>{props.firstText ? props.firstText  : ''}</Text>
-            <Text style={[styles.secondText, props.styleSecondText]}>{props.secondText ? props.secondText : ''}</Text>
-        </ImageBackground>
+        <TouchableOpacity onPress={props.onPress}>
+            <ImageBackground source={{ uri: props.uri }} style={[styles.image, props.imageStyle]}>
+                <Text style={[styles.firstText, props.styleFirstText]}>{props.firstText ? props.firstText : ''}</Text>
+                <Text style={[styles.secondText, props.styleSecondText]}>{props.secondText ? props.secondText : ''}</Text>
+            </ImageBackground>
+        </TouchableOpacity>
+
     )
 }
 

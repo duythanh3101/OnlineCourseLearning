@@ -4,10 +4,10 @@ import { Layout } from '@ui-kitten/components'
 import Course from '../../components/home/course/course'
 import { globalStyles } from '../../../global/styles'
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
     return (
         <Layout style={globalStyles.container}>
-            <Course/>
+            <Course {...props}/>
         </Layout>
     )
 }

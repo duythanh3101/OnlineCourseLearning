@@ -7,6 +7,7 @@ import { navigationStyle, colors } from '../../global/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import ProfileScreen from '../screens/profile/profileScreen';
+import CourseListByTopicScreen from '../screens/course/courseListByTopicScreen';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,13 @@ const HomeStack = (props) => {
                 component={ProfileScreen}
                 options={{
                     title: 'Profile'
+                }}
+            />
+              <Stack.Screen
+                name={ScreenKey.CourseListByTopicScreen}
+                component={CourseListByTopicScreen}
+                options={{
+                    title: 'Course'
                 }}
             />
 
