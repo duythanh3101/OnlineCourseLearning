@@ -23,11 +23,18 @@ const LoginScreen = (props) => {
         props.navigation.navigate(ScreenKey.MainTab)
     }
 
+    const onHandleForgotPasswordPress = () => {
+        props.navigation.navigate(ScreenKey.ForgotPasswordScreen)
+    }
+
+    const onHandleSignUpPress = () => {
+        props.navigation.navigate(ScreenKey.RegisterScreen)
+    }
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={[globalStyles.container, styles.container]}>
                 <View style={styles.imageContainer}>
-                    <Image source={ImageKey.RedLogo} style={{ width: 120, height: 120 }} />
+                    <Image source={ImageKey.RedLogo} style={{ width: 300, height: 300 }} />
 
                 </View>
 
@@ -58,11 +65,11 @@ const LoginScreen = (props) => {
                         onPress={onHandleSigninPress}
                     />
 
-                    <TouchableOpacity style={styles.forgot}>
+                    <TouchableOpacity style={styles.forgot} onPress={onHandleForgotPasswordPress}>
                         <Text style={styles.forgotText}>FORGOT PASSWORD?</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.forgot}>
+                    <TouchableOpacity style={styles.forgot} onPress={onHandleSignUpPress}>
                         <Text style={styles.forgotText}>SIGN UP FREE</Text>
                     </TouchableOpacity>
                 </View>

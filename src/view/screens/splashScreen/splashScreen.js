@@ -14,7 +14,7 @@ export default function SplashScreen(props) {
         //   }, 100);
         //   return () => clearInterval(interval);
         setTimeout(() => {
-            props.navigation.navigate(ScreenKey.LoginScreen);
+            props.navigation.navigate(ScreenKey.AuthenticationStack);
 
         }, 1000)
     }, [])

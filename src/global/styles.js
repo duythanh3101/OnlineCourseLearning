@@ -98,5 +98,16 @@ const globalStyles = StyleSheet.create({
     },
 });
 
+const navigationStyle = {
+    defaultNavigationOptions: {
+      headerStyle: {
+        height: 60,
+        backgroundColor: "#eee",
+        borderBottomColor: "transparent",
+        elevation: 0 // for android
+      },
+    }
+  }
 
-  export { globalStyles, colors }
+
+export { globalStyles, colors, navigationStyle }

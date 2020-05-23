@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { StyleSheet } from 'react-native'
 import { ScreenKey } from '../../global/constants';
 import HomeScreen from '../screens/home/homeScreen';
 import DownloadScreen from '../screens/downloads/downloadScreen';
@@ -9,6 +8,10 @@ import SearchScreen from '../screens/search/searchScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-navigation'; 
+import { NavigationContainer } from '@react-navigation/native';
+import HomeStack from './homeStack';
+import DownloadStack from './downloadStack';
+import BrowseStack from './browseStack';
 
 const MainTab = createBottomTabNavigator();
 
@@ -30,7 +33,6 @@ const TabBarComponent = ({ navigation, state }) => {
                 selectedIndex={state.index}
                 onSelect={onSelect}
                 style={{ borderTopColor: "#e6e6e6", borderTopWidth: 0.5 }}
-                
             >
                 <BottomNavigationTab icon={(style) => tabIcon(style, "map-outline")} title="Home" />
                 <BottomNavigationTab icon={(style) => tabIcon(style, "book-outline")} title="Download" />
@@ -45,24 +47,24 @@ const MainBottomTab = (props) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <MainTab.Navigator 
-                tabBar={props => <TabBarComponent {...props} 
-                />}>
+                tabBar={props => <TabBarComponent {...props}/>} 
+                >
                 <MainTab.Screen
-                    name={ScreenKey.HomeScreen}
-                    component={HomeScreen}
-                    options={{ headerShown: true }}/>
+                    name={ScreenKey.HomeStack}
+                    component={HomeStack}
+                    />
                 <MainTab.Screen
-                    name={ScreenKey.DownloadScreen}
-                    component={DownloadScreen}
-                    options={{ headerShown: true }} />
+                    name={ScreenKey.DownloadStack}
+                    component={DownloadStack}
+                    options={{ title: 'Download' }} />
                 <MainTab.Screen
-                    name={ScreenKey.BrowseScreen}
-                    component={BrowseScreen}
-                    options={{ headerShown: false }} />
+                    name={ScreenKey.BrowseStack}
+                    component={BrowseStack}
+                    />
                 <MainTab.Screen
                     name={ScreenKey.SearchScreen}
                     component={SearchScreen}
-                    options={{ headerShown: false }} />
+                    />
             </MainTab.Navigator>
         </SafeAreaView>
 
@@ -72,3 +74,14 @@ const MainBottomTab = (props) => {
 export default MainBottomTab
 
 const styles = StyleSheet.create({})
+
+const navigationStyle = {
+    defaultNavigationOptions: {
+      headerStyle: {
+        height: 80,
+        backgroundColor: "#eee",
+        borderBottomColor: "transparent",
+        elevation: 0 // for android
+      },
+    }
+  }

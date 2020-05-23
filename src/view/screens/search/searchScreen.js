@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
+// import { Text, Layout } from '@ui-kitten/components'
 import { globalStyles } from '../../../global/styles'
-import { SearchBar } from 'react-native-elements'
+import { TextInput } from 'react-native-paper';
+import SearchTab from '../../routes/searchTab';
 
 const SearchScreen = () => {
 
@@ -9,15 +11,9 @@ const SearchScreen = () => {
 
     return (
         <View style={globalStyles.container}>
-            <Text style={globalStyles.headerCenterText}> SearchScreen </Text>
-            {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <SearchBar
-                  lightTheme round
-                  value={searchText}
-                  onClear={setSearchText('')}
-                  onChangeText={setSearchText}
-                />
-            </TouchableWithoutFeedback> */}
+            <TextInput placeholder='Search'/>
+            <SearchTab/>
+              
         </View>
     )
 }

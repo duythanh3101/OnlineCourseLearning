@@ -9,7 +9,6 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from './src/redux/store';
 import BrowseScreen from './src/view/screens/browse/browseScreen';
 import HomeScreen from './src/view/screens/home/homeScreen';
-import ForgotPassword from './src/view/screens/authentication/forgot-password/forgot-password';
 import DownloadScreen from './src/view/screens/downloads/downloadScreen';
 import ProfileScreen from './src/view/screens/profile/profileScreen';
 import CourseListScreen from './src/view/screens/course/courseListScreen';
@@ -22,6 +21,9 @@ import { AppLoading } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainBottomTab from './src/view/routes/mainBottomTab';
+import AuthenticationStack from './src/view/routes/authenticationStack';
+import HomeStack from './src/view/routes/homeStack';
+import SearchTab from './src/view/routes/searchTab';
 
 const Stack = createStackNavigator();
 
@@ -33,13 +35,13 @@ const AppStackNavigator = () => {
         component={SplashScreen}
         options={{ headerShown: false }} />
       <Stack.Screen
-        name={ScreenKey.LoginScreen}
-        component={LoginScreen}
+        name={ScreenKey.AuthenticationStack}
+        component={AuthenticationStack}
         options={{ headerShown: false }} />
       <Stack.Screen
         name={ScreenKey.MainTab}
         component={MainBottomTab}
-        options={{ headerShown: false }} />
+        options={{ headerShown: false}} />
     </Stack.Navigator>
   )
 }

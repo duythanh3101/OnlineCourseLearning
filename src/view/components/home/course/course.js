@@ -103,7 +103,6 @@ export default Course
 const styles = StyleSheet.create({
     courseContainer: {
         flexDirection: 'column',
-        marginTop: 30
     },
     course: {
         flexDirection: 'column',

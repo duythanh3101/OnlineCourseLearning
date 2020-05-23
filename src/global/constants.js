@@ -11,17 +11,29 @@ export const ScreenKey = {
     DownloadScreen: 'downloadScreen',
     ProfileScreen: 'profileScreen',
     LoginScreen: 'loginScreen',
+    ForgotPasswordScreen: 'forgotPasswordScreen',
     RegisterScreen: 'registerScreen',
     SettingScreen: 'settingScreen',
     SplashScreen: 'splashScreen',
     BrowseScreen: 'browseScreen',
     SearchScreen: 'searchScreen',
+    SearchAllSectionsScreen: 'searchAllSectionsScreen',
+    SearchCoursesScreen: 'searchCoursesScreen',
+    SearchPathsScreen: 'searchPathsScreen',
+    SearchAuthorsScreen: 'searchAuthorsScreen',
+
     MainTab: 'mainTab',
+
+    AuthenticationStack: 'authenticationStack',
+    HomeStack: 'homeStack',
+    DownloadStack: 'downloadStack',
+    BrowseStack: 'browseStack',
 
 
 }
 
 export const ImageKey = {
-    RedLogo: require('../../assets/logo/red-online-course-learning.png'),
+    //RedLogo: require('../../assets/logo/red-online-course-learning.png'),
+    RedLogo: require('../../assets/logo/LOGO_ITEDU.png'),
     BlueLogo: require('../../assets/logo/blue-online-course-learning.png'),
 }

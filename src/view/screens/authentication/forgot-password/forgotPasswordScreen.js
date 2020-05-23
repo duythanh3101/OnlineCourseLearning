@@ -6,7 +6,7 @@ import RoundCornerButton from '../../../components/common/round-corner-button';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-const ForgotPassword = () => {
+const ForgotPasswordScreen = () => {
     const onPressSendEmail = () => {
         Alert.alert('Đang cập nhập');
     }
@@ -44,7 +44,7 @@ const ForgotPassword = () => {
     )
 }
 
-export default ForgotPassword
+export default ForgotPasswordScreen
 
 const styles = StyleSheet.create({
     roundCornerButtonBlue: {

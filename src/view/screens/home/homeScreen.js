@@ -1,13 +1,14 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Layout } from '@ui-kitten/components'
 import Course from '../../components/home/course/course'
 import { globalStyles } from '../../../global/styles'
 
 const HomeScreen = () => {
     return (
-        <View style={globalStyles.container}>
+        <Layout style={globalStyles.container}>
             <Course/>
-        </View>
+        </Layout>
     )
 }
 
