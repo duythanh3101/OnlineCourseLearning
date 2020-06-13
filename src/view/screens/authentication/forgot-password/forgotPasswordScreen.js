@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert, UIManager } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles';
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
@@ -9,6 +9,7 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const ForgotPasswordScreen = () => {
     const onPressSendEmail = () => {
         Alert.alert('Đang cập nhập');
+        
     }
 
     const onPressCancel = () => {

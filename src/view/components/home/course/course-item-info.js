@@ -1,23 +1,36 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import { colors, globalStyles } from '../../../../global/styles'
+import { ThemeContext } from '../../../../provider/theme-provider'
+import StarRatingImage from '../../star-rating/star-rating-image'
+import { AuthorDataContext } from '../../../../provider/author-data/author-data-provider'
 
 const CourseItemInfo = (props) => {
+    const { themes } = useContext(ThemeContext);
+    const { authorData } = useContext(AuthorDataContext)
+    const author = authorData.find(x => x.id === props.authorId);
+    //console.log('props.authorId', props)
+    
     return (
         <TouchableOpacity>
             <View style={[props.style, { width: 220 }]}>
-                <Image style={{ width: 220, height: 120 }} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
+                <Image style={{ width: 220, height: 120 }} source={{ uri: props.image }} />
 
-                <View style={styles.courseDetailContainer}>
-                    <Text style={[globalStyles.titleText, { margin: 5 }]}>{props.courseName}</Text>
-                    <Text style={[globalStyles.normalText, {marginTop: -5}]}>{props.author}</Text>
+                <View style={{...styles.courseDetailContainer, backgroundColor: themes.background.foreground }}>
+                    <Text style={[globalStyles.titleText, { margin: 5,
+                    color: themes.fontColor.mainColor
+                     }]}>{props.courseName}</Text>
+                    <Text style={[globalStyles.normalText, {color: themes.fontColor.mainColor}]}>{author ? author.name : 'haha'}</Text>
                     <View style={styles.inLine}>
-                        <Text style={globalStyles.normalText}>{props.level} -</Text>
-                        <Text style={globalStyles.normalText}>{props.date} -</Text>
-                        <Text style={globalStyles.normalText}>{props.duration}</Text>
+                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.level} -</Text>
+                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.date} -</Text>
+                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.duration}</Text>
                     </View>
 
-                    <Text style={globalStyles.normalText}>Rating</Text>
+                    <View style={[styles.inLine, {marginLeft: 5}]}>
+                        <StarRatingImage starCount={props.starCount}/>
+                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>({props.boughtCount})</Text>
+                    </View>
 
                 </View>
             </View>

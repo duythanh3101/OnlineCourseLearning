@@ -136,7 +136,7 @@ const BrowseScreen = () => {
                 <View style={styles.lineText}>
                     <Text style={globalStyles.titleText}>Paths</Text>
                     <TouchableOpacity onPress={onPressSeeAll}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
+                <Text style={globalStyles.normalCenterText}>See all {'>'}</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>

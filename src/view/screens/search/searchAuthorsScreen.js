@@ -44,7 +44,7 @@ const SearchAuthorsScreen = () => {
             <Text style={globalStyles.titleText}>{section.title}</Text>
 
             <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => { Alert.alert('Đang cập nhật') }}>
-                <Text style={globalStyles.normalCenterText}>{section.data.length} results ></Text>
+                <Text style={globalStyles.normalCenterText}>{section.data.length} results {'>'}</Text>
 
             </TouchableOpacity>
         </View>

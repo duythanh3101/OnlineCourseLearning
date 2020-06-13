@@ -1,10 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import CourseItemInfo from './course-item-info'
-import { globalStyles } from '../../../../global/styles'
+import { globalStyles, colors } from '../../../../global/styles'
 import { ScreenKey } from '../../../../global/constants'
+import { CourseDataContext } from '../../../../provider/course-data/course-data-provider'
+import { AuthorDataContext } from '../../../../provider/author-data/author-data-provider'
+import { PathDataContext } from '../../../../provider/path-data/path-data-provider'
+import Topic from './topic'
+import { ThemeContext } from '../../../../provider/theme-provider'
 
 const Course = (props) => {
+    //console.log(props)
+    const { courseData } = useContext(CourseDataContext);
+    const { authorData } = useContext(AuthorDataContext);
+    const { topicData } = useContext(PathDataContext);
+    const { themes } = useContext(ThemeContext);
+
     const [courses, setCourses] = useState([
         {
             courseName: 'Java',
@@ -35,71 +46,58 @@ const Course = (props) => {
             duration: '9h 35mins'
         },
     ])
-
-    const renderItem = (item, index) => {
+    //console.log('topic', topicData)
+    const renderCourseItem = (item, index) => {
         return <CourseItemInfo
             courseName={item.courseName}
             author={item.author}
             level={item.level}
             date={item.date}
             duration={item.duration}
+            boughtCount={item.boughtCount}
+            starCount={item.starCount}
             key={index}
+            image={item.image}
             style={styles.courseList} />
     }
 
-    const onPressSeeAll = (title) => {
-        //Alert.alert('Đang cập nhật')
+    // const onPressSeeAll = (title) => {
+    //     //Alert.alert('Đang cập nhật')
+    //     props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
+    //         item: {
+    //             title: title,
+    //             courses: courses
+    //         }
+    //     })
+    // }
+
+    const onPressSeeAllTopic = (topic) => {
+        console.log('aaaa', topic)
+
         props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
             item: {
-                title: title,
-                courses: courses
+                topic: topic
             }
         })
     }
 
+    const renderTopicItem = (item) => {
+        //console.log('topicaa', item.id)
+
+        let courseFilter = courseData.filter(x => x.topicId === item.id)
+        return <Topic
+            title={item.name}
+            courseData={courseFilter}
+            onPress={() => onPressSeeAllTopic(item)}
+            key={item.id}
+        />
+    }
+
     return (
-        <ScrollView style={styles.courseContainer}>
-            <View style={styles.course}>
-                <View style={globalStyles.lineText}>
-                    <Text style={globalStyles.titleText}>Software development</Text>
-                    <TouchableOpacity onPress={() => onPressSeeAll('Software development')}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal={true} style={styles.courseList}>
-                    {
-                        courses.map((item, i) => renderItem(item, i))
-                    }
-                </ScrollView>
-            </View>
-
-            <View style={styles.course}>
-                <View style={globalStyles.lineText}>
-                    <Text style={globalStyles.titleText}>IT development</Text>
-                    <TouchableOpacity onPress={() => onPressSeeAll('IT development')}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal={true} style={styles.courseList}>
-                    {
-                        courses.map((item, i) => renderItem(item, i))
-                    }
-                </ScrollView>
-            </View>
-
-            <View style={styles.course}>
-                <View style={globalStyles.lineText}>
-                    <Text style={globalStyles.titleText}>Soft skills</Text>
-                    <TouchableOpacity onPress={() => onPressSeeAll('Soft skills')}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal={true} style={styles.courseList}>
-                    {
-                        courses.map((item, i) => renderItem(item, i))
-                    }
-                </ScrollView>
-            </View>
+        <ScrollView style={{...styles.courseContainer, backgroundColor: themes.background.mainColor}}>
+            {
+                topicData.map((item) => renderTopicItem(item))
+            }
         </ScrollView>
 
     )
@@ -120,5 +118,9 @@ const styles = StyleSheet.create({
     },
     courseItemInfo: {
         margin: 5
-    }
+    },
+    normalCenterText: {
+        color: colors.white,
+        alignSelf: 'center'
+    },
 })
