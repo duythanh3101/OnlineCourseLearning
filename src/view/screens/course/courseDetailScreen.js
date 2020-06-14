@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, View, Image, Text, TouchableOpacity, Alert } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey } from '../../../global/constants'
@@ -9,52 +9,58 @@ import { Entypo, Feather } from '@expo/vector-icons';
 import { Layout, TabView, Tab } from "@ui-kitten/components";
 import ProfileScreen from '../profile/profileScreen'
 import LoginScreen from '../authentication/login/loginScreen'
+import { ThemeContext } from '../../../provider/theme-provider'
+import RoundCornerButton from '../../components/common/round-corner-button'
+import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
 
 
-const CourseDetailScreen = () => {
+const CourseDetailScreen = (props) => {
+    const { themes } = useContext(ThemeContext);
+    const { getAuthorById } = useContext(AuthorDataContext);
 
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
+    const course = props.route.params.course;
+    const author = getAuthorById(course.authorId);
 
-
+    console.log('author', author)
     const onPress = () => {
 
     }
 
     const onHandleBookmarkPress = () => {
-        Alert.alert('Bookmark')
+        //Alert.alert('Bookmark')
     }
 
     const onHandleAddToChannelPress = () => {
-        Alert.alert('Add to channel')
+        //Alert.alert('Add to channel')
     }
 
     const onHandleFavoritePress = () => {
-        Alert.alert('Favorite')
+        //Alert.alert('Favorite')
     }
     return (
-        <View style={[globalStyles.container, styles.container]}>
+        <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
-            <Image source={ImageKey.CourseImage} style={styles.topImage} />
+            <Image source={{uri: course.image}} style={styles.topImage} />
             {/* </View> */}
 
             <View styles={styles.mainContainer}>
-                <Text style={[globalStyles.headerText, styles.titleText]}>Angular Fundamentals</Text>
+                <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.courseName}</Text>
                 <View style={{
                     flexDirection: 'row',
                     marginTop: 10
                 }}>
-                    <RoundCornerWithImageTag title='Joe Eames' />
-                    <RoundCornerWithImageTag title='Joe Eames' />
-                    <RoundCornerWithImageTag title='Joe Eames' />
+                    <RoundCornerWithImageTag
+                        image={course.image}
+                        title={author.name}
+                         />
                 </View>
 
                 <View style={styles.topInfoContainer}>
-                    <Text style={globalStyles.normalText}>Intermediate -</Text>
-                    <Text style={globalStyles.normalText}>Feb 2020 -</Text>
-                    <Text style={globalStyles.normalText}>9.6h - </Text>
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{course.level} - {course.date} - {course.duration} - </Text>
 
                     <StarRatingImage starCount={3} />
-                    <Text style={globalStyles.normalText}> (818) </Text>
+                    <Text style={{...globalStyles.normalText, color: themes.fontColor.mainColor}}> ({course.boughtCount}) </Text>
 
                 </View>
 
@@ -63,36 +69,48 @@ const CourseDetailScreen = () => {
                         <View style={styles.icon}>
                             <Entypo name="bookmarks" size={24} color="white" />
                         </View>
-                        <Text style={globalStyles.titleText}>Bookmark</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Bookmark</Text>
+                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
                         <View style={styles.icon}>
                             <Entypo name="add-to-list" size={24} color="white" />
                         </View>
-                        <Text style={globalStyles.titleText}>Add to Channel</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Add to Channel</Text>
+                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text>
+
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
                         <View style={styles.icon}>
                             <Feather name="download" size={24} color="white" />
                         </View>
-                        <Text style={globalStyles.titleText}>Favorite</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Favorite</Text>
+                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text>
+
                     </TouchableOpacity>
                 </View>
-
+                <View style={{ flexDirection: 'column' }}>
+                    <RoundCornerButton
+                        backgroundStyle={{
+                            marginTop: 10,
+                            marginBottom: 10
+                        }}
+                        titleStyle={{
+                            fontSize: 18
+                        }}
+                        title='View related paths & courses'
+                    />
+                    
+                </View>
 
                 <TabView
                     onSelect={setTabSelectedIndex}
                     selectedIndex={tabSelectedIndex}
                     shouldLoadComponent={(index) => tabSelectedIndex === index}
                 >
-                    <Tab title='USERS'>
-                        <Layout>
-                            <LoginScreen/>
-                        </Layout>
-                    </Tab>
-                    <Tab title='ORDERS'>
+                    <Tab title='CONTENTS'>
                         <Layout style={styles.tabContainer}>
                             <Text category='h5'>ORDERS</Text>
                         </Layout>
@@ -103,7 +121,6 @@ const CourseDetailScreen = () => {
                         </Layout>
                     </Tab>
                 </TabView>
-                <Text style={{ color: 'white' }}>hshshshsh</Text>
             </View>
 
 
@@ -115,6 +132,10 @@ const CourseDetailScreen = () => {
 export default CourseDetailScreen
 
 const styles = StyleSheet.create({
+    tabContainer:{
+        flex: 1,
+        backgroundColor: 'white'
+    },
     iconItem: {
         alignItems: 'center'
     },
@@ -130,7 +151,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10,
     },
     topInfoContainer: {
         flexDirection: 'row',

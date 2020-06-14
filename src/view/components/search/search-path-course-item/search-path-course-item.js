@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { colors, globalStyles } from '../../../../global/styles'
+import { ThemeContext } from '../../../../provider/theme-provider';
 
 const SearchPathCourseItem = (props) => {
+    const { themes } = useContext(ThemeContext);
+
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={{...styles.container, backgroundColor: themes.background.foreground}}>
             <View style={styles.imageContainer}>
                 <Image source={{uri:props.source}} style={styles.image} />
             </View>
             <View style={styles.infoPathContainer}>
-                <Text style={globalStyles.titleText}>{props.title}</Text>
-                <Text style={[globalStyles.normalText, {marginLeft: 10}]}>{props.course}</Text>
+                <Text style={{...globalStyles.titleText, color: themes.fontColor.mainColor}}>{props.title}</Text>
+                <Text style={[globalStyles.normalText,
+                     {marginLeft: 10, color: themes.fontColor.mainColor}]}>{props.course} courses</Text>
             </View>
         </TouchableOpacity>
     )

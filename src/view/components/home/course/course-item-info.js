@@ -9,10 +9,9 @@ const CourseItemInfo = (props) => {
     const { themes } = useContext(ThemeContext);
     const { authorData } = useContext(AuthorDataContext)
     const author = authorData.find(x => x.id === props.authorId);
-    //console.log('props.authorId', props)
     
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
             <View style={[props.style, { width: 220 }]}>
                 <Image style={{ width: 220, height: 120 }} source={{ uri: props.image }} />
 

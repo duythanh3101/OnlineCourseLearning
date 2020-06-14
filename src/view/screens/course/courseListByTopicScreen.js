@@ -7,9 +7,7 @@ import { ThemeContext } from '../../../provider/theme-provider'
 import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
 
 const CourseListByTopicScreen = (props) => {
-    //console.log('screen', props);
     const topic = props.route.params.item.topic;
-    //console.log('topic', topic);
 
     const { themes } = useContext(ThemeContext);
     const { authorData } = useContext(AuthorDataContext);
@@ -36,7 +34,7 @@ const CourseListByTopicScreen = (props) => {
     }
 
     return (
-        <ScrollView style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
+        <View style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             <Text style={[globalStyles.headerText, { marginTop: 20, marginLeft: 20, color: themes.fontColor.mainColor }]}>{topic ? topic.name : ''}</Text>
             <FlatList
                 data={displayedCourses}
@@ -44,7 +42,7 @@ const CourseListByTopicScreen = (props) => {
                 renderItem={({ item, index }) => renderCourse(item, index)}
                 ItemSeparatorComponent={separator}
             />
-        </ScrollView>
+        </View>
 
     )
 }

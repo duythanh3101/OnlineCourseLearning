@@ -7,7 +7,7 @@ import { ImageKey } from '../../../global/constants';
 const RoundCornerWithImageTag = (props) => {
     return (
         <TouchableOpacity style={[globalStyles.roundCornerTagGray, props.style]} onPress={props.onPress}>
-            <Image source={ImageKey.CourseImage} style={globalStyles.imageTag} />
+            <Image source={{uri: props.image}} style={globalStyles.imageTag} />
             <Text style={[globalStyles.normalCenterText, props.textStyle]}>{props.title}</Text>
         </TouchableOpacity>
     )

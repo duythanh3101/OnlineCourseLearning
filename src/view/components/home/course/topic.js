@@ -3,10 +3,17 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-nati
 import { globalStyles } from '../../../../global/styles'
 import CourseItemInfo from './course-item-info'
 import { ThemeContext } from '../../../../provider/theme-provider';
+import { ScreenKey } from '../../../../global/constants';
 
 export default function Topic(props) {
-    //console.log('sss', props);
     const { themes } = useContext(ThemeContext);
+
+    // const onPressItem = (course) =>{
+    //     console.log('hqhqhqhqh', props);
+    //     // props.navigation.navigate(ScreenKey.CourseDetailScreen, {
+    //     //      course: course
+    //     //  });
+    // }
 
     const renderCourseItem = (item, index) => {
         return <CourseItemInfo
@@ -19,7 +26,11 @@ export default function Topic(props) {
             starCount={item.star}
             key={index}
             image={item.image}
-            style={styles.courseList} />
+            style={styles.courseList}
+            onPress={() => {
+                props.onPressItem(item);
+            }}
+            />
     }
 
     return (

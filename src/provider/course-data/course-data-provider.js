@@ -207,11 +207,14 @@ export function CourseDataProvider(props) {
     ]
         
     const getCoursesFromTopicId = (id) => courseData.filter(x => x.topicId == id);
+
+    const getCourseCountByAuthorId = (authorId) => courseData.filter(x => x.authorId == authorId).length;
     
     return (
         <CourseDataContext.Provider value={{
             courseData,
             getCoursesFromTopicId,
+            getCourseCountByAuthorId
 
         }}>
             {props.children}

@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
 import { ImageKey, ScreenKey } from '../../../../global/constants';
+import { ThemeService } from '@ui-kitten/components/theme/theme/theme.service';
+import { ThemeContext } from '../../../../provider/theme-provider';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 const LoginScreen = (props) => {
+
+    const {themes} = useContext(ThemeContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -32,7 +36,7 @@ const LoginScreen = (props) => {
     }
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={[globalStyles.container, styles.container]}>
+            <View style={[globalStyles.container, styles.container, {backgroundColor: themes.background.mainColor}]}>
                 <View style={styles.imageContainer}>
                     <Image source={ImageKey.RedLogo} style={{ width: 300, height: 300 }} />
 
@@ -61,7 +65,7 @@ const LoginScreen = (props) => {
                     />
                     <RoundCornerButton
                         title='SIGN IN'
-                        backgroundStyle={{ marginTop: 20 }}
+                        backgroundStyle={{ marginTop: 20, backgroundColor: themes.buttonColor.mainColor }}
                         onPress={onHandleSigninPress}
                     />
 

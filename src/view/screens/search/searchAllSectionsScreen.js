@@ -1,110 +1,74 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View, SectionList, Alert, TouchableOpacity } from 'react-native'
 import { globalStyles } from '../../../global/styles'
 import ListCourseItem from '../../components/course/listCourseItem/list-course-item'
 import SearchPathCourseItem from '../../components/search/search-path-course-item/search-path-course-item'
 import SearchAuthorItem from '../../components/search/search-author-item/search-author-item'
 import { ScreenKey } from '../../../global/constants'
+import { ThemeContext } from '../../../provider/theme-provider'
+import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
+import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
+import { PathDataContext } from '../../../provider/path-data/path-data-provider'
 
 const SearchAllSectionsScreen = (props) => {
+    const { themes } = useContext(ThemeContext);
+    const { authorData } = useContext(AuthorDataContext);
+    const { pathData } = useContext(PathDataContext);
+    const { getCourseCountByAuthorId } = useContext(CourseDataContext);
+    const { courseData } = useContext(CourseDataContext);
+
     const searchResults = [
         {
             title: 'Courses',
-            data: [
-                {
-                    id: '1',
-                    courseName: 'Java',
-                    author: 'John',
-                    level: 'Advanced',
-                    date: 'Feb 2019',
-                    duration: '9h 35mins'
-                },
-                {
-                    id: '2',
-                    courseName: 'Java',
-                    author: 'John',
-                    level: 'Advanced',
-                    date: 'Feb 2019',
-                    duration: '9h 35mins'
-                },
-                {
-                    id: '3',
-                    courseName: 'Java',
-                    author: 'John',
-                    level: 'Advanced',
-                    date: 'Feb 2019',
-                    duration: '9h 35mins'
-                },
-            ],
+            data: courseData,
             index: 0
         },
         {
             title: 'Paths',
-            data: [
-                {
-                    image: '',
-                    title: 'Javascript Core Language',
-                    course: '9 courses'
-                },
-                {
-                    image: '',
-                    title: 'Javascript Core Language',
-                    course: '9 courses'
-                }
-            ],
+            data: pathData,
             index: 1
         },
         {
             title: 'Authors',
-            data: [
-                {
-                    image: '',
-                    authorName: 'Scott Allen',
-                    course: '9 courses'
-                },
-                {
-                    image: '',
-                    authorName: 'Scott Allen',
-                    course: '9 courses'
-                },
-                {
-                    image: '',
-                    authorName: 'Scott Allen',
-                    course: '9 courses'
-                },
-            ],
+            data: authorData,
             index: 2
         },
     ]
 
     const renderItem = (item, index, section) => {
-        console.log(section);
 
         if (section.index == 0) {
-            return <ListCourseItem
-                source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                courseName={item.courseName}
-                author={item.author}
-                level={item.level}
-                date={item.date}
-                duration={item.duration}
-                //key={index}
-                style={{ margin: 5 }} />
+            const author = authorData ? authorData.find(x => x.id === item.authorId) : null;
+
+        return <ListCourseItem
+            source={item.image}
+            courseName={item.courseName}
+            authorName={author ? author.name : ''}
+            level={item.level}
+            date={item.date}
+            duration={item.duration}
+            starCount={item.star}
+            boughtCount={item.boughtCount}
+            key={item.id}
+            style={{ margin: 5 }} />
 
         } else if (section.index == 1) {
             return <SearchPathCourseItem
-                source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                title={item.title}
-                course={item.course}
+                source={item.image}
+                title={item.pathName}
+                course={item.courses}
                 onPress={onPressPathItem}
             />
 
         } else if (section.index == 2) {
+            let numCourses = getCourseCountByAuthorId(item.id);
+
             return <SearchAuthorItem
-                source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                authorName={item.authorName}
-                course={item.course}
+                source={item.image}
+                authorName={item.name}
+                course={numCourses}
                 onPress={onPressPathItem}
+                key={index}
             />
         }
     }
@@ -124,10 +88,12 @@ const SearchAllSectionsScreen = (props) => {
 
     const renderSectionHeader = (section) => {
         return <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={globalStyles.titleText}>{section.title}</Text>
+            <Text style={{...globalStyles.titleText, 
+                color: themes.fontColor.mainColor}}>{section.title}</Text>
 
             <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => { onHandleTabPress(section.index) }}>
-                <Text style={globalStyles.normalCenterText}>{section.data.length} results ></Text>
+                <Text style={{...globalStyles.normalCenterText, 
+                color: themes.fontColor.mainColor}}>{section.data.length} results {'>'}</Text>
 
             </TouchableOpacity>
         </View>
@@ -138,7 +104,7 @@ const SearchAllSectionsScreen = (props) => {
     }
 
     return (
-        <View style={globalStyles.container}>
+        <View style={{...globalStyles.container, backgroundColor: themes.background.mainColor}}>
             <SectionList
                 sections={searchResults}
                 keyExtractor={(item, index) => item + index}

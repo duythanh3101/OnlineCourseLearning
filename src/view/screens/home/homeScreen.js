@@ -7,7 +7,6 @@ import { ThemeContext } from '../../../provider/theme-provider'
 const HomeScreen = (props) => {
 
     const { themes } = useContext(ThemeContext)
-    //console.log('value ', props)
 
     const styles = StyleSheet.create({
         container: {

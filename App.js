@@ -29,6 +29,7 @@ import { ThemeProvider } from './src/provider/theme-provider';
 import { CourseDataProvider } from './src/provider/course-data/course-data-provider';
 import { AuthorDataProvider } from './src/provider/author-data/author-data-provider';
 import { PathDataProvider } from './src/provider/path-data/path-data-provider';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 const Stack = createStackNavigator();
 
@@ -63,12 +64,15 @@ export default function App() {
               <PersistGate loading={<AppLoading />} persistor={persistor}>
                 <IconRegistry icons={EvaIconsPack} />
                 <ApplicationProvider mapping={mapping} theme={light}>
-                  <NavigationContainer>
-                    <AppStackNavigator />
-                    {/* <CourseDetailScreen /> */}
-                    {/* <BrowseScreen /> */}
-                    {/* <HomeScreen /> */}
-                  </NavigationContainer>
+                  <PaperProvider>
+                    <NavigationContainer>
+                      <AppStackNavigator />
+                      {/* <CourseDetailScreen /> */}
+                      {/* <BrowseScreen /> */}
+                      {/* <HomeScreen /> */}
+                    </NavigationContainer>
+                  </PaperProvider>
+
                 </ApplicationProvider>
               </PersistGate>
             </ReduxProvider>

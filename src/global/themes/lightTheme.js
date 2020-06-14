@@ -9,7 +9,7 @@ export default themes = {
         normalTextColor: '#9598AF'
     },
     buttonColor: {
-        mainColor: 'E82F69',
-        smallColor: 'F5CE19'
+        mainColor: '#E82F69',
+        smallColor: '#F5CE19'
     }
 }

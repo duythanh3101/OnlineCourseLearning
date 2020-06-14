@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity, Image } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import ImageButtonTwoLines from '../../components/common/image-button-two-lines'
 import RoundCornerTag from '../../components/common/round-corner-tag'
 import PathCourseItem from '../../components/browse/path-course-item/path-course-item'
+import { ThemeContext } from '../../../provider/theme-provider'
+import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
+import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
+import { PathDataContext } from '../../../provider/path-data/path-data-provider'
+import AuthorVerticalItem from '../../components/author/author-vertical-item'
 
-const BrowseScreen = () => {
+const BrowseScreen = (props) => {
+
+    const { themes } = useContext(ThemeContext);
+    const { authorData } = useContext(AuthorDataContext);
+    const { pathData } = useContext(PathDataContext);
 
     const popularSkills = [
         {
@@ -83,6 +92,15 @@ const BrowseScreen = () => {
         />
     }
 
+    const renderAuthorItem = (item, index) => {
+
+        return <AuthorVerticalItem
+            name={item.name}
+            image={item.image}
+            key={index}
+        />
+    }
+
     const onPressSeeAll = () => {
         Alert.alert('Đang cập nhật')
     }
@@ -91,8 +109,18 @@ const BrowseScreen = () => {
         Alert.alert('Đang cập nhật')
     }
 
+    const renderPathItem = (item, index) => {
+        return <PathCourseItem
+            source={item.image}
+            title={item.pathName}
+            course={item.courses}
+            onPress={onPressPathItem}
+            key={index}
+        />
+    }
+
     return (
-        <ScrollView style={globalStyles.container}>
+        <ScrollView style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             <ImageButtonTwoLines
                 uri='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
                 firstText='NEW'
@@ -124,7 +152,7 @@ const BrowseScreen = () => {
             </ScrollView>
 
             <View style={styles.containerPopularSkills}>
-                <Text style={globalStyles.titleText}>Popular Skills</Text>
+                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Popular Skills</Text>
                 <ScrollView horizontal={true} style={styles.containerLinePopularSkills}>
                     {
                         popularSkills.map((item, index) => renderPopularItem(item, index))
@@ -134,54 +162,30 @@ const BrowseScreen = () => {
 
             <View style={styles.pathContainer}>
                 <View style={styles.lineText}>
-                    <Text style={globalStyles.titleText}>Paths</Text>
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Paths</Text>
                     <TouchableOpacity onPress={onPressSeeAll}>
-                <Text style={globalStyles.normalCenterText}>See all {'>'}</Text>
+                        <Text style={{...globalStyles.normalCenterText,
+                                    color: themes.fontColor.mainColor
+                            }}>See all {'>'}</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
-                    <PathCourseItem
-                        source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                        title='Building Web Applications with Blazor'
-                        course='5 courses'
-                        onPress={onPressPathItem}
-                    />
-
-                    <PathCourseItem
-                        source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                        title='Building WPF with Blazor'
-                        course='5 courses'
-                        onPress={onPressPathItem}
-                    />
+                    {
+                        pathData.map((item, index) => renderPathItem(item, index))
+                    }
 
                 </ScrollView>
 
             </View>
 
             <View style={styles.authorContainer}>
-                <Text style={globalStyles.titleText}>Top authors</Text>
+                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Top authors</Text>
 
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
                     <View style={styles.containerLineAuthors}>
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>Deborah Kurata</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>John</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>Andy</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>Deborah Kurata</Text>
-                        </TouchableOpacity>
+                        {
+                            authorData.map((item, index) => renderAuthorItem(item, index))
+                        }
                     </View>
 
                 </ScrollView>
@@ -199,6 +203,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         justifyContent: 'center',
         textAlign: 'center',
+        margin: 0,
         marginTop: 5,
     },
     authorItem: {
