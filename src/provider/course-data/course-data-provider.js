@@ -15,9 +15,9 @@ export function CourseDataProvider(props) {
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/gatsbyjs-getting-started-v1.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 1181,
             topicId: 1,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 2,
@@ -30,7 +30,7 @@ export function CourseDataProvider(props) {
             star: 4.5,
             boughtCount: 660,
             topicId: 1,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 3,
@@ -41,9 +41,9 @@ export function CourseDataProvider(props) {
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 1234,
             topicId: 1,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 4,
@@ -54,9 +54,9 @@ export function CourseDataProvider(props) {
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 434,
             topicId: 1,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 5,
@@ -67,9 +67,9 @@ export function CourseDataProvider(props) {
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 123412,
             topicId: 1,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 6,
@@ -80,9 +80,9 @@ export function CourseDataProvider(props) {
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 43,
             topicId: 2,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 7,
@@ -95,47 +95,47 @@ export function CourseDataProvider(props) {
             star: 4.5,
             boughtCount: 660,
             topicId: 2,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 8,
-            courseName: 'Web Development: Executive Briefing',
+            courseName: 'C# Development: Executive Briefing',
             authorId: 3,
             level: 'Advanced',
             date: 'Jun 06, 2014',
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 3535,
             topicId: 2,
-            isFavorited: true,
+            isFavorited: false,
 
         },
         {
             id: 9,
-            courseName: 'Web Development: Executive Briefing',
+            courseName: 'Java Development: Executive Briefing',
             authorId: 4,
             level: 'Beginner',
             date: 'Jun 06, 2014',
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 1313,
             topicId: 2,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 10,
-            courseName: 'Web Development: Executive Briefing',
+            courseName: 'C# Development: Executive Briefing',
             authorId: 5,
             level: 'Intermediate',
             date: 'Jun 06, 2014',
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 5353,
             topicId: 2,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 11,
@@ -146,75 +146,91 @@ export function CourseDataProvider(props) {
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/aws-architecting-reliability-v1.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 12351,
             topicId: 3,
-            isFavorited: true,
+            isFavorited: false,
 
         },
         {
             id: 12,
-            courseName: 'Web Development with ExpressJS',
+            courseName: 'Python Development with ExpressJS',
             authorId: 2,
             level: 'Beginner',
             date: 'Sep 27, 2012',
             duration: '2h 14m',
             image: 'https://pluralsight.imgix.net/course-images/penetrating-networks-comptia-pentest-v1.png',
             star: 4.5,
-            boughtCount: 660,
+            boughtCount: 45435,
             topicId: 3,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 13,
-            courseName: 'Web Development: Executive Briefing',
+            courseName: 'Java Development: Executive Briefing',
             authorId: 3,
             level: 'Advanced',
             date: 'Jun 06, 2014',
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 5645,
             topicId: 3,
-            isFavorited: true,
+            isFavorited: false,
 
         },
         {
             id: 14,
-            courseName: 'Web Development: Executive Briefing',
+            courseName: 'Angular Development: Executive Briefing',
             authorId: 4,
             level: 'Beginner',
             date: 'Jun 06, 2014',
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 443,
             topicId: 3,
-            isFavorited: true,
+            isFavorited: false,
         },
         {
             id: 15,
-            courseName: 'Web Development: Executive Briefing',
+            courseName: 'React Development: Executive Briefing',
             authorId: 5,
             level: 'Intermediate',
             date: 'Jun 06, 2014',
             duration: '2h 58m',
             image: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             star: 5,
-            boughtCount: 11846,
+            boughtCount: 34,
             topicId: 3,
-            isFavorited: true,
+            isFavorited: false,
         },
     ]
-        
+
     const getCoursesFromTopicId = (id) => courseData.filter(x => x.topicId == id);
 
     const getCourseCountByAuthorId = (authorId) => courseData.filter(x => x.authorId == authorId).length;
     
+    const addFavoriteCourse = (id) => {
+        let course = courseData.find(x => x.id === id );
+        course.isFavorited = true;
+
+        courseData = courseData.map(x => x === id ? course : x);
+    }
+
+    const removeFavoriteCourse = (id) => {
+        let course = courseData.find(x => x.id === id );
+        course.isFavorited = false;
+
+        courseData = courseData.map(x => x === id ? course : x);
+    }
+
     return (
         <CourseDataContext.Provider value={{
             courseData,
             getCoursesFromTopicId,
-            getCourseCountByAuthorId
+            getCourseCountByAuthorId,
+            addFavoriteCourse,
+            removeFavoriteCourse
 
         }}>
             {props.children}

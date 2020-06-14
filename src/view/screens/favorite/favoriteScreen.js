@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Layout, Text } from '@ui-kitten/components'
 import { globalStyles, colors } from '../../../global/styles'
@@ -9,47 +9,27 @@ import ListCourseItem from '../../components/course/listCourseItem/list-course-i
 import { ThemeContext } from '../../../provider/theme-provider';
 import { CourseDataContext } from '../../../provider/course-data/course-data-provider';
 import { AuthorDataContext } from '../../../provider/author-data/author-data-provider';
+import { useIsFocused } from '@react-navigation/native';
 
 const FavoriteScreen = (props) => {
+    const isFocused = useIsFocused();
 
     const { themes } = useContext(ThemeContext);
-    const { authorData } = useContext(AuthorDataContext);
-    const { courseData } = useContext(CourseDataContext);
-    const datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
+    const { authorData } = isFocused ? useContext(AuthorDataContext) : useContext(AuthorDataContext);
+    const { courseData } = isFocused ? useContext(CourseDataContext) : useContext(CourseDataContext);
+    let datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
 
-    const data = [
-        {
-            id: '1',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-        {
-            id: '2',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-        {
-            id: '3',
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-    ]
-
+    useEffect(() => {
+        console.log(courseData.filter(x=>x.isFavorited).length)
+        datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
+    })
     const separator = () => <View style={styles.separator} />;
 
     const renderItem = (item, index) => {
         const author = authorData ? authorData.find(x => x.id === item.authorId) : null;
 
         return <ListCourseItem
+            id={item.id}
             source={item.image}
             courseName={item.courseName}
             authorName={author ? author.name : ''}
@@ -69,8 +49,14 @@ const FavoriteScreen = (props) => {
                     (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <MaterialCommunityIcons style={{ alignSelf: 'center' }} name="progress-download" size={100} color="gray" />
-                            <Text style={[globalStyles.headerCenterText, styles.noDownloadText]}>No downloads</Text>
-                            <Text style={[globalStyles.headerCenterText, styles.appearHereText]}>Courses you download will appear here</Text>
+                            <Text style={[globalStyles.headerCenterText,
+                                 styles.noDownloadText,
+                                 {color: themes.fontColor.mainColor}
+                                 ]}>No downloads</Text>
+                            <Text style={[globalStyles.headerCenterText,
+                                 styles.appearHereText,
+                                 {color: themes.fontColor.mainColor}
+                                 ]}>Courses you download will appear here</Text>
                         </View>
                     )
                     :

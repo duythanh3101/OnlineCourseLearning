@@ -8,7 +8,9 @@ export default function AuthorVerticalItem(props) {
     const {themes} = useContext(ThemeContext);
 
     return (
-        <TouchableOpacity style={styles.authorItem} onPress={props.onPress}>
+        <TouchableOpacity style={styles.authorItem} onPress={() => {
+            props.onPress(props.id)
+        }}>
             <Image style={styles.imageAuthor} source={{ uri: props.image }} />
             <Text style={[globalStyles.titleText, styles.authorName, { color: themes.fontColor.mainColor }]}>{props.name}</Text>
         </TouchableOpacity>

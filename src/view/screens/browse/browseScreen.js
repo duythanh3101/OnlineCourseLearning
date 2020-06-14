@@ -9,6 +9,7 @@ import { AuthorDataContext } from '../../../provider/author-data/author-data-pro
 import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
 import { PathDataContext } from '../../../provider/path-data/path-data-provider'
 import AuthorVerticalItem from '../../components/author/author-vertical-item'
+import { ScreenKey } from '../../../global/constants'
 
 const BrowseScreen = (props) => {
 
@@ -47,19 +48,19 @@ const BrowseScreen = (props) => {
     const smallImages = [
         {
             key: 1,
-            uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg',
+            uri: 'https://pluralsight.imgix.net/course-images/gatsbyjs-getting-started-v1.png',
             firstText: 'FIRST',
             secondText: 'RELEASE'
         },
         {
             key: 2,
-            uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg',
+            uri: 'https://pluralsight.imgix.net/course-images/node-js-express-rest-web-services-update-v1.png',
             firstText: 'SECOND',
             secondText: 'RELEASE'
         },
         {
             key: 3,
-            uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg',
+            uri: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             firstText: 'FISRT',
             secondText: 'RELEASE'
         },
@@ -95,10 +96,18 @@ const BrowseScreen = (props) => {
     const renderAuthorItem = (item, index) => {
 
         return <AuthorVerticalItem
+            id={item.id}
             name={item.name}
             image={item.image}
             key={index}
+            onPress={onPressAuthor}
         />
+    }
+
+    const onPressAuthor = (id) => {
+        props.navigation.navigate(ScreenKey.AuthorScreen, {
+            id: id
+        })
     }
 
     const onPressSeeAll = () => {
@@ -122,13 +131,13 @@ const BrowseScreen = (props) => {
     return (
         <ScrollView style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             <ImageButtonTwoLines
-                uri='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
+                uri='https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png'
                 firstText='NEW'
                 secondText='RELEASE'
             />
 
             <ImageButtonTwoLines
-                uri='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
+                uri='https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png'
                 firstText='RECOMMENDED'
                 secondText='FOR YOU'
                 imageStyle={styles.imageStyle}

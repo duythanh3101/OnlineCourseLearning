@@ -30,6 +30,7 @@ import { CourseDataProvider } from './src/provider/course-data/course-data-provi
 import { AuthorDataProvider } from './src/provider/author-data/author-data-provider';
 import { PathDataProvider } from './src/provider/path-data/path-data-provider';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { VideoDataProvider } from './src/provider/video-data/video-data-provider';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,7 @@ export default function App() {
       <CourseDataProvider>
         <AuthorDataProvider>
           <PathDataProvider>
+            <VideoDataProvider>
 
             <ReduxProvider store={store}>
               <PersistGate loading={<AppLoading />} persistor={persistor}>
@@ -77,6 +79,7 @@ export default function App() {
               </PersistGate>
             </ReduxProvider>
 
+            </VideoDataProvider>
           </PathDataProvider>
         </AuthorDataProvider>
       </CourseDataProvider>

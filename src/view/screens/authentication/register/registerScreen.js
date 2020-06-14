@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
 import { ImageKey, constants } from '../../../../global/constants';
+import { ThemeProvider, ThemeContext } from '../../../../provider/theme-provider';
 
 const RegisterScreen = () => {
+
+    const {themes} = useContext(ThemeContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -16,9 +19,13 @@ const RegisterScreen = () => {
         <Icon {...style} name={isHidingPassword ? "eye-off" : "eye"} />
     );
 
+    const signUp = () => {
+        Alert.alert('Sign up successfully !!!')
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={[globalStyles.container, styles.container]}>
+            <View style={[globalStyles.container, styles.container, {backgroundColor: themes.background.mainColor}]}>
                 <View style={styles.imageContainer}>
                     <Image source={ImageKey.RedLogo} style={{ width: 120, height: 120 }} />
 
@@ -60,6 +67,7 @@ const RegisterScreen = () => {
                     <RoundCornerButton
                         title='SIGN UP'
                         backgroundStyle={{ marginTop: 20 }}
+                        onPress={signUp}
                     />
                     <TouchableOpacity style={styles.forgot}>
                         <Text style={styles.forgotText}>LOGIN WITH EXISTING ACCOUNT</Text>

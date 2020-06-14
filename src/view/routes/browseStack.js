@@ -9,6 +9,7 @@ import ProfileScreen from '../screens/profile/profileScreen';
 import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import SettingScreen from '../screens/setting/settingScreen';
+import AuthorScreen from '../screens/author/authorScreen';
 
 const Stack = createStackNavigator();
 
@@ -72,6 +73,13 @@ const BrowseStack = (props) => {
                 component={ProfileScreen}
                 options={{
                     title: 'Profile'
+                }}
+            />
+             <Stack.Screen
+                name={ScreenKey.AuthorScreen}
+                component={AuthorScreen}
+                options={{
+                    title: 'Author'
                 }}
             />
         </Stack.Navigator>

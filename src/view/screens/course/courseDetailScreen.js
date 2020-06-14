@@ -12,20 +12,27 @@ import LoginScreen from '../authentication/login/loginScreen'
 import { ThemeContext } from '../../../provider/theme-provider'
 import RoundCornerButton from '../../components/common/round-corner-button'
 import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
+import ContentVideoItem from '../../components/video/content-video-item'
+import { VideoDataContext } from '../../../provider/video-data/video-data-provider'
+import { FlatList, ScrollView } from 'react-native-gesture-handler'
+import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
 
 
 const CourseDetailScreen = (props) => {
     const { themes } = useContext(ThemeContext);
     const { getAuthorById } = useContext(AuthorDataContext);
+    const { videoContentData } = useContext(VideoDataContext);
+    const { getVideoContentById } = useContext(VideoDataContext);
+    const { addFavoriteCourse } = useContext(CourseDataContext);
+    const { courseData } = useContext(CourseDataContext);
+    const videoCourse = getVideoContentById(1);
+    //const content = videoCourse.content;
 
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
     const course = props.route.params.course;
     const author = getAuthorById(course.authorId);
 
-    console.log('author', author)
-    const onPress = () => {
-
-    }
+    //console.log('author', author)
 
     const onHandleBookmarkPress = () => {
         //Alert.alert('Bookmark')
@@ -37,14 +44,27 @@ const CourseDetailScreen = (props) => {
 
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
+        addFavoriteCourse(course.id)
+        //onsole.log('course', courseData)
     }
+
+    const renderVideoContent = (item, index) => {
+
+        return <ContentVideoItem
+            image={videoCourse.image}
+            title={item.title}
+            duration={item.duration}
+            key={index}
+        />
+    }
+
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
-            <Image source={{uri: course.image}} style={styles.topImage} />
+            <Image source={{ uri: course.image }} style={styles.topImage} />
             {/* </View> */}
 
-            <View styles={styles.mainContainer}>
+            <ScrollView styles={styles.mainContainer}>
                 <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.courseName}</Text>
                 <View style={{
                     flexDirection: 'row',
@@ -53,14 +73,14 @@ const CourseDetailScreen = (props) => {
                     <RoundCornerWithImageTag
                         image={course.image}
                         title={author.name}
-                         />
+                    />
                 </View>
 
                 <View style={styles.topInfoContainer}>
                     <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{course.level} - {course.date} - {course.duration} - </Text>
 
                     <StarRatingImage starCount={3} />
-                    <Text style={{...globalStyles.normalText, color: themes.fontColor.mainColor}}> ({course.boughtCount}) </Text>
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}> ({course.boughtCount}) </Text>
 
                 </View>
 
@@ -102,27 +122,31 @@ const CourseDetailScreen = (props) => {
                         }}
                         title='View related paths & courses'
                     />
-                    
-                </View>
 
+                </View>
                 <TabView
+                    // style={{flex: 1}}
                     onSelect={setTabSelectedIndex}
                     selectedIndex={tabSelectedIndex}
                     shouldLoadComponent={(index) => tabSelectedIndex === index}
                 >
                     <Tab title='CONTENTS'>
-                        <Layout style={styles.tabContainer}>
-                            <Text category='h5'>ORDERS</Text>
-                        </Layout>
+                        <View style={styles.tabContainer}>
+                            {
+                                videoCourse.content.map((item, index) => renderVideoContent(item, index))
+                            }
+                        </View>
                     </Tab>
-                    <Tab title='TRANSACTIONS'>
-                        <Layout style={styles.tabContainer}>
-                            <Text category='h5'>TRANSACTIONS</Text>
-                        </Layout>
+                    <Tab title='TRANSCRIPTIONS'>
+                        <View style={styles.tabContainer}>
+                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Course Overview</Text>
+                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{videoCourse.transcriptions}</Text>
+                        </View>
                     </Tab>
                 </TabView>
-            </View>
-
+            </ScrollView>
+            
+           
 
         </View>
 
@@ -132,8 +156,7 @@ const CourseDetailScreen = (props) => {
 export default CourseDetailScreen
 
 const styles = StyleSheet.create({
-    tabContainer:{
-        flex: 1,
+    tabContainer: {
         backgroundColor: 'white'
     },
     iconItem: {
