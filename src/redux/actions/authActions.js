@@ -1,10 +1,14 @@
 import { globalActionTypes } from "./actionTypes";
 
-export const login = (account, persistAccount) => ({
-    type: globalActionTypes.ACCOUNT_LOGIN,
-    payload: { account, persistAccount }
+export const loginRequest = () => ({
+    type: globalActionTypes.LOGIN_REQUESTED
 });
 
-export const logout = () => ({
-    type: globalActionTypes.ACCOUNT_LOGOUT
+export const loginSuccessed = (userInfo, token) => ({
+    type: globalActionTypes.LOGIN_SUCCESSED,
+    payload: { userInfo, token }
+});
+
+export const loginFailed = () => ({
+    type: globalActionTypes.LOGIN_FAILED,
 });
