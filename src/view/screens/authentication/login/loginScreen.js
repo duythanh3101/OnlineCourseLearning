@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
@@ -17,15 +17,19 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 
 const LoginScreen = (props) => {
 
-    const {themes} = useContext(ThemeContext);
+    const { themes } = useContext(ThemeContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isHidingPassword, setIsHidingPassword] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     const authReducer = useSelector(state => state.authReducer);
     const authDispatch = useDispatch();
+
+    useEffect(() => {
+        authDispatch(loginFailed());
+    }, [])
 
     const showPasswordIcon = style => (
         <Icon {...style} name={isHidingPassword ? "eye-off" : "eye"} />
@@ -33,13 +37,30 @@ const LoginScreen = (props) => {
 
     const onHandleSigninPress = async () => {
         authDispatch(loginRequest());
-        const res = await AuthenticationService.login('duythanh3101@gmail.com', '123456');
-        if (res && res.data.message && res.data.message === 'OK'){
-            authDispatch(loginSuccessed(res.data.userInfo, res.data.token));
+        await AuthenticationService.login('duythanh3101@gmail.com', '123456')
+            .then(response => {
+                console.log('login screen res: ', response);
+                if (response && response.data.message && response.data.message === 'OK') {
+                    authDispatch(loginSuccessed(response.data.userInfo, response.data.token));
+                    setIsError(false);
+                    props.navigation.navigate(ScreenKey.MainTab)
+                } else {
+                    setIsError(true);
+                    authDispatch(loginFailed());
+                }
+            })
+            .catch(error => {
+                console.log('login screen error: ', error);
+                setIsError(true);
+                authDispatch(loginFailed());
+            })
+    }
 
-            props.navigation.navigate(ScreenKey.MainTab)
-        }else{
-            authDispatch(loginFailed());
+    const showError = () => {
+        if (isError === true) {
+            return <Text style={[globalStyles.titleText, 
+                { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
+                     Email hoặc mật khẩu không hợp lệ</Text>
         }
     }
 
@@ -51,13 +72,10 @@ const LoginScreen = (props) => {
         props.navigation.navigate(ScreenKey.RegisterScreen)
     }
 
-    // if (authReducer.isAuthenticating === true){
-    //     return <ActivityIndicator/>
-    // }
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={[globalStyles.container, styles.container, {backgroundColor: themes.background.mainColor}]}>
-                
+            <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
+
                 <View style={styles.imageContainer}>
                     <Image source={ImageKey.RedLogo} style={{ width: 300, height: 300 }} />
 
@@ -89,7 +107,9 @@ const LoginScreen = (props) => {
                         backgroundStyle={{ marginTop: 20, backgroundColor: themes.buttonColor.mainColor }}
                         onPress={onHandleSigninPress}
                     />
-
+                    {
+                        showError()
+                    }
                     <TouchableOpacity style={styles.forgot} onPress={onHandleForgotPasswordPress}>
                         <Text style={styles.forgotText}>FORGOT PASSWORD?</Text>
                     </TouchableOpacity>
@@ -99,14 +119,15 @@ const LoginScreen = (props) => {
                     </TouchableOpacity>
 
                     {
-                    authReducer.isAuthenticating === true 
-                    ?
-                    <ActivityIndicator style={{alignSelf : 'center', flex: 1}}/>
-                    :
-                    null
-                }
+                        authReducer.isAuthenticating === true
+                            ?
+                            <ActivityIndicator style={{ alignSelf: 'center', flex: 1 }} />
+                            :
+                            null
+                    }
+
                 </View>
-               
+
             </View>
 
         </TouchableWithoutFeedback>
