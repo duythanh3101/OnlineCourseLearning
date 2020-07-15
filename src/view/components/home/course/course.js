@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles'
 import { ScreenKey } from '../../../../global/constants'
@@ -6,19 +6,35 @@ import { CourseDataContext } from '../../../../provider/course-data/course-data-
 import { PathDataContext } from '../../../../provider/path-data/path-data-provider'
 import Topic from './topic'
 import { ThemeContext } from '../../../../provider/theme-provider'
+import CourseHomeService from '../../../../core/service/courseHomeService'
+import axios from 'axios'
 
 const Course = (props) => {
     const { courseData } = useContext(CourseDataContext);
     const { topicData } = useContext(PathDataContext);
     const { themes } = useContext(ThemeContext);
 
-    const onPressSeeAllTopic = (topic) => {
+    useEffect(() => {
 
-        props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
-            item: {
-                topic: topic
-            }
+
+    }, [])
+
+    const onPressSeeAllTopic = async (topic) => {
+
+        await CourseHomeService.getTopNewCourses(10, 1)
+        .then(response => {
+            console.log('Home: ', response.data)
         })
+        .catch(error => {
+            console.log('Home error: ', error)
+        });
+      
+
+        // props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
+        //     item: {
+        //         topic: topic
+        //     }
+        // })
     }
 
     const onPressItem = (course) => {
@@ -44,6 +60,14 @@ const Course = (props) => {
 
     return (
         <ScrollView style={{ ...styles.courseContainer, backgroundColor: themes.background.mainColor }}>
+            {/* <Topic
+                title='Khóa học bán chạy'
+                courseData={courseFilter}
+                onPress={() => onPressSeeAllTopic(item)}
+                key={item.id}
+                onPressItem={onPressItem}
+
+            /> */}
             {
                 topicData.map((item) => renderTopicItem(item))
             }

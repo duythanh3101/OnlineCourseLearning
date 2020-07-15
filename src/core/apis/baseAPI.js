@@ -23,16 +23,39 @@ export default class BaseAPI {
         return await Axios.get(this.endpoint, { params: queryParams });
     }
 
-    async get(queryParams, config) {
-        return await Axios.get(this.endpoint, { params: queryParams }, config);
+    async get(queryParams, authorizationToken) {
+        const headers = authorizationToken ? 
+        {
+            Authorization: `Bearer ${authorizationToken}`
+        }
+        : 
+        null
+
+        return await Axios.get(this.endpoint, { params: queryParams }, headers);
     }
 
     async post(entity) {
-        return await Axios.post(this.endpoint, entity);
+        const config = {
+            'Content-type': 'application/json; charset=UTF-8'
+        }
+        return await Axios.post(this.endpoint, entity, config);
     }
 
-    async post(entity, config){
-        return await Axios.post(this.endpoint, entity, config);
+    async post(entity, authorizationToken){
+
+        const config = {
+            'Content-type': 'application/json'
+        }
+
+        const headers = authorizationToken ? 
+        {
+            Authorization: `Bearer ${authorizationToken}`
+        }
+        : 
+        null
+        console.log('entity3: ', entity, this.endpoint);
+
+        return await Axios.post(this.endpoint, entity);
     }
 
     async put(entity) {

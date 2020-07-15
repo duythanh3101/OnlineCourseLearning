@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
@@ -39,8 +39,8 @@ const LoginScreen = (props) => {
         authDispatch(loginRequest());
         await AuthenticationService.login('duythanh3101@gmail.com', '123456')
             .then(response => {
-                console.log('login screen res: ', response);
                 if (response && response.data.message && response.data.message === 'OK') {
+                    console.log('Login token: ', response.data.token);
                     authDispatch(loginSuccessed(response.data.userInfo, response.data.token));
                     setIsError(false);
                     props.navigation.navigate(ScreenKey.MainTab)
@@ -50,7 +50,6 @@ const LoginScreen = (props) => {
                 }
             })
             .catch(error => {
-                console.log('login screen error: ', error);
                 setIsError(true);
                 authDispatch(loginFailed());
             })
@@ -58,9 +57,9 @@ const LoginScreen = (props) => {
 
     const showError = () => {
         if (isError === true) {
-            return <Text style={[globalStyles.titleText, 
-                { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
-                     Email hoặc mật khẩu không hợp lệ</Text>
+            return <Text style={[globalStyles.titleText,
+            { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
+                Email hoặc mật khẩu không hợp lệ</Text>
         }
     }
 
@@ -77,7 +76,7 @@ const LoginScreen = (props) => {
             <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
 
                 <View style={styles.imageContainer}>
-                    <Image source={ImageKey.RedLogo} style={{ width: 300, height: 300 }} />
+                    <Image source={ImageKey.RedLogo} style={{ width: 250, height: 250 }} />
 
                 </View>
 
@@ -129,7 +128,6 @@ const LoginScreen = (props) => {
                 </View>
 
             </View>
-
         </TouchableWithoutFeedback>
     )
 }
@@ -144,7 +142,8 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 40
     },
     container: {
         flexDirection: 'column',

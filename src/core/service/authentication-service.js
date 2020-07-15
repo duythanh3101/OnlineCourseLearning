@@ -12,7 +12,7 @@ class AuthenticationService extends BaseService {
             'Content-type': 'application/json; charset=UTF-8'
         }
 
-        return await this.create({ email, password }, config);
+        return await this.create({ email, password });
     }
 
     
