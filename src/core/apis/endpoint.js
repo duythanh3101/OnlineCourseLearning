@@ -12,3 +12,6 @@ export const searchEndpoint = rootEndpoint + "/course/search";
 export const getAllCategoryEndpoint = rootEndpoint + "/category/all";
 export const getAllInstructorEndpoint = rootEndpoint + "/instructor";
 export const getInstructorDetailEndpoint = rootEndpoint + "/instructor/detail";
+
+export const getUserInfoEndpoint = rootEndpoint + "/user/me";
+export const updateProfileEndpoint = rootEndpoint + "/user/update-profile";

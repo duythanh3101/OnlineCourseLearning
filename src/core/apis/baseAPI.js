@@ -25,6 +25,7 @@ export default class BaseAPI {
     }
 
     async get(queryParams, authorizationToken) {
+        console.log('user', queryParams, authorizationToken);
         const headers = authorizationToken ? 
         {
             Authorization: `Bearer ${authorizationToken}`

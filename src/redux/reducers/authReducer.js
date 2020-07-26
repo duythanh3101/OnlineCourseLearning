@@ -24,8 +24,8 @@ export default function (state = initialState, action) {
                 ...state,
                 isAuthenticated: true,
                 isAuthenticating: false,
-                userInfo: action.userInfo,
-                token: action.token
+                userInfo: action.payload.userInfo,
+                token: action.payload.token
             }
         }
 

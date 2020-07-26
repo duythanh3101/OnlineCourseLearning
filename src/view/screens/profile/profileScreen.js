@@ -1,21 +1,30 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import RoundCornerTag from '../../components/common/round-corner-tag';
 import { ThemeContext } from '../../../provider/theme-provider';
+import UserService from '../../../core/service/userService';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProfileScreen = () => {
 
     const { themes } = useContext(ThemeContext);
+    const authReducer = useSelector(state => state.authReducer);
+    //const authDispatch = useDispatch();
+    const userInfo = authReducer.userInfo;
 
+    useEffect(() => {
+        //console.log('auth', authReducer)
+
+    }, [])
     return (
         <View style={{...globalStyles.container, backgroundColor: themes.background.mainColor}}>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image style={styles.imageProfile} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
+                <Image style={styles.imageProfile} source={{ uri: userInfo.avatar }} />
                 <Text style={[globalStyles.titleText, styles.nameProfile, {
                     color: themes.fontColor.mainColor
-                }]}>Duy Thanh</Text>
+                }]}>{userInfo.email}</Text>
             </View>
             <View style={{}}>
                 <Text style={{...globalStyles.titleText, color: themes.fontColor.mainColor}}>Interests</Text>
