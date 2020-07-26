@@ -9,3 +9,6 @@ export const getCourseInfoEndpoint = rootEndpoint + "/course/get-course-info";
 export const getCourseDetailEndpoint = rootEndpoint + "/course/get-course-detail";
 export const detailWithLessonEndpoint = rootEndpoint + "/course/detail-with-lesson";
 export const searchEndpoint = rootEndpoint + "/course/search";
+export const getAllCategoryEndpoint = rootEndpoint + "/category/all";
+export const getAllInstructorEndpoint = rootEndpoint + "/instructor";
+export const getInstructorDetailEndpoint = rootEndpoint + "/instructor/detail";

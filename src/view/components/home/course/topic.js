@@ -1,31 +1,45 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { globalStyles } from '../../../../global/styles'
 import CourseItemInfo from './course-item-info'
 import { ThemeContext } from '../../../../provider/theme-provider';
 import { ScreenKey } from '../../../../global/constants';
+import courseHomeService from '../../../../core/service/courseHomeService';
 
 export default function Topic(props) {
     const { themes } = useContext(ThemeContext);
 
-    // const onPressItem = (course) =>{
-    //     console.log('hqhqhqhqh', props);
-    //     // props.navigation.navigate(ScreenKey.CourseDetailScreen, {
-    //     //      course: course
-    //     //  });
-    // }
+    const [isLoading, setIsLoading] = useState(false)
+    const [courses, setCourses] = useState([])
+    useEffect(() => {
+        setIsLoading(true);
+        courseHomeService.getCoursesByCategoryId(props.id, 10, 1)
+            .then(response => {
+                if (response.data.payload.count > 0) {
+                    //console.log('courses 2: ', courseaaa);
+                    setCourses(response.data.payload.rows)
+                    setIsLoading(false);
+
+                }
+            })
+            .catch(error => {
+                console.log('courses error: ', error);
+
+            })
+    }, [])
 
     const renderCourseItem = (item, index) => {
+        //console.log('sadasd: ', item);
         return <CourseItemInfo
-            courseName={item.courseName}
-            authorId={item.authorId}
-            level={item.level}
-            date={item.date}
-            duration={item.duration}
-            boughtCount={item.boughtCount}
-            starCount={item.star}
+            id={item.id}
+            courseName={item.title}
+            authorName={item.name}
+            date={item.updatedAt.substring(0, 10)}
+            duration={item.totalHours}
+            boughtCount={item.soldNumber}
+            starCount={item.ratedNumber}
             key={index}
-            image={item.image}
+            image={item.imageUrl}
             style={styles.courseList}
             onPress={() => {
                 props.onPressItem(item);
@@ -33,6 +47,9 @@ export default function Topic(props) {
             />
     }
 
+    if (isLoading === true || courses.length === 0)
+        return <View></View>
+           
     return (
         <View style={styles.course}>
             <View style={globalStyles.lineText}>
@@ -48,7 +65,7 @@ export default function Topic(props) {
             </View>
             <ScrollView horizontal={true} style={styles.courseList}>
                 {
-                    props.courseData.map((item, i) => renderCourseItem(item, i))
+                    courses.map((item, i) => renderCourseItem(item, i))
                 }
             </ScrollView>
         </View>

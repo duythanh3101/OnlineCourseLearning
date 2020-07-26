@@ -30,9 +30,7 @@ const CourseDetailScreen = (props) => {
 
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
     const course = props.route.params.course;
-    const author = getAuthorById(course.authorId);
-
-    //console.log('author', author)
+    //const author = getAuthorById(course.authorId);
 
     const onHandleBookmarkPress = () => {
         //Alert.alert('Bookmark')
@@ -44,43 +42,45 @@ const CourseDetailScreen = (props) => {
 
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
-        addFavoriteCourse(course.id)
+        //addFavoriteCourse(course.id)
         //onsole.log('course', courseData)
     }
 
     const renderVideoContent = (item, index) => {
 
-        return <ContentVideoItem
-            image={videoCourse.image}
-            title={item.title}
-            duration={item.duration}
-            key={index}
-        />
+        // return <ContentVideoItem
+        //     image={videoCourse.image}
+        //     title={item.title}
+        //     duration={item.duration}
+        //     key={index}
+        // />
+
+        return <View></View>
     }
 
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
-            <Image source={{ uri: course.image }} style={styles.topImage} />
+            <Image source={{ uri: course.imageUrl }} style={styles.topImage} />
             {/* </View> */}
 
             <ScrollView styles={styles.mainContainer}>
-                <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.courseName}</Text>
+                <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.title}</Text>
                 <View style={{
                     flexDirection: 'row',
                     marginTop: 10
                 }}>
                     <RoundCornerWithImageTag
-                        image={course.image}
-                        title={author.name}
+                        image={course.imageUrl}
+                        title={course.name}
                     />
                 </View>
 
                 <View style={styles.topInfoContainer}>
-                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{course.level} - {course.date} - {course.duration} - </Text>
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{course.updatedAt.substring(0, 10)} - {course.totalHours} hours - </Text>
 
-                    <StarRatingImage starCount={3} />
-                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}> ({course.boughtCount}) </Text>
+                    <StarRatingImage starCount={course.ratedNumber} />
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}> ({course.soldNumber}) </Text>
 
                 </View>
 
@@ -133,21 +133,18 @@ const CourseDetailScreen = (props) => {
                     <Tab title='CONTENTS'>
                         <View style={styles.tabContainer}>
                             {
-                                videoCourse.content.map((item, index) => renderVideoContent(item, index))
+                                //videoCourse.content.map((item, index) => renderVideoContent(item, index))
                             }
                         </View>
                     </Tab>
                     <Tab title='TRANSCRIPTIONS'>
                         <View style={styles.tabContainer}>
                             <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Course Overview</Text>
-                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{videoCourse.transcriptions}</Text>
+                            {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{videoCourse.transcriptions}</Text> */}
                         </View>
                     </Tab>
                 </TabView>
             </ScrollView>
-            
-           
-
         </View>
 
     )

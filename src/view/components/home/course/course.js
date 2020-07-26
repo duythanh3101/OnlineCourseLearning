@@ -14,22 +14,27 @@ const Course = (props) => {
     const { topicData } = useContext(PathDataContext);
     const { themes } = useContext(ThemeContext);
 
-    useEffect(() => {
+    const [topics, setTopics] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        setIsLoading(true);
+        CourseHomeService.getAllCategory()
+            .then(response => {
+                if (response.data.message === 'OK') {
+                    setTopics(response.data.payload);
+                    setIsLoading(false);
+                    //console.log('topic 2: ', response.data.payload)
+                }
+                //console.log('Home: ', response.data)
+            })
+            .catch(error => {
+                console.log('Home error: ', error)
+            });
 
     }, [])
 
     const onPressSeeAllTopic = async (topic) => {
-
-        await CourseHomeService.getTopNewCourses(10, 1)
-        .then(response => {
-            console.log('Home: ', response.data)
-        })
-        .catch(error => {
-            console.log('Home error: ', error)
-        });
-      
-
         // props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
         //     item: {
         //         topic: topic
@@ -38,7 +43,7 @@ const Course = (props) => {
     }
 
     const onPressItem = (course) => {
-
+        //console.log('Course Detail Screen ', course);
         props.navigation.navigate(ScreenKey.CourseDetailScreen, {
             course: course
         })
@@ -46,16 +51,16 @@ const Course = (props) => {
 
 
     const renderTopicItem = (item) => {
-
-        let courseFilter = courseData.filter(x => x.topicId === item.id)
         return <Topic
             title={item.name}
-            courseData={courseFilter}
+            //courseData={courseaaa}
             onPress={() => onPressSeeAllTopic(item)}
             key={item.id}
+            id={item.id}
             onPressItem={onPressItem}
-
         />
+
+        // return <Text key={item.id}>hahaha</Text>
     }
 
     return (
@@ -69,7 +74,11 @@ const Course = (props) => {
 
             /> */}
             {
-                topicData.map((item) => renderTopicItem(item))
+                isLoading === false
+                    ?
+                    topics.map((item) => renderTopicItem(item))
+                    :
+                    null
             }
         </ScrollView>
 

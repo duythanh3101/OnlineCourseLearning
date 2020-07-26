@@ -3,7 +3,6 @@ import Axios from 'axios'
 export default class BaseAPI {
     
     constructor(endpoint) {
-        console.log(endpoint)
         this.endpoint = endpoint;
         
     }
@@ -16,6 +15,8 @@ export default class BaseAPI {
      * @param {string} id 
      */
     async getById(id) {
+        //console.log(`${this.endpoint}/${id}`)
+
         return await Axios.get(`${this.endpoint}/${id}`);
     }
 
@@ -53,7 +54,6 @@ export default class BaseAPI {
         }
         : 
         null
-        console.log('entity3: ', entity, this.endpoint);
 
         return await Axios.post(this.endpoint, entity);
     }
