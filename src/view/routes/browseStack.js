@@ -11,6 +11,7 @@ import { Entypo } from '@expo/vector-icons';
 import SettingScreen from '../screens/setting/settingScreen';
 import AuthorScreen from '../screens/author/authorScreen';
 import CourseListScreen from '../screens/course/courseListScreen';
+import CourseDetailScreen from '../screens/course/courseDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -88,6 +89,14 @@ const BrowseStack = (props) => {
                 component={AuthorScreen}
                 options={{
                     title: 'Author'
+                }}
+            />
+
+            <Stack.Screen
+                name={ScreenKey.CourseDetailScreen}
+                component={CourseDetailScreen}
+                options={{
+                    title: 'Course Detail'
                 }}
             />
         </Stack.Navigator>

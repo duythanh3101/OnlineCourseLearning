@@ -84,7 +84,7 @@ const BrowseScreen = (props) => {
             setInstructors(response.data.payload);
         })
         .catch(error => {
-            console.log('Instructor errror')
+            console.log('Instructor error')
         })
     }, [])
 
@@ -116,13 +116,13 @@ const BrowseScreen = (props) => {
             name={item['user.name']}
             image={item['user.avatar']}
             key={index}
-            onPress={onPressAuthor}
+            onPress={() => onPressAuthor(item)}
         />
     }
 
-    const onPressAuthor = (id) => {
+    const onPressAuthor = (item) => {
         props.navigation.navigate(ScreenKey.AuthorScreen, {
-            id: id
+            item: item
         })
     }
 
