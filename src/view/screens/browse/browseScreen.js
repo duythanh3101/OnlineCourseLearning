@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity, Image } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import ImageButtonTwoLines from '../../components/common/image-button-two-lines'
@@ -10,6 +10,7 @@ import { CourseDataContext } from '../../../provider/course-data/course-data-pro
 import { PathDataContext } from '../../../provider/path-data/path-data-provider'
 import AuthorVerticalItem from '../../components/author/author-vertical-item'
 import { ScreenKey } from '../../../global/constants'
+import instructorService from '../../../core/service/instructorService'
 
 const BrowseScreen = (props) => {
 
@@ -71,6 +72,21 @@ const BrowseScreen = (props) => {
             secondText: 'RELEASE'
         },
     ];
+    
+
+    const [instructors, setInstructors] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        instructorService.getAll()
+        .then(response => {
+            //console.log('Instructor success', response.data)
+            setInstructors(response.data.payload);
+        })
+        .catch(error => {
+            console.log('Instructor errror')
+        })
+    }, [])
 
     const renderPopularItem = (item, index) => {
         return <RoundCornerTag
@@ -97,8 +113,8 @@ const BrowseScreen = (props) => {
 
         return <AuthorVerticalItem
             id={item.id}
-            name={item.name}
-            image={item.image}
+            name={item['user.name']}
+            image={item['user.avatar']}
             key={index}
             onPress={onPressAuthor}
         />
@@ -118,6 +134,12 @@ const BrowseScreen = (props) => {
         Alert.alert('Đang cập nhật')
     }
 
+    const onPressTop = (type) =>{
+        props.navigation.navigate(ScreenKey.CourseListScreen, {
+            type: type
+        })
+    }
+
     const renderPathItem = (item, index) => {
         return <PathCourseItem
             source={item.image}
@@ -132,15 +154,27 @@ const BrowseScreen = (props) => {
         <ScrollView style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             <ImageButtonTwoLines
                 uri='https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png'
-                firstText='NEW'
-                secondText='RELEASE'
+                firstText='TOP'
+                secondText='SELL'
+                onPress={() => onPressTop(0)}
             />
 
             <ImageButtonTwoLines
                 uri='https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png'
-                firstText='RECOMMENDED'
-                secondText='FOR YOU'
+                firstText='TOP'
+                secondText='NEW'
                 imageStyle={styles.imageStyle}
+                onPress={() => onPressTop(1)}
+
+            />
+
+            <ImageButtonTwoLines
+                uri='https://pluralsight.imgix.net/course-images/node-js-express-rest-web-services-update-v1.png'
+                firstText='TOP'
+                secondText='RATING'
+                imageStyle={styles.imageStyle}
+                onPress={() => onPressTop(2)}
+
             />
 
             <ScrollView horizontal={true}>
@@ -193,7 +227,7 @@ const BrowseScreen = (props) => {
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
                     <View style={styles.containerLineAuthors}>
                         {
-                            authorData.map((item, index) => renderAuthorItem(item, index))
+                            instructors.map((item, index) => renderAuthorItem(item, index))
                         }
                     </View>
 

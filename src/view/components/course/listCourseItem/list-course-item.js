@@ -42,7 +42,7 @@ const ListCourseItem = (props) => {
                         color: themes.fontColor.mainColor
                     }]}>{props.authorName}</Text>
                     <View style={styles.inLine}>
-                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.level} -</Text>
+                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.level} -</Text> */}
                         <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.date} -</Text>
                         <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.duration}</Text>
                     </View>

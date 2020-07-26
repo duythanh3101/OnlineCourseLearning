@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { ScreenKey } from '../../global/constants';
@@ -10,6 +10,7 @@ import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import SettingScreen from '../screens/setting/settingScreen';
 import AuthorScreen from '../screens/author/authorScreen';
+import CourseListScreen from '../screens/course/courseListScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,7 @@ const BrowseStack = (props) => {
         _closeMenu();
         props.navigation.navigate(ScreenKey.SettingScreen);
     }
-    
+
     const _openMenu = () => setVisible(true);
 
     const _closeMenu = () => setVisible(false);
@@ -33,8 +34,8 @@ const BrowseStack = (props) => {
 
     return (
         <Stack.Navigator
-            screenOptions={navigationStyle.defaultNavigationOptions} 
-            
+            screenOptions={navigationStyle.defaultNavigationOptions}
+
         >
             <Stack.Screen
                 name={ScreenKey.BrowseScreen}
@@ -42,32 +43,39 @@ const BrowseStack = (props) => {
                 options={{
                     title: 'Browse',
                     headerRight: () => (
-                        <View style={{ flexDirection: 'row', marginRight: 10}}>
-                        <TouchableOpacity onPress={onHandleAccountPress} style={{marginRight: 5}}>
-                            <MaterialIcons name="account-circle" size={24} color={colors.blue} />
-                        </TouchableOpacity>
-                        <Menu
-                            
-                            visible={visible}
-                            onDismiss={_closeMenu}
-                            anchor={
-                                <TouchableOpacity onPress={_openMenu}>
-                                    <Entypo name="dots-three-vertical" size={24} color="black" />
+                        <View style={{ flexDirection: 'row', marginRight: 10 }}>
+                            <TouchableOpacity onPress={onHandleAccountPress} style={{ marginRight: 5 }}>
+                                <MaterialIcons name="account-circle" size={24} color={colors.blue} />
+                            </TouchableOpacity>
+                            <Menu
 
-                                </TouchableOpacity>
-                            }
-                        >
-                            <Menu.Item onPress={onHanldeSettingPress} title="Settings" />
-                            <Divider />
-                            <Menu.Item onPress={() => { }} title="Send feedback" />
-                            <Divider />
-                            <Menu.Item onPress={() => { }} title="Contact support" />
-                        </Menu>
+                                visible={visible}
+                                onDismiss={_closeMenu}
+                                anchor={
+                                    <TouchableOpacity onPress={_openMenu}>
+                                        <Entypo name="dots-three-vertical" size={24} color="black" />
 
-                    </View>
+                                    </TouchableOpacity>
+                                }
+                            >
+                                <Menu.Item onPress={onHanldeSettingPress} title="Settings" />
+                                <Divider />
+                                <Menu.Item onPress={() => { }} title="Send feedback" />
+                                <Divider />
+                                <Menu.Item onPress={() => { }} title="Contact support" />
+                            </Menu>
+
+                        </View>
 
                     ),
                 }} />
+            <Stack.Screen
+                name={ScreenKey.CourseListScreen}
+                component={CourseListScreen}
+                options={{
+                    title: 'Course List'
+                }}
+            />
             <Stack.Screen
                 name={ScreenKey.ProfileScreen}
                 component={ProfileScreen}
@@ -75,7 +83,7 @@ const BrowseStack = (props) => {
                     title: 'Profile'
                 }}
             />
-             <Stack.Screen
+            <Stack.Screen
                 name={ScreenKey.AuthorScreen}
                 component={AuthorScreen}
                 options={{
