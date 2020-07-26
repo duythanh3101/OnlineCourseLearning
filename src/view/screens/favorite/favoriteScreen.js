@@ -20,7 +20,7 @@ const FavoriteScreen = (props) => {
     let datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
 
     useEffect(() => {
-        console.log(courseData.filter(x=>x.isFavorited).length)
+        //console.log(courseData.filter(x=>x.isFavorited).length)
         datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
     })
     const separator = () => <View style={styles.separator} />;

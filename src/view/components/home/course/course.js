@@ -34,12 +34,12 @@ const Course = (props) => {
 
     }, [])
 
-    const onPressSeeAllTopic = async (topic) => {
-        // props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
-        //     item: {
-        //         topic: topic
-        //     }
-        // })
+    const onPressSeeAllTopic = (topic) => {
+        props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
+            item: {
+                topic: topic
+            }
+        })
     }
 
     const onPressItem = (course) => {

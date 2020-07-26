@@ -26,7 +26,7 @@ const ListCourseItem = (props) => {
     const _closeMenu = () => setVisible(false);
 
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
             <View style={{ ...styles.container, backgroundColor: themes.background.foreground }}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={{ uri: props.source }} />

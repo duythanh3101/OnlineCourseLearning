@@ -11,6 +11,7 @@ export default function Topic(props) {
 
     const [isLoading, setIsLoading] = useState(false)
     const [courses, setCourses] = useState([])
+
     useEffect(() => {
         setIsLoading(true);
         courseHomeService.getCoursesByCategoryId(props.id, 10, 1)

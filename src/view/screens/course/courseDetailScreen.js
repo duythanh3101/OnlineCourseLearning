@@ -31,7 +31,7 @@ const CourseDetailScreen = (props) => {
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
     const course = props.route.params.course;
     //const author = getAuthorById(course.authorId);
-
+    console.log('detail props: ', props)
     const onHandleBookmarkPress = () => {
         //Alert.alert('Bookmark')
     }
