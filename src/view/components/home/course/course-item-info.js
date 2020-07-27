@@ -25,13 +25,20 @@ const CourseItemInfo = (props) => {
                     <View style={styles.inLine}>
                         {/* <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.level} -</Text> */}
                         <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.date} -</Text>
-                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.duration} hours</Text>
+                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.duration} giờ</Text>
                     </View>
 
                     <View style={[styles.inLine, {marginLeft: 5}]}>
                         <StarRatingImage starCount={props.starCount}/>
-                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>({props.boughtCount})</Text>
+                        <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>({props.boughtCount}) học viên</Text>
                     </View>
+                    {
+                        parseInt(props.price) === 0 
+                        ?
+                        <Text style={{...globalStyles.titleText,color: themes.fontColor.maroon}}>Miễn phí</Text>
+                        :
+                        <Text style={{...globalStyles.titleText,color: themes.fontColor.maroon}}>{props.price} VND</Text>
+                    }                    
 
                 </View>
             </View>
@@ -48,6 +55,6 @@ const styles = StyleSheet.create({
     courseDetailContainer: {
         flexDirection: 'column',
         backgroundColor: colors.darkgray,
-        height: 120
+        height: 150
     },
 })

@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     },
     containerPopularSkills: {
         marginTop: 10,
-        marginBottom: 20
+        marginBottom: 30
     },
     containerLinePopularSkills: {
         flex: 1,

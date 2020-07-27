@@ -1,5 +1,8 @@
-import { topSellEndpoint, topNewEndpoint, topRateEndpoint, searchEndpoint, getAllCategoryEndpoint } from "../apis/endpoint";
+import { topSellEndpoint, topNewEndpoint,
+     topRateEndpoint, searchEndpoint,
+     getCourseDetailEndpoint, getAllCategoryEndpoint, getCourseInfoEndpoint } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
+import Axios from "axios";
 
 class CourseHomeService {
 
@@ -9,15 +12,9 @@ class CourseHomeService {
         this.restClientRate = new BaseAPI(topRateEndpoint);
         this.restClientSearch = new BaseAPI(searchEndpoint);
         this.resClientAllCategory = new BaseAPI(getAllCategoryEndpoint);
+        this.resClientCourseDetail = new BaseAPI(getCourseDetailEndpoint);
+        this.resClientCourseInfo= new BaseAPI(getCourseInfoEndpoint);
     }
-
-    // async login(email, password) {
-    //     const config = {
-    //         'Content-type': 'application/json; charset=UTF-8'
-    //     }
-
-    //     return await this.create({ email, password });
-    // }
 
     async getTopSellCourses(limit, page){
         return await this.restClientSell.post({
@@ -55,6 +52,22 @@ class CourseHomeService {
 
     async getAllCategory(){
         return await this.resClientAllCategory.get();
+    }
+
+    async getCourseDetail(id){
+
+        const config = {
+            'Content-type': 'application/json'
+        }
+        console.log(`${getCourseDetailEndpoint}/${id}/${null}`)
+
+        return await Axios.get(`${getCourseDetailEndpoint}/${id}/${null}`);
+        //return await Axios.get('https://api.itedu.me/course/get-course-detail/9f3d46fa-61d2-4d4c-a392-a8e79ca7f335/null', config);
+
+        // return await this.resClientCourseDetail.get({
+        //     id: id,
+        //     userId: null
+        // });
     }
     
 }

@@ -13,9 +13,9 @@ const CourseListByTopicScreen = (props) => {
     const topic = props.route.params.item.topic;
 
     const { themes } = useContext(ThemeContext);
-    const { authorData } = useContext(AuthorDataContext);
-    const { courseData } = useContext(CourseDataContext);
-    const displayedCourses = courseData ? courseData.filter(x => x.topicId == topic.id) : [];
+    //const { authorData } = useContext(AuthorDataContext);
+    //const { courseData } = useContext(CourseDataContext);
+    //const displayedCourses = courseData ? courseData.filter(x => x.topicId == topic.id) : [];
 
     const [courses, setCourses] = useState([])
     const [isLoading, setIsLoading] = useState(false)

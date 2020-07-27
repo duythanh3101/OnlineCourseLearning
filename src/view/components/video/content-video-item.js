@@ -25,12 +25,13 @@ export default function ContentVideoItem(props) {
                 <View style={styles.textContainer}>
                     <Text style={{ ...globalStyles.titleText, 
                         color: themes.fontColor.mainColor,
-                        marginLeft: 0
+                        marginLeft: 0,
+                        maxWidth: 250
                     }}>{props.title}</Text>
                     <Text style={{ ...globalStyles.normalText, 
                         color: themes.fontColor.mainColor,
                         marginLeft: 0
-                         }}>{props.duration}</Text>
+                         }}>{props.duration} giờ</Text>
                 </View>
             </View>
 

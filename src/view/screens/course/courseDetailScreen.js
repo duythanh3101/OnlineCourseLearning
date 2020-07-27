@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import { StyleSheet, View, Image, Text, TouchableOpacity, Alert } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey } from '../../../global/constants'
@@ -16,7 +16,9 @@ import ContentVideoItem from '../../components/video/content-video-item'
 import { VideoDataContext } from '../../../provider/video-data/video-data-provider'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
-
+import courseHomeService from '../../../core/service/courseHomeService'
+import { Video } from 'expo-av'
+import { useSelector } from 'react-redux'
 
 const CourseDetailScreen = (props) => {
     const { themes } = useContext(ThemeContext);
@@ -29,9 +31,30 @@ const CourseDetailScreen = (props) => {
     //const content = videoCourse.content;
 
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
+
     const course = props.route.params.course;
-    //const author = getAuthorById(course.authorId);
-    //console.log('detail props: ', props)
+    const [lessons, setLessons] = useState([]);
+    //const authReducer = useSelector(state => state.authReducer);
+
+    useEffect(() => {
+        courseHomeService.getCourseDetail(course.id)
+            .then(response => {
+                console.log('aaaa: ', response.data.payload.section.lesson);
+                
+                const sections = response.data.payload.section;
+                sections.map(a => a.lesson.map(x => setLessons(prevs => [...prevs, x])))
+                //sections.map(a => console.log('sec: ', a.lesson));
+                
+            })
+            .catch(error => {
+                console.log('aaa courses error');
+            })
+
+           //console.log('lesson: ', lessons);
+    }, [])
+
+
+    console.log('detail props: ', course)
     const onHandleBookmarkPress = () => {
         //Alert.alert('Bookmark')
     }
@@ -43,26 +66,55 @@ const CourseDetailScreen = (props) => {
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
         //addFavoriteCourse(course.id)
-        //onsole.log('course', courseData)
     }
 
     const renderVideoContent = (item, index) => {
 
-        // return <ContentVideoItem
-        //     image={videoCourse.image}
-        //     title={item.title}
-        //     duration={item.duration}
-        //     key={index}
-        // />
+        return <ContentVideoItem
+            image={course.imageUrl}
+            title={item.name}
+            duration={item.hours}
+            key={index}
+        />
 
-        return <View></View>
+        // return <View></View>
     }
+
+    // const _handleVideoRef  = (component) => {
+    //     const playbackObject = component;
+
+    //     let source = {
+    //         uri: 'https://storage.googleapis.com/itedu-bucket/Courses/856457a1-8008-4c35-956a-c9975cd8cc22/promo/2fc49c1c-e948-4bad-b8ab-50a1f7da0a1e.mp4'
+    //     }
+
+    //     let state = {
+    //         isPlaying: false,
+    //         playbackInstance: null,
+    //         currentIndex: 0,
+    //         volume: 1.0,
+    //         isBuffering: false
+    //       }
+
+    //     playbackObject.loadAsync(source, state, false);
+
+    // }
 
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
-            <Image source={{ uri: course.imageUrl }} style={styles.topImage} />
+            {/* <Image source={{ uri: course.imageUrl }} style={styles.topImage} /> */}
             {/* </View> */}
+            <Video
+                source={{ uri: 'https://storage.googleapis.com/itedu-bucket/Courses/856457a1-8008-4c35-956a-c9975cd8cc22/promo/2fc49c1c-e948-4bad-b8ab-50a1f7da0a1e.mp4' }}
+                rate={1.0}
+                volume={1.0}
+                isMuted={false}
+                resizeMode="cover"
+                //shouldPlay
+                isLooping
+                useNativeControls
+                style={{ height: 300 }}
+            />
 
             <ScrollView styles={styles.mainContainer}>
                 <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.title}</Text>
@@ -83,22 +135,35 @@ const CourseDetailScreen = (props) => {
                     <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}> ({course.soldNumber}) </Text>
 
                 </View>
+                <View style={styles.topInfoContainer}>
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, marginTop: 5 }}>Giá: </Text>
+
+                    {
+                        course.price === 0 
+                        ?
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> Miễn phí </Text>
+                        :
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> {course.price} VND</Text>
+
+                    }
+
+                </View>
 
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleBookmarkPress}>
                         <View style={styles.icon}>
                             <Entypo name="bookmarks" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Bookmark</Text>
-                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Bookmark</Text>
+                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
                         <View style={styles.icon}>
                             <Entypo name="add-to-list" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Add to Channel</Text>
-                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Buy</Text>
+                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
 
                     </TouchableOpacity>
 
@@ -106,8 +171,8 @@ const CourseDetailScreen = (props) => {
                         <View style={styles.icon}>
                             <Feather name="download" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Favorite</Text>
-                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Favorite</Text>
+                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
 
                     </TouchableOpacity>
                 </View>
@@ -133,14 +198,14 @@ const CourseDetailScreen = (props) => {
                     <Tab title='CONTENTS'>
                         <View style={styles.tabContainer}>
                             {
-                                //videoCourse.content.map((item, index) => renderVideoContent(item, index))
+                                lessons.map((item, index) => renderVideoContent(item, index))
                             }
                         </View>
                     </Tab>
-                    <Tab title='TRANSCRIPTIONS'>
+                    <Tab title='DESCRIPTION'>
                         <View style={styles.tabContainer}>
-                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Course Overview</Text>
-                            {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{videoCourse.transcriptions}</Text> */}
+                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Course Overview</Text>
+                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{course.description}</Text>
                         </View>
                     </Tab>
                 </TabView>

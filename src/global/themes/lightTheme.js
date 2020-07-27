@@ -6,7 +6,8 @@ export default themes = {
     },
     fontColor: {
         mainColor: '#2B242A',
-        normalTextColor: '#9598AF'
+        normalTextColor: '#9598AF',
+        maroon: '#FF4500'
     },
     buttonColor: {
         mainColor: '#E82F69',

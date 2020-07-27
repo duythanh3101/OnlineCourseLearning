@@ -42,6 +42,7 @@ export default function Topic(props) {
             key={index}
             image={item.imageUrl}
             style={styles.courseList}
+            price={item.price}
             onPress={() => {
                 props.onPressItem(item);
             }}

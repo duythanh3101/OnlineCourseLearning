@@ -31,6 +31,7 @@ export default class BaseAPI {
         }
         : 
         null
+        console.log('get: ', queryParams, authorizationToken)
 
         return await Axios.get(this.endpoint, { params: queryParams }, headers);
     }
