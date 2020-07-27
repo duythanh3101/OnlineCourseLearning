@@ -34,12 +34,12 @@ const CourseDetailScreen = (props) => {
 
     const course = props.route.params.course;
     const [lessons, setLessons] = useState([]);
-    //const authReducer = useSelector(state => state.authReducer);
+    const authReducer = useSelector(state => state.authReducer);
 
     useEffect(() => {
         courseHomeService.getCourseDetail(course.id)
             .then(response => {
-                console.log('aaaa: ', response.data.payload.section.lesson);
+                //console.log('aaaa: ', response.data.payload.section.lesson);
                 
                 const sections = response.data.payload.section;
                 sections.map(a => a.lesson.map(x => setLessons(prevs => [...prevs, x])))
@@ -47,25 +47,42 @@ const CourseDetailScreen = (props) => {
                 
             })
             .catch(error => {
-                console.log('aaa courses error');
+                console.log('get courses error');
             })
 
            //console.log('lesson: ', lessons);
     }, [])
 
 
-    console.log('detail props: ', course)
+    //console.log('detail props: ', course)
     const onHandleBookmarkPress = () => {
         //Alert.alert('Bookmark')
     }
 
     const onHandleAddToChannelPress = () => {
         //Alert.alert('Add to channel')
+        courseHomeService.getFreeCourse(course.id, authReducer.token)
+        .then(response => {
+            console.log('buy: ', response.data);
+            
+        })
+        .catch(error => {
+            console.log('buy courses error');
+        })
     }
 
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
         //addFavoriteCourse(course.id)
+        courseHomeService.likeCourse(course.id, authReducer.token)
+        .then(response => {
+            console.log('like: ', response.data);
+            
+        })
+        .catch(error => {
+            console.log('like courses error');
+        })
+
     }
 
     const renderVideoContent = (item, index) => {
@@ -79,25 +96,6 @@ const CourseDetailScreen = (props) => {
 
         // return <View></View>
     }
-
-    // const _handleVideoRef  = (component) => {
-    //     const playbackObject = component;
-
-    //     let source = {
-    //         uri: 'https://storage.googleapis.com/itedu-bucket/Courses/856457a1-8008-4c35-956a-c9975cd8cc22/promo/2fc49c1c-e948-4bad-b8ab-50a1f7da0a1e.mp4'
-    //     }
-
-    //     let state = {
-    //         isPlaying: false,
-    //         playbackInstance: null,
-    //         currentIndex: 0,
-    //         volume: 1.0,
-    //         isBuffering: false
-    //       }
-
-    //     playbackObject.loadAsync(source, state, false);
-
-    // }
 
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>

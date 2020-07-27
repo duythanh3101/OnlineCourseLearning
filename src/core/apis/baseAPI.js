@@ -24,6 +24,15 @@ export default class BaseAPI {
         return await Axios.get(this.endpoint, { params: queryParams });
     }
 
+    async getByToken(token) {
+        return await Axios.get(this.endpoint, 
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
     async get(queryParams, authorizationToken) {
         const headers = authorizationToken ? 
         {
@@ -33,7 +42,12 @@ export default class BaseAPI {
         null
         console.log('get: ', queryParams, authorizationToken)
 
-        return await Axios.get(this.endpoint, { params: queryParams }, headers);
+        return await Axios.get(this.endpoint, { params: queryParams },
+            {
+            headers: {
+                'Authorization': `Bearer ${authorizationToken}`
+            }
+        });
     }
 
     async post(entity) {
@@ -44,19 +58,26 @@ export default class BaseAPI {
     }
 
     async post(entity, authorizationToken){
-
         const config = {
             'Content-type': 'application/json'
         }
 
-        const headers = authorizationToken ? 
-        {
-            Authorization: `Bearer ${authorizationToken}`
-        }
-        : 
-        null
+        // const headers = authorizationToken ? 
+        // {
+        //     'Authorization': `Bearer ${authorizationToken}`
+        // }
+        // : 
+        // null
 
-        return await Axios.post(this.endpoint, entity);
+        //console.log('post ', entity, headers)
+
+
+        return await Axios.post(this.endpoint, entity, 
+            {
+                headers: {
+                    'Authorization': `Bearer ${authorizationToken}`
+                }
+            });
     }
 
     async put(entity) {

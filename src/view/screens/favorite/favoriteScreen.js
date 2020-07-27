@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Layout, Text } from '@ui-kitten/components'
 import { globalStyles, colors } from '../../../global/styles'
@@ -10,6 +10,9 @@ import { ThemeContext } from '../../../provider/theme-provider';
 import { CourseDataContext } from '../../../provider/course-data/course-data-provider';
 import { AuthorDataContext } from '../../../provider/author-data/author-data-provider';
 import { useIsFocused } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import courseHomeService from '../../../core/service/courseHomeService';
+import { ScreenKey } from '../../../global/constants';
 
 const FavoriteScreen = (props) => {
     const isFocused = useIsFocused();
@@ -19,32 +22,63 @@ const FavoriteScreen = (props) => {
     const { courseData } = isFocused ? useContext(CourseDataContext) : useContext(CourseDataContext);
     let datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
 
+
+    const authReducer = useSelector(state => state.authReducer);
+
+    const [courses, setCourses] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
+        setIsLoading(true);
         //console.log(courseData.filter(x=>x.isFavorited).length)
         datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
+
+        courseHomeService.getFavoriteCourses(authReducer.token)
+        .then(response => {
+            //console.log('favorite success', response.data);
+            setCourses(response.data.payload);
+            setIsLoading(false);
+
+        })
+        .catch(error => {
+            console.log('favorite courses error');
+            setIsLoading(false);
+
+        })
+
     })
     const separator = () => <View style={styles.separator} />;
+
+    const onPressCourse = (course) => {
+        props.navigation.navigate(ScreenKey.CourseDetailScreen, {
+            course: course
+        })
+    }
 
     const renderItem = (item, index) => {
         const author = authorData ? authorData.find(x => x.id === item.authorId) : null;
 
         return <ListCourseItem
             id={item.id}
-            source={item.image}
-            courseName={item.courseName}
-            authorName={author ? author.name : ''}
-            level={item.level}
-            date={item.date}
+            source={item.courseImage}
+            courseName={item.courseTitle}
+            authorName={item.instructorName}
+            //level={item.level}
+            date={''}
             duration={item.duration}
-            starCount={item.star}
-            boughtCount={item.boughtCount}
+            starCount={item.courseContentPoint}
+            boughtCount={item.courseSoldNumber}
             key={item.id}
-            style={{ margin: 5 }} />
+            style={{ margin: 5 }} 
+            onPress={() => {
+                onPressCourse(item)
+            }}
+            />
     }
     return (
         <View style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             {
-                datas && datas.length == 0
+                courses && courses.length == 0
                     ?
                     (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -63,12 +97,12 @@ const FavoriteScreen = (props) => {
                     (
                         <View>
                             <View style={styles.headerDownContainer}>
-                                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>{datas.length} courses</Text>
+                                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>{courses.length} courses</Text>
                                 <Text style={[globalStyles.titleText, styles.removeText]}>REMOVE ALL</Text>
                             </View>
 
                             <FlatList
-                                data={datas}
+                                data={courses}
                                 keyExtractor={(item, index) => item + index}
                                 renderItem={({ item, index }) => renderItem(item, index)}
                                 ItemSeparatorComponent={separator}
