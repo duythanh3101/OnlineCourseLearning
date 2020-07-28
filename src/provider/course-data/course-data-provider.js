@@ -5,6 +5,8 @@ export const CourseDataContext = React.createContext();
 
 export function CourseDataProvider(props) {
 
+    let results = [];
+
     let courseData = [
         {
             id: 1,
@@ -224,13 +226,19 @@ export function CourseDataProvider(props) {
         courseData = courseData.map(x => x === id ? course : x);
     }
 
+    const setResults = (datas) =>{
+        results = datas;
+    }
+
     return (
         <CourseDataContext.Provider value={{
             courseData,
             getCoursesFromTopicId,
             getCourseCountByAuthorId,
             addFavoriteCourse,
-            removeFavoriteCourse
+            removeFavoriteCourse,
+            results,
+            setResults
 
         }}>
             {props.children}

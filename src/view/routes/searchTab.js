@@ -9,13 +9,14 @@ import SearchAuthorsScreen from '../screens/search/searchAuthorsScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
-const SearchTab = () => {
+const SearchTab = (props) => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator {...props}>
             <Tab.Screen
                 name={ScreenKey.SearchAllSectionsScreen}
                 component={SearchAllSectionsScreen}
-                options={{ title: 'All' }} />
+                options={{ title: 'All' }} 
+                />
             <Tab.Screen
                 name={ScreenKey.SearchCoursesScreen}
                 component={SearchCoursesScreen}

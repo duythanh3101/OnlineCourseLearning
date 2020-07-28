@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { StyleSheet, Text, View, SectionList, Alert, TouchableOpacity } from 'react-native'
 import { globalStyles } from '../../../global/styles'
 import ListCourseItem from '../../components/course/listCourseItem/list-course-item'
@@ -8,6 +8,7 @@ import { ThemeContext } from '../../../provider/theme-provider'
 import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
 import { FlatList } from 'react-native-gesture-handler'
 import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
+import { ScreenKey } from '../../../global/constants'
 
 const SearchCoursesScreen = (props) => {
 
@@ -15,20 +16,38 @@ const SearchCoursesScreen = (props) => {
     const { courseData } = useContext(CourseDataContext);
     const { authorData } = useContext(AuthorDataContext);
 
+    const [courses, setCourses] = useState([])
+    
+    useEffect(() => {
+       setCourses(props.datas);
+        //console.log('aa', props.datas);
+    }, [props.datas])
+
+    const onPressCourse = (course) => {
+        props.navigation.navigate(ScreenKey.CourseDetailScreen, {
+            course: course
+        })
+    }
+
+
     const renderItem = (item, index) => {
         const author = authorData ? authorData.find(x => x.id === item.authorId) : null;
 
         return <ListCourseItem
-            source={item.image}
-            courseName={item.courseName}
-            authorName={author ? author.name : ''}
-            level={item.level}
-            date={item.date}
-            duration={item.duration}
-            starCount={item.star}
-            boughtCount={item.boughtCount}
+            source={item.imageUrl}
+            courseName={item.title}
+            authorName={item.name}
+            //level={item.level}
+            date={item.updatedAt.substring(0, 10)}
+            duration={item.totalHours}
+            starCount={item.ratedNumber}
+            boughtCount={item.soldNumber}
             key={item.id}
-            style={{ margin: 5 }} />
+            style={{ margin: 5 }} 
+            onPress={() => {
+                onPressCourse(item)
+            }}
+            />
 
     }
 
@@ -39,7 +58,7 @@ const SearchCoursesScreen = (props) => {
     return (
         <View style={{...globalStyles.container, backgroundColor: themes.background.mainColor}}>
             <FlatList
-                data={courseData}
+                data={courses}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item, index }) => renderItem(item, index)}
 

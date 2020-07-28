@@ -55,7 +55,7 @@ const FavoriteScreen = (props) => {
                 
                 courseHomeService.getCourseDetailWithLesson(a.id, authReducer.token)
                 .then(res => {
-                    console.log('ooooo', res.data.payload);
+                    //console.log('ooooo', res.data.payload);
                     setCourses(prev => [...prev, res.data.payload]);
                 })
                 .catch(er => {
