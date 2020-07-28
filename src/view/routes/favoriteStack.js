@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { ScreenKey } from '../../global/constants';
@@ -10,6 +10,7 @@ import FavoriteScreen from '../screens/favorite/favoriteScreen';
 import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import SettingScreen from '../screens/setting/settingScreen';
+import CourseDetailVideoScreen from '../screens/course/courseDetailVideoScreen';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ const FavoriteStack = (props) => {
         _closeMenu();
         props.navigation.navigate(ScreenKey.SettingScreen);
     }
-    
+
     const _openMenu = () => setVisible(true);
 
     const _closeMenu = () => setVisible(false);
@@ -40,12 +41,12 @@ const FavoriteStack = (props) => {
                 options={{
                     title: 'Favorite',
                     headerRight: () => (
-                        <View style={{ flexDirection: 'row', marginRight: 10}}>
-                            <TouchableOpacity onPress={onHandleAccountPress} style={{marginRight: 5}}>
+                        <View style={{ flexDirection: 'row', marginRight: 10 }}>
+                            <TouchableOpacity onPress={onHandleAccountPress} style={{ marginRight: 5 }}>
                                 <MaterialIcons name="account-circle" size={24} color={colors.blue} />
                             </TouchableOpacity>
                             <Menu
-                                
+
                                 visible={visible}
                                 onDismiss={_closeMenu}
                                 anchor={
@@ -66,6 +67,14 @@ const FavoriteStack = (props) => {
 
                     ),
                 }} />
+
+            <Stack.Screen
+                name={ScreenKey.CourseDetailVideoScreen}
+                component={CourseDetailVideoScreen}
+                options={{
+                    title: 'Course Detail'
+                }}
+            />
             <Stack.Screen
                 name={ScreenKey.ProfileScreen}
                 component={ProfileScreen}
@@ -73,7 +82,7 @@ const FavoriteStack = (props) => {
                     title: 'Profile'
                 }}
             />
-             <Stack.Screen
+            <Stack.Screen
                 name={ScreenKey.SettingScreen}
                 component={SettingScreen}
                 options={{

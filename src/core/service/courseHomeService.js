@@ -1,8 +1,10 @@
 import { topSellEndpoint, topNewEndpoint,
      topRateEndpoint, searchEndpoint,
      getCourseDetailEndpoint, getAllCategoryEndpoint,
-      getCourseInfoEndpoint, likeCourseEndpoint, 
-      getFreeCourseEndpoint, getFavoriteCourseEndpoint } from "../apis/endpoint";
+      getCourseInfoEndpoint, likeCourseEndpoint,
+      getFreeCourseEndpoint, getFavoriteCourseEndpoint,
+      payCourseEndpoint, getProcessCoursesEndpoint,
+      getDeatailWithLessonEndpoint } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
 
@@ -19,6 +21,10 @@ class CourseHomeService {
         this.resClientLikeCourse= new BaseAPI(likeCourseEndpoint);
         this.resClientFreeCourse= new BaseAPI(getFreeCourseEndpoint);
         this.resClientFavoriteCourse= new BaseAPI(getFavoriteCourseEndpoint);
+        this.resClientMyCourse= new BaseAPI(getProcessCoursesEndpoint);
+        this.resClientDetailWithLesson= new BaseAPI(getDeatailWithLessonEndpoint);
+
+        
     }
 
     async getTopSellCourses(limit, page){
@@ -67,26 +73,55 @@ class CourseHomeService {
 
         return await Axios.get(`${getCourseDetailEndpoint}/${id}/${null}`);
     }
-  
-    
+
+    async getCourseDetailWithLesson(id, token){
+        console.log('sad' + `${getDeatailWithLessonEndpoint}/${id}`)
+        //console.log('sad')
+
+        //return await this.resClientDetailWithLesson.get(id, token);
+        return await Axios.get(`${getDeatailWithLessonEndpoint}/${id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
+
     async likeCourse(id, token){
         console.log('ddd: ', id, likeCourseEndpoint)
-        
+
         return await this.resClientLikeCourse.post({
             courseId: id
         }, token);
     }
 
     async getFreeCourse(id, token){
-        console.log('eeee: ', id, getFreeCourseEndpoint)
+        console.log(id, getFreeCourseEndpoint, token)
 
-        return await this.resClientFreeCourse.post({
-            courseId: id
-        }, token);
+        // return await this.resClientFreeCourse.post({
+        //     courseId: id
+        // });
+
+        return await Axios.post('https://api.itedu.me/payment/get-free-courses',
+        {
+            courseId: '9f3d46fa-61d2-4d4c-a392-a8e79ca7f335'
+        }
+        ,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json'
+            }
+        }
+        );
     }
 
     async getFavoriteCourses(token){
         return await this.resClientFavoriteCourse.getByToken(token);
+    }
+
+    async getProcessCourses(token){
+        return await this.resClientMyCourse.getByToken(token);
     }
 }
 

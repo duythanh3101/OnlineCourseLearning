@@ -33,24 +33,48 @@ const FavoriteScreen = (props) => {
         //console.log(courseData.filter(x=>x.isFavorited).length)
         datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
 
-        courseHomeService.getFavoriteCourses(authReducer.token)
+        // courseHomeService.getFavoriteCourses(authReducer.token)
+        // .then(response => {
+        //     //console.log('favorite success', response.data);
+        //     setCourses(response.data.payload);
+        //     setIsLoading(false);
+
+        // })
+        // .catch(error => {
+        //     console.log('favorite courses error');
+        //     setIsLoading(false);
+
+        // })
+
+        courseHomeService.getProcessCourses(authReducer.token)
         .then(response => {
-            //console.log('favorite success', response.data);
-            setCourses(response.data.payload);
-            setIsLoading(false);
+            //console.log('process success', response.data);
+            //setCourses(response.data.payload);
+            response.data.payload.map(a => {
+                //console.log('ssss: ', a.id);
+                
+                courseHomeService.getCourseDetailWithLesson(a.id, authReducer.token)
+                .then(res => {
+                    console.log('ooooo', res.data.payload);
+                    setCourses(prev => [...prev, res.data.payload]);
+                })
+                .catch(er => {
+                    console.log('process error');
+
+                })                
+            })
 
         })
         .catch(error => {
             console.log('favorite courses error');
-            setIsLoading(false);
 
         })
 
-    })
+    }, [])
     const separator = () => <View style={styles.separator} />;
 
     const onPressCourse = (course) => {
-        props.navigation.navigate(ScreenKey.CourseDetailScreen, {
+        props.navigation.navigate(ScreenKey.CourseDetailVideoScreen, {
             course: course
         })
     }
@@ -60,14 +84,14 @@ const FavoriteScreen = (props) => {
 
         return <ListCourseItem
             id={item.id}
-            source={item.courseImage}
-            courseName={item.courseTitle}
+            source={item.imageUrl}
+            courseName={item.title}
             authorName={item.instructorName}
             //level={item.level}
-            date={''}
-            duration={item.duration}
-            starCount={item.courseContentPoint}
-            boughtCount={item.courseSoldNumber}
+            date={item.createdAt.substring(0,10)}
+            duration={item.totalHours}
+            starCount={item.ratedNumber}
+            boughtCount={item.soldNumber}
             key={item.id}
             style={{ margin: 5 }} 
             onPress={() => {
@@ -95,7 +119,7 @@ const FavoriteScreen = (props) => {
                     )
                     :
                     (
-                        <View>
+                        <View style={{marginTop: 20}}>
                             <View style={styles.headerDownContainer}>
                                 <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>{courses.length} courses</Text>
                                 <Text style={[globalStyles.titleText, styles.removeText]}>REMOVE ALL</Text>

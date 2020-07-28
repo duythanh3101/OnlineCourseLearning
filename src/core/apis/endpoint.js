@@ -18,3 +18,9 @@ export const updateProfileEndpoint = rootEndpoint + "/user/update-profile";
 export const likeCourseEndpoint = rootEndpoint + "/user/like-course";
 export const getFavoriteCourseEndpoint = rootEndpoint + "/user/get-favorite-courses";
 export const getFreeCourseEndpoint = rootEndpoint + "/payment/get-free-courses";
+export const payCourseEndpoint = rootEndpoint + "/payment/get-course-info";
+export const getProcessCoursesEndpoint = rootEndpoint + "/user/get-process-courses";
+
+export const getDeatailWithLessonEndpoint = rootEndpoint + "/course/detail-with-lesson";
+
+

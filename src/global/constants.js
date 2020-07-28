@@ -14,6 +14,7 @@ export const ScreenKey = {
     AuthorScreen: 'authorScreen',
     CourseListScreen: 'courseListScreen',
     CourseDetailScreen: 'courseDetailScreen',
+    CourseDetailVideoScreen: 'courseDetailVideoScreen',
     CourseListByTopicScreen: 'courseListByTopicScreen',
     LoginScreen: 'loginScreen',
     ForgotPasswordScreen: 'forgotPasswordScreen',

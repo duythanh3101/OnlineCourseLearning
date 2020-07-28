@@ -44,7 +44,7 @@ const ListCourseItem = (props) => {
                     <View style={styles.inLine}>
                         {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.level} -</Text> */}
                         <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.date} -</Text>
-                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.duration}</Text>
+                        <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{props.duration} giờ</Text>
                     </View>
 
                     <View style={[styles.inLine, { marginLeft: 5 }]}>

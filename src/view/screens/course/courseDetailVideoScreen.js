@@ -19,8 +19,9 @@ import { CourseDataContext } from '../../../provider/course-data/course-data-pro
 import courseHomeService from '../../../core/service/courseHomeService'
 import { Video } from 'expo-av'
 import { useSelector } from 'react-redux'
+import ContentVideoCanPressItem from '../../components/video/content-video-can-press-item'
 
-const CourseDetailScreen = (props) => {
+const CourseDetailVideoScreen = (props) => {
     const { themes } = useContext(ThemeContext);
     const { getAuthorById } = useContext(AuthorDataContext);
     const { videoContentData } = useContext(VideoDataContext);
@@ -41,17 +42,17 @@ const CourseDetailScreen = (props) => {
         courseHomeService.getCourseDetail(course.id)
             .then(response => {
                 //console.log('aaaa: ', response.data.payload.section.lesson);
-                
+
                 const sections = response.data.payload.section;
                 sections.map(a => a.lesson.map(x => setLessons(prevs => [...prevs, x])))
-                sections.map(a => console.log('sec: ', a.lesson));
-                
+                //sections.map(a => console.log('sec: ', a.lesson));
+
             })
             .catch(error => {
                 console.log('get courses error');
             })
 
-           //console.log('lesson: ', lessons);
+        //console.log('lesson: ', lessons);
     }, [])
 
 
@@ -62,36 +63,41 @@ const CourseDetailScreen = (props) => {
 
     const onHandleAddToChannelPress = () => {
         courseHomeService.getFreeCourse(course.id, authReducer.token)
-        .then(response => {
-            console.log('buy: ', response.data);
-            
-        })
-        .catch(error => {
-            console.log('buy courses error', error);
-        })
+            .then(response => {
+                console.log('buy: ', response.data);
+
+            })
+            .catch(error => {
+                console.log('buy courses error', error);
+            })
     }
 
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
         //addFavoriteCourse(course.id)
         courseHomeService.likeCourse(course.id, authReducer.token)
-        .then(response => {
-            console.log('like: ', response.data);
-            
-        })
-        .catch(error => {
-            console.log('like courses error');
-        })
+            .then(response => {
+                console.log('like: ', response.data);
+
+            })
+            .catch(error => {
+                console.log('like courses error');
+            })
 
     }
 
     const renderVideoContent = (item, index) => {
 
-        return <ContentVideoItem
+        return <ContentVideoCanPressItem
             image={course.imageUrl}
             title={item.name}
             duration={item.hours}
             key={index}
+            onPress={() => {
+                if (item.videoUrl){
+                    setUrl(item.videoUrl);
+                }
+            }}
         />
 
         // return <View></View>
@@ -99,9 +105,6 @@ const CourseDetailScreen = (props) => {
 
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
-            {/* <View style={styles.imageContainer}> */}
-            {/* <Image source={{ uri: course.imageUrl }} style={styles.topImage} /> */}
-            {/* </View> */}
             <Video
                 source={{ uri: url }}
                 rate={1.0}
@@ -137,11 +140,11 @@ const CourseDetailScreen = (props) => {
                     <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, marginTop: 5 }}>Giá: </Text>
 
                     {
-                        course.price === 0 
-                        ?
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> Miễn phí </Text>
-                        :
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> {course.price} VND</Text>
+                        course.price === 0
+                            ?
+                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> Miễn phí </Text>
+                            :
+                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> {course.price} VND</Text>
 
                     }
 
@@ -213,7 +216,7 @@ const CourseDetailScreen = (props) => {
     )
 }
 
-export default CourseDetailScreen
+export default CourseDetailVideoScreen
 
 const styles = StyleSheet.create({
     tabContainer: {
