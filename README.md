@@ -7,3 +7,7 @@ Môn học: Ứng dụng di động nâng cao
 
 Deadline 2: Offline data
 Link youtube: https://youtu.be/58ekZK-kFHA
+
+
+Deadline 3: Online data
+Link youtube: https://youtu.be/Fv1ZA_6hMBo
