@@ -59,7 +59,7 @@ const LoginScreen = (props) => {
         if (isError === true) {
             return <Text style={[globalStyles.titleText,
             { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
-                Email hoặc mật khẩu không hợp lệ</Text>
+                Email hoặc mật khẩu không hợp lệ hoặc chưa kích hoạt tài khoản</Text>
         }
     }
 

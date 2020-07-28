@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     pathContainer: {
-        marginTop: 20
+        marginTop: 30
     },
     lineText: {
         flexDirection: 'row',
@@ -288,8 +288,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     containerPopularSkills: {
-        marginTop: 10,
-        marginBottom: 30
+        marginTop: 20,
+        marginBottom: 5
     },
     containerLinePopularSkills: {
         flex: 1,
