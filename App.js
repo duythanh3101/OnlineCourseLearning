@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
-import { mapping, light } from "@eva-design/eva";
+import { mapping, light, dark } from "@eva-design/eva";
 import { Provider as ReduxProvider, useSelector, useDispatch } from 'react-redux';
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from './src/redux/store';
@@ -24,6 +24,13 @@ import MainBottomTab from './src/view/routes/mainBottomTab';
 import AuthenticationStack from './src/view/routes/authenticationStack';
 import HomeStack from './src/view/routes/homeStack';
 import SearchTab from './src/view/routes/searchTab';
+import CourseDetailScreen from './src/view/screens/course/courseDetailScreen';
+import { ThemeProvider } from './src/provider/theme-provider';
+import { CourseDataProvider } from './src/provider/course-data/course-data-provider';
+import { AuthorDataProvider } from './src/provider/author-data/author-data-provider';
+import { PathDataProvider } from './src/provider/path-data/path-data-provider';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { VideoDataProvider } from './src/provider/video-data/video-data-provider';
 
 const Stack = createStackNavigator();
 
@@ -41,7 +48,7 @@ const AppStackNavigator = () => {
       <Stack.Screen
         name={ScreenKey.MainTab}
         component={MainBottomTab}
-        options={{ headerShown: false}} />
+        options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
@@ -49,16 +56,35 @@ const AppStackNavigator = () => {
 
 export default function App() {
   return (
-    <ReduxProvider store={store}>
-      <PersistGate loading={<AppLoading />} persistor={persistor}>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider mapping={mapping} theme={light}>
-          <NavigationContainer>
-            <AppStackNavigator/>
-          </NavigationContainer>
-        </ApplicationProvider>
-      </PersistGate>
-    </ReduxProvider>
+    <ThemeProvider>
+      <CourseDataProvider>
+        <AuthorDataProvider>
+          <PathDataProvider>
+            <VideoDataProvider>
+
+            <ReduxProvider store={store}>
+              <PersistGate loading={<AppLoading />} persistor={persistor}>
+                <IconRegistry icons={EvaIconsPack} />
+                <ApplicationProvider mapping={mapping} theme={light}>
+                  <PaperProvider>
+                    <NavigationContainer>
+                      <AppStackNavigator />
+                      {/* <CourseDetailScreen /> */}
+                      {/* <BrowseScreen /> */}
+                      {/* <HomeScreen /> */}
+                    </NavigationContainer>
+                  </PaperProvider>
+
+                </ApplicationProvider>
+              </PersistGate>
+            </ReduxProvider>
+
+            </VideoDataProvider>
+          </PathDataProvider>
+        </AuthorDataProvider>
+      </CourseDataProvider>
+
+    </ThemeProvider>
 
   );
 }
@@ -70,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
- 
+
 });
 
 const navigationStyle = {

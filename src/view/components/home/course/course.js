@@ -1,105 +1,85 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
-import CourseItemInfo from './course-item-info'
-import { globalStyles } from '../../../../global/styles'
+import { globalStyles, colors } from '../../../../global/styles'
 import { ScreenKey } from '../../../../global/constants'
+import { CourseDataContext } from '../../../../provider/course-data/course-data-provider'
+import { PathDataContext } from '../../../../provider/path-data/path-data-provider'
+import Topic from './topic'
+import { ThemeContext } from '../../../../provider/theme-provider'
+import CourseHomeService from '../../../../core/service/courseHomeService'
+import axios from 'axios'
 
 const Course = (props) => {
-    const [courses, setCourses] = useState([
-        {
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-        {
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-        {
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-        {
-            courseName: 'Java',
-            author: 'John',
-            level: 'Advanced',
-            date: 'Feb 2019',
-            duration: '9h 35mins'
-        },
-    ])
+    const { courseData } = useContext(CourseDataContext);
+    const { topicData } = useContext(PathDataContext);
+    const { themes } = useContext(ThemeContext);
 
-    const renderItem = (item, index) => {
-        return <CourseItemInfo
-            courseName={item.courseName}
-            author={item.author}
-            level={item.level}
-            date={item.date}
-            duration={item.duration}
-            key={index}
-            style={styles.courseList} />
-    }
+    const [topics, setTopics] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const onPressSeeAll = (title) => {
-        //Alert.alert('Đang cập nhật')
+    useEffect(() => {
+        setIsLoading(true);
+        CourseHomeService.getAllCategory()
+            .then(response => {
+                if (response.data.message === 'OK') {
+                    setTopics(response.data.payload);
+                    setIsLoading(false);
+                    //console.log('topic 2: ', response.data.payload)
+                }
+                //console.log('Home: ', response.data)
+            })
+            .catch(error => {
+                console.log('Home error: ', error)
+            });
+
+    }, [])
+
+    const onPressSeeAllTopic = (topic) => {
         props.navigation.navigate(ScreenKey.CourseListByTopicScreen, {
             item: {
-                title: title,
-                courses: courses
+                topic: topic
             }
         })
     }
 
+    const onPressItem = (course) => {
+        //console.log('Course Detail Screen ', course);
+        props.navigation.navigate(ScreenKey.CourseDetailScreen, {
+            course: course
+        })
+    }
+
+
+    const renderTopicItem = (item) => {
+        return <Topic
+            title={item.name}
+            //courseData={courseaaa}
+            onPress={() => onPressSeeAllTopic(item)}
+            key={item.id}
+            id={item.id}
+            onPressItem={onPressItem}
+        />
+
+        // return <Text key={item.id}>hahaha</Text>
+    }
+
     return (
-        <ScrollView style={styles.courseContainer}>
-            <View style={styles.course}>
-                <View style={globalStyles.lineText}>
-                    <Text style={globalStyles.titleText}>Software development</Text>
-                    <TouchableOpacity onPress={() => onPressSeeAll('Software development')}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal={true} style={styles.courseList}>
-                    {
-                        courses.map((item, i) => renderItem(item, i))
-                    }
-                </ScrollView>
-            </View>
+        <ScrollView style={{ ...styles.courseContainer, backgroundColor: themes.background.mainColor }}>
+            {/* <Topic
+                title='Khóa học bán chạy'
+                courseData={courseFilter}
+                onPress={() => onPressSeeAllTopic(item)}
+                key={item.id}
+                onPressItem={onPressItem}
 
-            <View style={styles.course}>
-                <View style={globalStyles.lineText}>
-                    <Text style={globalStyles.titleText}>IT development</Text>
-                    <TouchableOpacity onPress={() => onPressSeeAll('IT development')}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal={true} style={styles.courseList}>
-                    {
-                        courses.map((item, i) => renderItem(item, i))
-                    }
-                </ScrollView>
-            </View>
-
-            <View style={styles.course}>
-                <View style={globalStyles.lineText}>
-                    <Text style={globalStyles.titleText}>Soft skills</Text>
-                    <TouchableOpacity onPress={() => onPressSeeAll('Soft skills')}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal={true} style={styles.courseList}>
-                    {
-                        courses.map((item, i) => renderItem(item, i))
-                    }
-                </ScrollView>
-            </View>
+            /> */}
+            {
+                isLoading === false
+                    ?
+                    topics.map((item) => renderTopicItem(item))
+                    :
+                    null
+            }
         </ScrollView>
 
     )
@@ -120,5 +100,9 @@ const styles = StyleSheet.create({
     },
     courseItemInfo: {
         margin: 5
-    }
+    },
+    normalCenterText: {
+        color: colors.white,
+        alignSelf: 'center'
+    },
 })

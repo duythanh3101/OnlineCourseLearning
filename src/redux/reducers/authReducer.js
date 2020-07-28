@@ -1,32 +1,42 @@
 import { globalActionTypes } from '../actions/actionTypes'
 
 const initialState = {
-    account: null,
-    /** Check if user has logged in in this section. */
-    loggedIn: false,
-    /** Check if the account should be persisted between sections. */
-    persistAccount: false
+    isAuthenticated: false,
+
+    isAuthenticating: false,
+
+    userInfo: null,
+
+    token: null
 };
 
 export default function (state = initialState, action) {
     switch(action.type) {
-        case globalActionTypes.ACCOUNT_LOGIN: {
-            const { account, persistAccount } = action.payload;
+        case globalActionTypes.LOGIN_REQUESTED: {
             return {
                 ...state,
-                loggedIn: true,
-                persistAccount: persistAccount,
-                account: account
+                isAuthenticating: true
             }
         }
-        case globalActionTypes.ACCOUNT_LOGOUT: {
+
+        case globalActionTypes.LOGIN_SUCCESSED: {
             return {
                 ...state,
-                loggedIn: false,
-                persistAccount: false,
-                account: null
+                isAuthenticated: true,
+                isAuthenticating: false,
+                userInfo: action.payload.userInfo,
+                token: action.payload.token
             }
         }
+
+        case globalActionTypes.LOGIN_FAILED: {
+            return {
+                ...state,
+                isAuthenticated: false,
+                isAuthenticating: false,
+            }
+        }
+      
         default: return state;
     }
 };

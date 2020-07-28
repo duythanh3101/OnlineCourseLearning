@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { globalStyles } from '../../../global/styles'
 import { FontAwesome } from '@expo/vector-icons';
+import { ThemeContext } from '../../../provider/theme-provider';
 
 const RoundCornerTag = (props) => {
+
+    const {themes} = useContext(ThemeContext);
+
     return (
         <TouchableOpacity style={[globalStyles.roundCornerTagGray, props.style]} onPress={props.onPress}>
             {

@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity, Image } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import ImageButtonTwoLines from '../../components/common/image-button-two-lines'
 import RoundCornerTag from '../../components/common/round-corner-tag'
 import PathCourseItem from '../../components/browse/path-course-item/path-course-item'
+import { ThemeContext } from '../../../provider/theme-provider'
+import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
+import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
+import { PathDataContext } from '../../../provider/path-data/path-data-provider'
+import AuthorVerticalItem from '../../components/author/author-vertical-item'
+import { ScreenKey } from '../../../global/constants'
+import instructorService from '../../../core/service/instructorService'
 
-const BrowseScreen = () => {
+const BrowseScreen = (props) => {
+
+    const { themes } = useContext(ThemeContext);
+    const { authorData } = useContext(AuthorDataContext);
+    const { pathData } = useContext(PathDataContext);
 
     const popularSkills = [
         {
@@ -38,19 +49,19 @@ const BrowseScreen = () => {
     const smallImages = [
         {
             key: 1,
-            uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg',
+            uri: 'https://pluralsight.imgix.net/course-images/gatsbyjs-getting-started-v1.png',
             firstText: 'FIRST',
             secondText: 'RELEASE'
         },
         {
             key: 2,
-            uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg',
+            uri: 'https://pluralsight.imgix.net/course-images/node-js-express-rest-web-services-update-v1.png',
             firstText: 'SECOND',
             secondText: 'RELEASE'
         },
         {
             key: 3,
-            uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg',
+            uri: 'https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png',
             firstText: 'FISRT',
             secondText: 'RELEASE'
         },
@@ -61,6 +72,21 @@ const BrowseScreen = () => {
             secondText: 'RELEASE'
         },
     ];
+    
+
+    const [instructors, setInstructors] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        instructorService.getAll()
+        .then(response => {
+            //console.log('Instructor success', response.data)
+            setInstructors(response.data.payload);
+        })
+        .catch(error => {
+            console.log('Instructor error')
+        })
+    }, [])
 
     const renderPopularItem = (item, index) => {
         return <RoundCornerTag
@@ -83,6 +109,23 @@ const BrowseScreen = () => {
         />
     }
 
+    const renderAuthorItem = (item, index) => {
+
+        return <AuthorVerticalItem
+            id={item.id}
+            name={item['user.name']}
+            image={item['user.avatar']}
+            key={index}
+            onPress={() => onPressAuthor(item)}
+        />
+    }
+
+    const onPressAuthor = (item) => {
+        props.navigation.navigate(ScreenKey.AuthorScreen, {
+            item: item
+        })
+    }
+
     const onPressSeeAll = () => {
         Alert.alert('Đang cập nhật')
     }
@@ -91,19 +134,47 @@ const BrowseScreen = () => {
         Alert.alert('Đang cập nhật')
     }
 
+    const onPressTop = (type) =>{
+        props.navigation.navigate(ScreenKey.CourseListScreen, {
+            type: type
+        })
+    }
+
+    const renderPathItem = (item, index) => {
+        return <PathCourseItem
+            source={item.image}
+            title={item.pathName}
+            course={item.courses}
+            onPress={onPressPathItem}
+            key={index}
+        />
+    }
+
     return (
-        <ScrollView style={globalStyles.container}>
+        <ScrollView style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             <ImageButtonTwoLines
-                uri='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                firstText='NEW'
-                secondText='RELEASE'
+                uri='https://pluralsight.imgix.net/course-images/aws-operations-managing-v5.png'
+                firstText='TOP'
+                secondText='SELL'
+                onPress={() => onPressTop(0)}
             />
 
             <ImageButtonTwoLines
-                uri='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                firstText='RECOMMENDED'
-                secondText='FOR YOU'
+                uri='https://pluralsight.imgix.net/course-images/web-development-executive-briefing-v2.png'
+                firstText='TOP'
+                secondText='NEW'
                 imageStyle={styles.imageStyle}
+                onPress={() => onPressTop(1)}
+
+            />
+
+            <ImageButtonTwoLines
+                uri='https://pluralsight.imgix.net/course-images/node-js-express-rest-web-services-update-v1.png'
+                firstText='TOP'
+                secondText='RATING'
+                imageStyle={styles.imageStyle}
+                onPress={() => onPressTop(2)}
+
             />
 
             <ScrollView horizontal={true}>
@@ -124,7 +195,7 @@ const BrowseScreen = () => {
             </ScrollView>
 
             <View style={styles.containerPopularSkills}>
-                <Text style={globalStyles.titleText}>Popular Skills</Text>
+                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Popular Skills</Text>
                 <ScrollView horizontal={true} style={styles.containerLinePopularSkills}>
                     {
                         popularSkills.map((item, index) => renderPopularItem(item, index))
@@ -134,54 +205,30 @@ const BrowseScreen = () => {
 
             <View style={styles.pathContainer}>
                 <View style={styles.lineText}>
-                    <Text style={globalStyles.titleText}>Paths</Text>
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Paths</Text>
                     <TouchableOpacity onPress={onPressSeeAll}>
-                        <Text style={globalStyles.normalCenterText}>See all ></Text>
+                        <Text style={{...globalStyles.normalCenterText,
+                                    color: themes.fontColor.mainColor
+                            }}>See all {'>'}</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
-                    <PathCourseItem
-                        source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                        title='Building Web Applications with Blazor'
-                        course='5 courses'
-                        onPress={onPressPathItem}
-                    />
-
-                    <PathCourseItem
-                        source='http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg'
-                        title='Building WPF with Blazor'
-                        course='5 courses'
-                        onPress={onPressPathItem}
-                    />
+                    {
+                        pathData.map((item, index) => renderPathItem(item, index))
+                    }
 
                 </ScrollView>
 
             </View>
 
             <View style={styles.authorContainer}>
-                <Text style={globalStyles.titleText}>Top authors</Text>
+                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Top authors</Text>
 
                 <ScrollView horizontal={true} style={{ flexDirection: 'row' }}>
                     <View style={styles.containerLineAuthors}>
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>Deborah Kurata</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>John</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>Andy</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.authorItem} onPress={onPressPathItem}>
-                            <Image style={styles.imageAuthor} source={{ uri: 'http://getwallpapers.com/wallpaper/full/d/6/3/920567-vertical-beautiful-background-pics-1920x1200-for-iphone.jpg' }} />
-                            <Text style={[globalStyles.titleText, styles.authorName]}>Deborah Kurata</Text>
-                        </TouchableOpacity>
+                        {
+                            instructors.map((item, index) => renderAuthorItem(item, index))
+                        }
                     </View>
 
                 </ScrollView>
@@ -199,6 +246,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         justifyContent: 'center',
         textAlign: 'center',
+        margin: 0,
         marginTop: 5,
     },
     authorItem: {
@@ -232,7 +280,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     pathContainer: {
-        marginTop: 20
+        marginTop: 30
     },
     lineText: {
         flexDirection: 'row',
@@ -240,8 +288,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     containerPopularSkills: {
-        marginTop: 10,
-        marginBottom: 20
+        marginTop: 20,
+        marginBottom: 5
     },
     containerLinePopularSkills: {
         flex: 1,

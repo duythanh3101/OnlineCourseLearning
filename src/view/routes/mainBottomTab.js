@@ -12,6 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeStack from './homeStack';
 import DownloadStack from './downloadStack';
 import BrowseStack from './browseStack';
+import FavoriteStack from './favoriteStack';
 
 const MainTab = createBottomTabNavigator();
 
@@ -35,7 +36,7 @@ const TabBarComponent = ({ navigation, state }) => {
                 style={{ borderTopColor: "#e6e6e6", borderTopWidth: 0.5 }}
             >
                 <BottomNavigationTab icon={(style) => tabIcon(style, "map-outline")} title="Home" />
-                <BottomNavigationTab icon={(style) => tabIcon(style, "book-outline")} title="Download" />
+                <BottomNavigationTab icon={(style) => tabIcon(style, "book-outline")} title="Favorite" />
                 <BottomNavigationTab icon={(style) => tabIcon(style, "recording-outline")} title="Browse" />
                 <BottomNavigationTab icon={(style) => tabIcon(style, "settings-2-outline")} title="Search" />
             </BottomNavigation>
@@ -50,18 +51,22 @@ const MainBottomTab = (props) => {
                 tabBar={props => <TabBarComponent {...props}/>} 
                 >
                 <MainTab.Screen
+                    {...props}
                     name={ScreenKey.HomeStack}
                     component={HomeStack}
                     />
                 <MainTab.Screen
-                    name={ScreenKey.DownloadStack}
-                    component={DownloadStack}
-                    options={{ title: 'Download' }} />
+                    {...props}
+                    name={ScreenKey.FavoriteStack}
+                    component={FavoriteStack}
+                    options={{ title: 'Favorite' }} />
                 <MainTab.Screen
+                    {...props}
                     name={ScreenKey.BrowseStack}
                     component={BrowseStack}
                     />
                 <MainTab.Screen
+                    {...props}
                     name={ScreenKey.SearchScreen}
                     component={SearchScreen}
                     />

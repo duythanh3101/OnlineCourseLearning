@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native'
 import { colors } from '../../../global/styles'
 
 const ImageButtonTwoLines = (props) => {
+
     return (
         <TouchableOpacity onPress={props.onPress}>
             <ImageBackground source={{ uri: props.uri }} style={[styles.image, props.imageStyle]}>

@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native'
+import { ThemeProvider } from '../provider/theme-provider';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -29,7 +30,8 @@ const globalStyles = StyleSheet.create({
         fontSize: 18,
         color: colors.white,
         fontWeight: 'bold',
-        margin: 10
+        marginLeft: 10,
+        marginBottom: 10
     },
     headerCenterText: {
         fontSize: 24,
@@ -94,7 +96,14 @@ const globalStyles = StyleSheet.create({
     lineText: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        
+    },
+    imageTag: {
+        width: 25,
+        height: 25,
+        borderRadius: 25,
+        marginRight: 10
     },
 });
 

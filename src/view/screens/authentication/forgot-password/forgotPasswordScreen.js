@@ -1,25 +1,30 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert } from 'react-native'
+import React, { useContext } from 'react'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert, UIManager } from 'react-native'
 import { globalStyles, colors } from '../../../../global/styles';
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
+import { ThemeContext } from '../../../../provider/theme-provider';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 const ForgotPasswordScreen = () => {
+
+    const {themes} = useContext(ThemeContext);
+
     const onPressSendEmail = () => {
         Alert.alert('Đang cập nhập');
+        
     }
 
     const onPressCancel = () => {
         Alert.alert('Đang cập nhập');
     }
     return (
-        <View style={[globalStyles.container, {justifyContent: 'center'}]}>
-            <Text style={globalStyles.headerText}>
+        <View style={[globalStyles.container, {justifyContent: 'center', backgroundColor: themes.background.mainColor}]}>
+            <Text style={{...globalStyles.headerText, color: themes.fontColor.mainColor, marginLeft: 10 }}>
                 FORGOT PASSWORD
             </Text>
-            <Text style={[globalStyles.titleText, { marginTop: 10, marginLeft: 20 }]}>
+            <Text style={[globalStyles.titleText, { marginTop: 10, marginLeft: 20, color: themes.fontColor.mainColor }]}>
                 Enter your email address and we'll send you a link to reset your password
                 </Text>
             <Input
