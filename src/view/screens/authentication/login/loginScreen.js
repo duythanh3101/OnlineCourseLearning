@@ -23,6 +23,7 @@ const LoginScreen = (props) => {
     const [password, setPassword] = useState("");
     const [isHidingPassword, setIsHidingPassword] = useState(true);
     const [isError, setIsError] = useState(false);
+    const [errorText, setErrorText] = useState('')
 
     const authReducer = useSelector(state => state.authReducer);
     const authDispatch = useDispatch();
@@ -46,10 +47,12 @@ const LoginScreen = (props) => {
                     props.navigation.navigate(ScreenKey.MainTab)
                 } else {
                     setIsError(true);
+                    setErrorText(response.message)
                     authDispatch(loginFailed());
                 }
             })
             .catch(error => {
+                setErrorText('Đăng ký không thành công')
                 setIsError(true);
                 authDispatch(loginFailed());
             })
@@ -59,7 +62,7 @@ const LoginScreen = (props) => {
         if (isError === true) {
             return <Text style={[globalStyles.titleText,
             { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
-                Email hoặc mật khẩu không hợp lệ hoặc chưa kích hoạt tài khoản</Text>
+                {errorText}</Text>
         }
     }
 

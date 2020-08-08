@@ -25,31 +25,31 @@ const RegisterScreen = (props) => {
     const [errorText, setErrorText] = useState('')
 
     const validateAccount = () => {
-        if (username === ""){
+        if (username === "") {
             return "Tên đăng nhập không được để trống"
         }
 
-        if (email === ""){
+        if (email === "") {
             return "Email không được để trống"
         }
 
-        if (!checkEmail(email)){
+        if (!checkEmail(email)) {
             return "Email không hợp lệ"
         }
 
-        if (phone === ""){
+        if (phone === "") {
             return "Số điện thoại không được để trống"
         }
 
-        if (password === '' || confirmPassword === ''){
+        if (password === '' || confirmPassword === '') {
             return "Mật khẩu không được để trống"
         }
 
-        if (password !== confirmPassword){
+        if (password !== confirmPassword) {
             return "Mật khẩu xác nhận không hợp lệ"
         }
 
-      
+
         return '';
     }
 
@@ -59,38 +59,38 @@ const RegisterScreen = (props) => {
 
     const signUp = () => {
         let error = validateAccount();
-        if (error === ''){
+        if (error === '') {
             registerService.register(username, email, phone, password).
-            //registerService.register('sads2sad', 'asdas2da', '0002', 'asd2asd').
-            then(res => {
-                console.log('register success', res.data)
-                setIsError(false);
-                setIsShow(true);
-            })
-            .catch(err => {
-                console.log('register error', err)
-                setIsError(true);
-                setIsShow(true);
-            })
-        }else{
-                setErrorText(error);
-                setIsError(true);
-                setIsShow(true);
+                //registerService.register('sads2sad', 'asdas2da', '0002', 'asd2asd').
+                then(res => {
+                    //console.log('register success', res.data)
+                    setIsError(false);
+                    setIsShow(true);
+                })
+                .catch(err => {
+                    //console.log('register error', err)
+                    setIsError(true);
+                    setIsShow(true);
+                })
+        } else {
+            setErrorText(error);
+            setIsError(true);
+            setIsShow(true);
 
         }
-       
+
     }
 
     const showError = () => {
-        if (isShow){
+        if (isShow) {
             if (isError === true) {
                 return <Text style={[globalStyles.titleText,
                 { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
-                {errorText}</Text>
+                    {errorText}</Text>
             }
-            else{
+            else {
                 return <Text style={[globalStyles.titleText,
-                    { color: 'red', alignSelf: 'center', marginTop: 10 }]}>Người dùng được tạo thành công</Text>
+                { color: 'red', alignSelf: 'center', marginTop: 10 }]}>Đăng ký thành công. Vui lòng xác nhận qua Email</Text>
             }
         }
     }
