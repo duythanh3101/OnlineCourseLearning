@@ -150,14 +150,19 @@ const CourseDetailScreen = (props) => {
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
     }
-    console.log('detail info', sectionCourses);
+    //console.log('detail info', sectionCourses);
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
             {/* <Image source={{ uri: course.imageUrl }} style={styles.topImage} /> */}
             {/* </View> */}
-            <Video
-                source={{ uri: url }}
+            {
+                detailInfo.promoVidUrl === null
+                ?
+                <Image source={{ uri: detailInfo.imageUrl }} style={styles.topImage} /> 
+                :
+                <Video
+                source={{ uri: detailInfo.promoVidUrl }}
                 rate={1.0}
                 volume={1.0}
                 isMuted={false}
@@ -165,8 +170,10 @@ const CourseDetailScreen = (props) => {
                 //shouldPlay
                 isLooping
                 useNativeControls
-                style={{ height: 300 }}
+                style={{ height: '40%' }}
             />
+            }
+            
 
             <ScrollView styles={styles.mainContainer}>
                 <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.title}</Text>
@@ -341,6 +348,6 @@ const styles = StyleSheet.create({
     },
     topImage: {
         width: '100%',
-        height: '25%',
+        height: '40%',
     }
 })
