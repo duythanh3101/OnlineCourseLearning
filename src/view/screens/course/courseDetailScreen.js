@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share } from 'react-native'
+import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
@@ -66,22 +66,22 @@ const CourseDetailScreen = (props) => {
     const onHandleShare = async () => {
         let msg = 'https://itedu.me/course-detail/' + course.id.toString();
         try {
-          const result = await Share.share({
-            message: msg
-          });
-          if (result.action === Share.sharedAction) {
-            if (result.activityType) {
-              // shared with activity type of result.activityType
-            } else {
-              // shared
+            const result = await Share.share({
+                message: msg
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
             }
-          } else if (result.action === Share.dismissedAction) {
-            // dismissed
-          }
         } catch (error) {
-          alert(error.message);
+            alert(error.message);
         }
-      };
+    };
 
     const onHandleAddToChannelPress = () => {
         courseHomeService.getFreeCourse(course.id, authReducer.token)
@@ -117,7 +117,20 @@ const CourseDetailScreen = (props) => {
             key={index}
         />
 
-        // return <View></View>
+        //  return <View></View>
+    }
+
+    const renderSectionVideo = (item, index) => {
+
+        return <View style={{ flexDirection: 'column' }} key={index}>
+            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Section {item.numberOrder}.{item.name}</Text>
+            {
+                item.lesson.map((item, i) => renderVideoContent(item, i))
+            }
+        </View>
+
+
+        //  return <View></View>
     }
 
     const renderLearningWhat = (item, index) => {
@@ -137,7 +150,7 @@ const CourseDetailScreen = (props) => {
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
     }
-    //console.log('detail info', detailInfo);
+    console.log('detail info', sectionCourses);
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
@@ -243,28 +256,33 @@ const CourseDetailScreen = (props) => {
                         detailInfo.requirement.map((item, index) => renderRequirement(item, index))
                     }
                 </View>
-                <TabView
-                    // style={{flex: 1}}
-                    onSelect={setTabSelectedIndex}
-                    selectedIndex={tabSelectedIndex}
-                    shouldLoadComponent={(index) => tabSelectedIndex === index}
-                >
-                    <Tab title='CONTENTS'>
-                        <View style={styles.tabContainer}>
-                            {
-                                lessons.map((item, index) => renderVideoContent(item, index))
-                            }
-                        </View>
-                    </Tab>
-                    <Tab title='DESCRIPTION'>
-                        <View style={styles.tabContainer}>
-                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Course Overview</Text>
-                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{course.description}</Text>
-                        </View>
-                    </Tab>
-                </TabView>
+                <Separator />
+                <View style={styles.tabContainer}>
+                {
+                    detailInfo.videoNumber > 1
+                        ?
+                        <Text style={{
+                            ...globalStyles.titleText,
+                            color: themes.fontColor.mainColor,
+                        }}>{detailInfo.videoNumber} videos ({detailInfo.totalHours} giờ)</Text>
+                        :
+                        <Text style={{
+                            ...globalStyles.titleText,
+                            color: themes.fontColor.mainColor,
+                        }}>{detailInfo.videoNumber} video ({detailInfo.totalHours} giờ)</Text>
+
+                }
+
+                {
+                    sectionCourses.map((item, index) => renderSectionVideo(item, index))
+                }
+
+            </View>
+
+
             </ScrollView>
-        </View>
+          
+        </View >
 
     )
 }
@@ -273,7 +291,7 @@ export default CourseDetailScreen
 
 const styles = StyleSheet.create({
     tabContainer: {
-        backgroundColor: 'white'
+        flexDirection: 'column',
     },
     iconItem: {
         alignItems: 'center'
