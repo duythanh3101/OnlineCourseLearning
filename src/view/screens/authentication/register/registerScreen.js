@@ -3,11 +3,12 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TouchableW
 import { globalStyles, colors } from '../../../../global/styles'
 import { Icon, Input } from "@ui-kitten/components";
 import RoundCornerButton from '../../../components/common/round-corner-button';
-import { ImageKey, constants } from '../../../../global/constants';
+import { ImageKey, constants, ScreenKey } from '../../../../global/constants';
 import { ThemeProvider, ThemeContext } from '../../../../provider/theme-provider';
 import registerService from '../../../../core/service/register-service ';
+import { checkEmail } from '../../../../global/utilConverter';
 
-const RegisterScreen = () => {
+const RegisterScreen = (props) => {
 
     const { themes } = useContext(ThemeContext);
 
@@ -21,24 +22,63 @@ const RegisterScreen = () => {
     const [isError, setIsError] = useState(false);
     const [isShow, setIsShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [errorText, setErrorText] = useState('')
+
+    const validateAccount = () => {
+        if (username === ""){
+            return "Tên đăng nhập không được để trống"
+        }
+
+        if (email === ""){
+            return "Email không được để trống"
+        }
+
+        if (!checkEmail(email)){
+            return "Email không hợp lệ"
+        }
+
+        if (phone === ""){
+            return "Số điện thoại không được để trống"
+        }
+
+        if (password === '' || confirmPassword === ''){
+            return "Mật khẩu không được để trống"
+        }
+
+        if (password !== confirmPassword){
+            return "Mật khẩu xác nhận không hợp lệ"
+        }
+
+      
+        return '';
+    }
 
     const showPasswordIcon = style => (
         <Icon {...style} name={isHidingPassword ? "eye-off" : "eye"} />
     );
 
     const signUp = () => {
-        registerService.register(username, email, phone, password).
-        //registerService.register('sads2sad', 'asdas2da', '0002', 'asd2asd').
-        then(res => {
-            console.log('register success', res.data)
-            setIsError(false);
-            setIsShow(true);
-        })
-        .catch(err => {
-            console.log('register error', err)
-            setIsError(true);
-            setIsShow(true);
-        })
+        let error = validateAccount();
+        if (error === ''){
+            registerService.register(username, email, phone, password).
+            //registerService.register('sads2sad', 'asdas2da', '0002', 'asd2asd').
+            then(res => {
+                console.log('register success', res.data)
+                setIsError(false);
+                setIsShow(true);
+            })
+            .catch(err => {
+                console.log('register error', err)
+                setIsError(true);
+                setIsShow(true);
+            })
+        }else{
+                setErrorText(error);
+                setIsError(true);
+                setIsShow(true);
+
+        }
+       
     }
 
     const showError = () => {
@@ -46,7 +86,7 @@ const RegisterScreen = () => {
             if (isError === true) {
                 return <Text style={[globalStyles.titleText,
                 { color: 'red', alignSelf: 'center', marginTop: 10 }]}>
-                Email hoặc số điện thoại đã được sử dụng</Text>
+                {errorText}</Text>
             }
             else{
                 return <Text style={[globalStyles.titleText,
@@ -55,11 +95,15 @@ const RegisterScreen = () => {
         }
     }
 
+    const loginClick = () => {
+        props.navigation.replace(ScreenKey.LoginScreen);
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
                 <View style={styles.imageContainer}>
-                    <Image source={ImageKey.RedLogo} style={{ width: 120, height: 120 }} />
+                    <Image source={ImageKey.RedLogo} style={{ width: 250, height: 250 }} />
 
                 </View>
 
@@ -123,7 +167,7 @@ const RegisterScreen = () => {
                         backgroundStyle={{ marginTop: 20 }}
                         onPress={signUp}
                     />
-                    <TouchableOpacity style={styles.forgot}>
+                    <TouchableOpacity style={styles.forgot} onPress={loginClick}>
                         <Text style={styles.forgotText}>LOGIN WITH EXISTING ACCOUNT</Text>
                     </TouchableOpacity>
                 </View>
