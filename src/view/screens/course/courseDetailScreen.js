@@ -105,16 +105,16 @@ const CourseDetailScreen = (props) => {
     }
 
     const renderLearningWhat = (item, index) => {
-        return <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+        return <View style={{ flexDirection: 'row', marginLeft: 5 }} key={index}>
             <Entypo name="check" size={24} color="blue" />
-            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{item}</Text>
+            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>{item}</Text>
         </View>
     }
 
     const renderRequirement = (item, index) => {
-        return <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+        return <View style={{ flexDirection: 'row', marginLeft: 5 }} key={index}>
             <Entypo name="check" size={24} color="blue" />
-            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{item}</Text>
+            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>{item}</Text>
         </View>
     }
 
@@ -219,7 +219,7 @@ const CourseDetailScreen = (props) => {
                         detailInfo.learnWhat.map((item, index) => renderLearningWhat(item, index))
                     }
                     <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Mô tả</Text>
-                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{detailInfo.description}</Text>
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>{detailInfo.description}</Text>
                     <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Yêu cầu</Text>
                     {
                         detailInfo.requirement.map((item, index) => renderRequirement(item, index))
