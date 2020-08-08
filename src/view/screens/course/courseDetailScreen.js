@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { StyleSheet, View, Image, Text, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
@@ -63,9 +63,25 @@ const CourseDetailScreen = (props) => {
 
 
     //console.log('detail props: ', course)
-    const onHandleBookmarkPress = () => {
-        //Alert.alert('Bookmark')
-    }
+    const onHandleShare = async () => {
+        let msg = 'https://itedu.me/course-detail/' + course.id.toString();
+        try {
+          const result = await Share.share({
+            message: msg
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      };
 
     const onHandleAddToChannelPress = () => {
         courseHomeService.getFreeCourse(course.id, authReducer.token)
@@ -173,13 +189,16 @@ const CourseDetailScreen = (props) => {
                 </View>
 
                 <View style={styles.iconContainer}>
-                    <TouchableOpacity style={styles.iconItem} onPress={onHandleBookmarkPress}>
+                    <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
                         <View style={styles.icon}>
-                            <Entypo name="bookmarks" size={24} color="white" />
+                            <Feather name="download" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Bookmark</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Favorite</Text>
                         {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
+
                     </TouchableOpacity>
+
+
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
                         <View style={styles.icon}>
@@ -190,13 +209,12 @@ const CourseDetailScreen = (props) => {
 
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
+                    <TouchableOpacity style={styles.iconItem} onPress={onHandleShare}>
                         <View style={styles.icon}>
-                            <Feather name="download" size={24} color="white" />
+                            <Entypo name="share" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Favorite</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Share</Text>
                         {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
-
                     </TouchableOpacity>
                 </View>
                 {/* <View style={{ flexDirection: 'column' }}>
