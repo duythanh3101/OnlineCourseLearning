@@ -5,6 +5,7 @@ import { ThemeContext } from '../../../../provider/theme-provider'
 import StarRatingImage from '../../star-rating/star-rating-image'
 import { AuthorDataContext } from '../../../../provider/author-data/author-data-provider'
 import InstructorService from '../../../../core/service/instructorService'
+import { convertNumberCurrenry } from '../../../../global/utilConverter'
 
 const CourseItemInfo = (props) => {
     const { themes } = useContext(ThemeContext);
@@ -37,7 +38,7 @@ const CourseItemInfo = (props) => {
                         ?
                         <Text style={{...globalStyles.titleText,color: themes.fontColor.maroon}}>Miễn phí</Text>
                         :
-                        <Text style={{...globalStyles.titleText,color: themes.fontColor.maroon}}>{props.price} VND</Text>
+                        <Text style={{...globalStyles.titleText,color: themes.fontColor.maroon}}>{convertNumberCurrenry(props.price)} VND</Text>
                     }                    
 
                 </View>

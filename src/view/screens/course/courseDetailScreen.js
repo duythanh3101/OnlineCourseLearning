@@ -19,15 +19,12 @@ import { CourseDataContext } from '../../../provider/course-data/course-data-pro
 import courseHomeService from '../../../core/service/courseHomeService'
 import { Video } from 'expo-av'
 import { useSelector } from 'react-redux'
+import { formatMoney, convertNumberCurrenry } from '../../../global/utilConverter'
+import Separator from '../../components/separator/separator'
+import LoadingIndicator from '../../components/loading/loading-indicator'
 
 const CourseDetailScreen = (props) => {
     const { themes } = useContext(ThemeContext);
-    const { getAuthorById } = useContext(AuthorDataContext);
-    const { videoContentData } = useContext(VideoDataContext);
-    const { getVideoContentById } = useContext(VideoDataContext);
-    const { addFavoriteCourse } = useContext(CourseDataContext);
-    const { courseData } = useContext(CourseDataContext);
-    const videoCourse = getVideoContentById(1);
     //const content = videoCourse.content;
 
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
@@ -36,22 +33,32 @@ const CourseDetailScreen = (props) => {
     const [lessons, setLessons] = useState([]);
     const [url, setUrl] = useState('https://storage.googleapis.com/itedu-bucket/Courses/856457a1-8008-4c35-956a-c9975cd8cc22/promo/2fc49c1c-e948-4bad-b8ab-50a1f7da0a1e.mp4');
     const authReducer = useSelector(state => state.authReducer);
+    const [detailInfo, setDetailInfo] = useState(null);
+    const [sectionCourses, setSectionCourses] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
         courseHomeService.getCourseDetail(course.id)
             .then(response => {
-                //console.log('aaaa: ', response.data.payload.section.lesson);
-                
+                //console.log('aaaa: ', response.data.payload.subtitle);
+                setDetailInfo(response.data.payload);
+                setSectionCourses(response.data.payload.section);
+
                 const sections = response.data.payload.section;
                 sections.map(a => a.lesson.map(x => setLessons(prevs => [...prevs, x])))
-                sections.map(a => console.log('sec: ', a.lesson));
-                
+                //sections.map(a => console.log('sec: ', a.lesson));
+
+                setIsLoading(false);
+
             })
             .catch(error => {
                 console.log('get courses error');
+                setIsLoading(false);
+
             })
 
-           //console.log('lesson: ', lessons);
+        //console.log('lesson: ', lessons);
     }, [])
 
 
@@ -62,26 +69,26 @@ const CourseDetailScreen = (props) => {
 
     const onHandleAddToChannelPress = () => {
         courseHomeService.getFreeCourse(course.id, authReducer.token)
-        .then(response => {
-            console.log('buy: ', response.data);
-            
-        })
-        .catch(error => {
-            console.log('buy courses error', error);
-        })
+            .then(response => {
+                //console.log('buy: ', response.data);
+
+            })
+            .catch(error => {
+                console.log('buy courses error', error);
+            })
     }
 
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
         //addFavoriteCourse(course.id)
         courseHomeService.likeCourse(course.id, authReducer.token)
-        .then(response => {
-            console.log('like: ', response.data);
-            
-        })
-        .catch(error => {
-            console.log('like courses error');
-        })
+            .then(response => {
+                console.log('like: ', response.data);
+
+            })
+            .catch(error => {
+                console.log('like courses error');
+            })
 
     }
 
@@ -97,6 +104,24 @@ const CourseDetailScreen = (props) => {
         // return <View></View>
     }
 
+    const renderLearningWhat = (item, index) => {
+        return <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+            <Entypo name="check" size={24} color="blue" />
+            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{item}</Text>
+        </View>
+    }
+
+    const renderRequirement = (item, index) => {
+        return <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+            <Entypo name="check" size={24} color="blue" />
+            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{item}</Text>
+        </View>
+    }
+
+    if (isLoading || detailInfo === null) {
+        return <LoadingIndicator />
+    }
+    //console.log('detail info', detailInfo);
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
             {/* <View style={styles.imageContainer}> */}
@@ -137,11 +162,11 @@ const CourseDetailScreen = (props) => {
                     <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, marginTop: 5 }}>Giá: </Text>
 
                     {
-                        course.price === 0 
-                        ?
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> Miễn phí </Text>
-                        :
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> {course.price} VND</Text>
+                        course.price === 0
+                            ?
+                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> Miễn phí </Text>
+                            :
+                            <Text style={{ ...globalStyles.titleText, color: themes.fontColor.maroon }}> {convertNumberCurrenry(course.price)} VNĐ</Text>
 
                     }
 
@@ -174,7 +199,7 @@ const CourseDetailScreen = (props) => {
 
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'column' }}>
+                {/* <View style={{ flexDirection: 'column' }}>
                     <RoundCornerButton
                         backgroundStyle={{
                             marginTop: 10,
@@ -186,6 +211,19 @@ const CourseDetailScreen = (props) => {
                         title='View related paths & courses'
                     />
 
+                </View> */}
+                <Separator />
+                <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Bạn sẽ học được?</Text>
+                    {
+                        detailInfo.learnWhat.map((item, index) => renderLearningWhat(item, index))
+                    }
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Mô tả</Text>
+                    <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>{detailInfo.description}</Text>
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Yêu cầu</Text>
+                    {
+                        detailInfo.requirement.map((item, index) => renderRequirement(item, index))
+                    }
                 </View>
                 <TabView
                     // style={{flex: 1}}
