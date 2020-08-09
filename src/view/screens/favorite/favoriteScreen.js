@@ -13,6 +13,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import courseHomeService from '../../../core/service/courseHomeService';
 import { ScreenKey } from '../../../global/constants';
+import LoadingIndicator from '../../components/loading/loading-indicator';
 
 const FavoriteScreen = (props) => {
     const isFocused = useIsFocused();
@@ -20,8 +21,6 @@ const FavoriteScreen = (props) => {
     const { themes } = useContext(ThemeContext);
     const { authorData } = isFocused ? useContext(AuthorDataContext) : useContext(AuthorDataContext);
     const { courseData } = isFocused ? useContext(CourseDataContext) : useContext(CourseDataContext);
-    let datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
-
 
     const authReducer = useSelector(state => state.authReducer);
 
@@ -31,29 +30,16 @@ const FavoriteScreen = (props) => {
     useEffect(() => {
         setIsLoading(true);
         //console.log(courseData.filter(x=>x.isFavorited).length)
-        datas = courseData ? courseData.filter(x => x.isFavorited === true) : [];
 
-        // courseHomeService.getFavoriteCourses(authReducer.token)
-        // .then(response => {
-        //     //console.log('favorite success', response.data);
-        //     setCourses(response.data.payload);
-        //     setIsLoading(false);
-
-        // })
-        // .catch(error => {
-        //     console.log('favorite courses error');
-        //     setIsLoading(false);
-
-        // })
-
-        courseHomeService.getProcessCourses(authReducer.token)
+        setCourses([]);
+        courseHomeService.getFavoriteCourses(authReducer.token)
         .then(response => {
             //console.log('process success', response.data);
             //setCourses(response.data.payload);
             response.data.payload.map(a => {
                 //console.log('ssss: ', a.id);
                 
-                courseHomeService.getCourseDetailWithLesson(a.id, authReducer.token)
+                courseHomeService.getCourseDetail(a.id)
                 .then(res => {
                     //console.log('ooooo', res.data.payload);
                     setCourses(prev => [...prev, res.data.payload]);
@@ -63,25 +49,26 @@ const FavoriteScreen = (props) => {
 
                 })                
             })
+            setIsLoading(false);
 
         })
         .catch(error => {
             console.log('favorite courses error');
-
+            setIsLoading(true);
         })
 
-    }, [])
+    }, [isFocused])
     const separator = () => <View style={styles.separator} />;
 
     const onPressCourse = (course) => {
-        props.navigation.navigate(ScreenKey.CourseDetailVideoScreen, {
+        props.navigation.navigate(ScreenKey.CourseDetailScreen, {
             course: course
         })
     }
 
     const renderItem = (item, index) => {
         const author = authorData ? authorData.find(x => x.id === item.authorId) : null;
-
+        //console.log('item: ', item)
         return <ListCourseItem
             id={item.id}
             source={item.imageUrl}
@@ -99,6 +86,11 @@ const FavoriteScreen = (props) => {
             }}
             />
     }
+
+    if (isLoading){
+        return <LoadingIndicator/>
+    }
+
     return (
         <View style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             {
@@ -114,7 +106,7 @@ const FavoriteScreen = (props) => {
                             <Text style={[globalStyles.headerCenterText,
                                  styles.appearHereText,
                                  {color: themes.fontColor.mainColor}
-                                 ]}>Courses you download will appear here</Text>
+                                 ]}>Your Favorite Courses will appear here</Text>
                         </View>
                     )
                     :
