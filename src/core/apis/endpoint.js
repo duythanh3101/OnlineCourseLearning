@@ -13,9 +13,7 @@ export const getAllCategoryEndpoint = rootEndpoint + "/category/all";
 export const getAllInstructorEndpoint = rootEndpoint + "/instructor";
 export const getInstructorDetailEndpoint = rootEndpoint + "/instructor/detail";
 
-export const getUserInfoEndpoint = rootEndpoint + "/user/me";
-export const updateProfileEndpoint = rootEndpoint + "/user/update-profile";
-export const likeCourseEndpoint = rootEndpoint + "/user/like-course";
+
 export const getlikeCourseStatusEndpoint = rootEndpoint + "/user/get-course-like-status";
 export const getFavoriteCourseEndpoint = rootEndpoint + "/user/get-favorite-courses";
 export const getFreeCourseEndpoint = rootEndpoint + "/payment/get-free-courses";
@@ -29,5 +27,11 @@ export const checkOwnCourse = rootEndpoint + "/user/check-own-course";
 
 export const getLessonURL = rootEndpoint + "/lesson/video";
 export const updateLessonStatus = rootEndpoint + "/lesson/update-status";
+export const getDocumentResource = rootEndpoint + "/resource/get-url";
 
+// user
+export const getUserInfoEndpoint = rootEndpoint + "/user/me";
+export const updateProfileEndpoint = rootEndpoint + "/user/update-profile";
+export const likeCourseEndpoint = rootEndpoint + "/user/like-course";
+export const sendEmailForgotPassword = rootEndpoint + "/user/forget-pass/send-email";
 

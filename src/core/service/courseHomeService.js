@@ -8,7 +8,8 @@ import {
     getDeatailWithLessonEndpoint,
     getlikeCourseStatusEndpoint,
     checkOwnCourse,
-    getLessonURL
+    getLessonURL,
+    getDocumentResource
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -159,6 +160,15 @@ class CourseHomeService {
     async getLessonURL(courseId, lessonId, token) {
 
         return await Axios.get(`${getLessonURL}/${courseId}/${lessonId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
+    async getDocumentResource(courseId, lessonId, resourceId, token) {
+
+        return await Axios.get(`${getDocumentResource}/${courseId}/${lessonId}/${resourceId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
