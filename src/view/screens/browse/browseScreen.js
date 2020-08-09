@@ -177,7 +177,7 @@ const BrowseScreen = (props) => {
 
             />
 
-            <ScrollView horizontal={true}>
+            {/* <ScrollView horizontal={true}>
 
                 <View style={styles.containerGroupTwoLineSmallImages}>
                     <View style={styles.containerLineSmallImages}>
@@ -192,10 +192,10 @@ const BrowseScreen = (props) => {
                         }
                     </View>
                 </View>
-            </ScrollView>
+            </ScrollView> */}
 
             <View style={styles.containerPopularSkills}>
-                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Popular Skills</Text>
+                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginBottom: 5 }}>Popular Skills</Text>
                 <ScrollView horizontal={true} style={styles.containerLinePopularSkills}>
                     {
                         popularSkills.map((item, index) => renderPopularItem(item, index))

@@ -8,6 +8,8 @@ import { AuthorDataContext } from '../../../../provider/author-data/author-data-
 import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import { CourseDataContext } from '../../../../provider/course-data/course-data-provider'
+import courseHomeService from '../../../../core/service/courseHomeService'
+import { useSelector } from 'react-redux'
 
 const ListCourseItem = (props) => {
     const { themes } = useContext(ThemeContext)
@@ -15,10 +17,12 @@ const ListCourseItem = (props) => {
     const { removeFavoriteCourse } = useContext(CourseDataContext)
     
     const [visible, setVisible] = useState(false)
+    const authReducer = useSelector(state => state.authReducer);
 
     const onHanldeSettingPress = () => {
         _closeMenu();
-        removeFavoriteCourse(props.id)
+        //removeFavoriteCourse(props.id)
+        courseHomeService.likeCourse(props.id, authReducer.token)
     }
 
     const _openMenu = () => setVisible(true);

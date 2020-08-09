@@ -30,12 +30,12 @@ const CourseDetailScreen = (props) => {
     const [tabSelectedIndex, setTabSelectedIndex] = useState(0);
 
     const course = props.route.params.course;
-    const [lessons, setLessons] = useState([]);
     const [url, setUrl] = useState('https://storage.googleapis.com/itedu-bucket/Courses/856457a1-8008-4c35-956a-c9975cd8cc22/promo/2fc49c1c-e948-4bad-b8ab-50a1f7da0a1e.mp4');
     const authReducer = useSelector(state => state.authReducer);
     const [detailInfo, setDetailInfo] = useState(null);
     const [sectionCourses, setSectionCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isFavorited, setIsFavorited] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -44,10 +44,6 @@ const CourseDetailScreen = (props) => {
                 //console.log('aaaa: ', response.data.payload.subtitle);
                 setDetailInfo(response.data.payload);
                 setSectionCourses(response.data.payload.section);
-
-                const sections = response.data.payload.section;
-                sections.map(a => a.lesson.map(x => setLessons(prevs => [...prevs, x])))
-                //sections.map(a => console.log('sec: ', a.lesson));
 
                 setIsLoading(false);
 
@@ -58,6 +54,18 @@ const CourseDetailScreen = (props) => {
 
             })
 
+        courseHomeService.getLikeCourseStatus(course.id, authReducer.token)
+            .then(response => {
+                if (response.data.likeStatus === true){
+                    setIsFavorited(true);
+                }else{
+                    setIsFavorited(false);
+                }
+
+            })
+            .catch(error => {
+                console.log('getLikeCourseStatus error');
+            })
         //console.log('lesson: ', lessons);
     }, [])
 
@@ -79,20 +87,10 @@ const CourseDetailScreen = (props) => {
                 // dismissed
             }
         } catch (error) {
-            alert(error.message);
+            //alert(error.message);
         }
     };
 
-    // const onHandleAddToChannelPress = () => {
-    //     courseHomeService.getFreeCourse(course.id, authReducer.token)
-    //         .then(response => {
-    //             //console.log('buy: ', response.data);
-
-    //         })
-    //         .catch(error => {
-    //             console.log('buy courses error', error);
-    //         })
-    // }
     const onHandleAddToChannelPress = useCallback(async () => {
         let url = "https://itedu.me/payment/" + course.id.toString();
         // Checking if the link is supported for links with custom URL scheme.
@@ -106,12 +104,26 @@ const CourseDetailScreen = (props) => {
     }, [url]);
 
     const onHandleFavoritePress = () => {
-        //Alert.alert('Favorite')
         //addFavoriteCourse(course.id)
         courseHomeService.likeCourse(course.id, authReducer.token)
             .then(response => {
-                //console.log('like: ', response.data);
-                alert('Đã thêm khóa học yêu thích thành công', 'Thông báo');
+                console.log('like: ', response.data);
+                if (response.data.likeStatus === true) {
+                    Alert.alert('Thông báo', 'Đã thêm khóa học yêu thích thành công',
+                        [
+                            {
+                                text: 'OK', onPress: () => setIsFavorited(true)
+                            }
+                        ]);
+                }
+                else {
+                    Alert.alert('Thông báo', 'Đã xóa khỏi danh sách khóa học yêu thích',
+                        [
+                            {
+                                text: 'OK', onPress: () => setIsFavorited(false)
+                            }
+                        ]);
+                }
             })
             .catch(error => {
                 //console.log('like courses error');
@@ -217,13 +229,33 @@ const CourseDetailScreen = (props) => {
                 </View>
 
                 <View style={styles.iconContainer}>
-                    <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
-                        <View style={styles.icon}>
-                            <Entypo name="heart-outlined" size={24} color="white" />
-                        </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Thích</Text>
+                    {
+                        isFavorited === false
+                            ?
+                            <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
+                                <View style={styles.icon}>
+                                    <Entypo name="heart-outlined" size={24} color="white" />
+                                </View>
+                                <Text style={{
+                                    ...globalStyles.titleText,
+                                    color: themes.fontColor.mainColor,
+                                    marginLeft: 0
+                                }}>Thích</Text>
 
-                    </TouchableOpacity>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
+                                <View style={styles.icon}>
+                                    <Entypo name="heart-outlined" size={24} color="red" />
+                                </View>
+                                <Text style={{
+                                    ...globalStyles.titleText,
+                                    color: 'red'
+                                }}>Đã thích</Text>
+
+                            </TouchableOpacity>
+                    }
+
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
                         <View style={styles.icon}>

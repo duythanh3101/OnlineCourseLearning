@@ -5,7 +5,8 @@ import {
     getCourseInfoEndpoint, likeCourseEndpoint,
     getFreeCourseEndpoint, getFavoriteCourseEndpoint,
     payCourseEndpoint, getProcessCoursesEndpoint,
-    getDeatailWithLessonEndpoint
+    getDeatailWithLessonEndpoint,
+    getlikeCourseStatusEndpoint
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -25,8 +26,7 @@ class CourseHomeService {
         this.resClientFavoriteCourse = new BaseAPI(getFavoriteCourseEndpoint);
         this.resClientMyCourse = new BaseAPI(getProcessCoursesEndpoint);
         this.resClientDetailWithLesson = new BaseAPI(getDeatailWithLessonEndpoint);
-
-
+        this.resClientLikeCourseStatus = new BaseAPI(getlikeCourseStatusEndpoint);
     }
 
     async getTopSellCourses(limit, page) {
@@ -90,11 +90,21 @@ class CourseHomeService {
 
 
     async likeCourse(id, token) {
-        console.log('ddd: ', id, likeCourseEndpoint)
+        //console.log('ddd: ', id, likeCourseEndpoint)
 
         return await this.resClientLikeCourse.post({
             courseId: id
         }, token);
+    }
+
+    async getLikeCourseStatus(id, token) {
+        console.log('ddd: ', id, getlikeCourseStatusEndpoint)
+
+        return await Axios.get(`${getlikeCourseStatusEndpoint}/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     }
 
     async getFreeCourse(id, token) {

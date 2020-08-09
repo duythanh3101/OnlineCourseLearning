@@ -122,7 +122,7 @@ const FavoriteScreen = (props) => {
                         <View style={{marginTop: 20}}>
                             <View style={styles.headerDownContainer}>
                                 <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>{courses.length} courses</Text>
-                                <Text style={[globalStyles.titleText, styles.removeText]}>REMOVE ALL</Text>
+                                {/* <Text style={[globalStyles.titleText, styles.removeText]}>REMOVE ALL</Text> */}
                             </View>
 
                             <FlatList
