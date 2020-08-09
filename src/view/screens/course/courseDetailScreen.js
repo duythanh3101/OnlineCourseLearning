@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
-import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList } from 'react-native'
+import React, { useState, useContext, useEffect, useRef, useCallback } from 'react'
+import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList, Linking } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
@@ -83,16 +83,27 @@ const CourseDetailScreen = (props) => {
         }
     };
 
-    const onHandleAddToChannelPress = () => {
-        courseHomeService.getFreeCourse(course.id, authReducer.token)
-            .then(response => {
-                //console.log('buy: ', response.data);
+    // const onHandleAddToChannelPress = () => {
+    //     courseHomeService.getFreeCourse(course.id, authReducer.token)
+    //         .then(response => {
+    //             //console.log('buy: ', response.data);
 
-            })
-            .catch(error => {
-                console.log('buy courses error', error);
-            })
-    }
+    //         })
+    //         .catch(error => {
+    //             console.log('buy courses error', error);
+    //         })
+    // }
+    const onHandleAddToChannelPress = useCallback(async () => {
+        let url = "https://itedu.me/payment/" + course.id.toString();
+        // Checking if the link is supported for links with custom URL scheme.
+        const supported = await Linking.canOpenURL(url);
+
+        if (supported) {
+            await Linking.openURL(url);
+        } else {
+            //Alert.alert(`Don't know how to open this URL: ${url}`);
+        }
+    }, [url]);
 
     const onHandleFavoritePress = () => {
         //Alert.alert('Favorite')
@@ -210,7 +221,7 @@ const CourseDetailScreen = (props) => {
                         <View style={styles.icon}>
                             <Entypo name="heart-outlined" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Favorite</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Thích</Text>
 
                     </TouchableOpacity>
 
@@ -218,14 +229,14 @@ const CourseDetailScreen = (props) => {
                         <View style={styles.icon}>
                             <Entypo name="add-to-list" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Buy</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Mua ngay</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleShare}>
                         <View style={styles.icon}>
                             <Entypo name="share" size={24} color="white" />
                         </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Share</Text>
+                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Chia sẻ</Text>
                     </TouchableOpacity>
                 </View>
 
