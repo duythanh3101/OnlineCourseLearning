@@ -11,6 +11,7 @@ import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import SettingScreen from '../screens/setting/settingScreen';
 import CourseDetailScreen from '../screens/course/courseDetailScreen';
+import CourseDetailVideoScreen from '../screens/course/courseDetailVideoScreen';
 
 const Stack = createStackNavigator();
 
@@ -81,6 +82,14 @@ const HomeStack = (props) => {
             <Stack.Screen
                 name={ScreenKey.CourseDetailScreen}
                 component={CourseDetailScreen}
+                options={{
+                    title: 'Course Detail'
+                }}
+            />
+
+            <Stack.Screen
+                name={ScreenKey.CourseDetailVideoScreen}
+                component={CourseDetailVideoScreen}
                 options={{
                     title: 'Course Detail'
                 }}

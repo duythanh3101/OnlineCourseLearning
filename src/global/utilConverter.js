@@ -50,3 +50,14 @@ export function hoursToFormatTime(hour) {
     return "" + hours + ":" + minutes + ":" + seconds;
 
 }
+
+export const isYoutubeURL = (url) => {
+    return url.startsWith('https://youtube.com/');
+}
+
+export const getYoutubeVideoId = (url) => {
+    let lastSplashIndex = url.lastIndexOf('/');
+    //console.log('video id: ', url.substring(lastSplashIndex, url.length));
+    return url.substring(lastSplashIndex + 1, url.length);
+}
+

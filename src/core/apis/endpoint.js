@@ -23,5 +23,11 @@ export const payCourseEndpoint = rootEndpoint + "/payment/get-course-info";
 export const getProcessCoursesEndpoint = rootEndpoint + "/user/get-process-courses";
 
 export const getDeatailWithLessonEndpoint = rootEndpoint + "/course/detail-with-lesson";
+export const checkOwnCourse = rootEndpoint + "/user/check-own-course";
+
+// lesson
+
+export const getLessonURL = rootEndpoint + "/lesson/video";
+export const updateLessonStatus = rootEndpoint + "/lesson/update-status";
 
 

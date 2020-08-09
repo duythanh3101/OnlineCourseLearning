@@ -4,6 +4,7 @@ import { ThemeContext } from '../../../provider/theme-provider'
 import { globalStyles } from '../../../global/styles'
 import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
+import { hoursToFormatTime } from '../../../global/utilConverter';
 
 export default function ContentVideoCanPressItem(props) {
     const { themes } = useContext(ThemeContext)
@@ -21,22 +22,23 @@ export default function ContentVideoCanPressItem(props) {
     return (
         <TouchableOpacity style={{ ...styles.container, backgroundColor: themes.background.mainColor }} 
                             onPress={props.onPress}>
-            <View style={{...styles.container, padding: 5}}>
+            <View style={{...styles.contentContainer, padding: 5}}>
                 <Image style={styles.image} source={{ uri: props.image }} />
                 <View style={styles.textContainer}>
-                    <Text style={{ ...globalStyles.titleText, 
+                    <Text style={{ ...globalStyles.normalText, 
                         color: themes.fontColor.mainColor,
                         marginLeft: 0,
+                        fontWeight: 'bold',
                         maxWidth: 250
-                    }}>{props.title}</Text>
+                    }}>{props.numberOrder}. {props.title}</Text>
                     <Text style={{ ...globalStyles.normalText, 
                         color: themes.fontColor.mainColor,
                         marginLeft: 0
-                         }}>{props.duration} giờ</Text>
+                         }}>{hoursToFormatTime(props.duration)}</Text>
                 </View>
             </View>
 
-            <Menu
+            {/* <Menu
                 style={{marginRight: 10}}
                 visible={visible}
                 onDismiss={_closeMenu}
@@ -49,7 +51,7 @@ export default function ContentVideoCanPressItem(props) {
                 <Menu.Item onPress={onHandleBookmarkPress} title="Bookmark" />
                 <Divider />
                 <Menu.Item onPress={() => { }} title="Remove download" />
-            </Menu>
+            </Menu> */}
         </TouchableOpacity>
     )
 }
@@ -60,9 +62,12 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     container: {
+        flexDirection: 'column',
+    },
+    contentContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        //justifyContent: 'space-between'
     },
     image: {
         height: 80,

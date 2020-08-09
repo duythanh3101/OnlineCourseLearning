@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect, useRef, useCallback } from 'react'
 import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList, Linking } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
-import { ImageKey } from '../../../global/constants'
+import { ImageKey, ScreenKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
 import RoundCornerWithImageTag from '../../components/common/round-corner-with-image-tag'
 import StarRatingImage from '../../components/star-rating/star-rating-image'
 import { Entypo, Feather } from '@expo/vector-icons';
-import { Layout, TabView, Tab } from "@ui-kitten/components";
+import { Layout, TabView, Tab, Button } from "@ui-kitten/components";
 import ProfileScreen from '../profile/profileScreen'
 import LoginScreen from '../authentication/login/loginScreen'
 import { ThemeContext } from '../../../provider/theme-provider'
@@ -36,6 +36,7 @@ const CourseDetailScreen = (props) => {
     const [sectionCourses, setSectionCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isFavorited, setIsFavorited] = useState(false);
+    const [isOwnCourse, setIsOwnCourse] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -56,15 +57,28 @@ const CourseDetailScreen = (props) => {
 
         courseHomeService.getLikeCourseStatus(course.id, authReducer.token)
             .then(response => {
-                if (response.data.likeStatus === true){
+                if (response.data.likeStatus === true) {
                     setIsFavorited(true);
-                }else{
+                } else {
                     setIsFavorited(false);
                 }
 
             })
             .catch(error => {
                 console.log('getLikeCourseStatus error');
+            })
+
+        courseHomeService.isOwnCourse(course.id, authReducer.token)
+            .then(response => {
+                if (response.data.payload.isUserOwnCourse === true) {
+                    setIsOwnCourse(true);
+                } else {
+                    setIsOwnCourse(false);
+                }
+
+            })
+            .catch(error => {
+                console.log('is own course error');
             })
         //console.log('lesson: ', lessons);
     }, [])
@@ -92,6 +106,10 @@ const CourseDetailScreen = (props) => {
     };
 
     const onHandleAddToChannelPress = useCallback(async () => {
+        if (isOwnCourse) {
+            Alert.alert('Thông báo', 'Bạn đã đăng ký khóa học này trước đó rồi');
+            return;
+        }
         let url = "https://itedu.me/payment/" + course.id.toString();
         // Checking if the link is supported for links with custom URL scheme.
         const supported = await Linking.canOpenURL(url);
@@ -170,6 +188,12 @@ const CourseDetailScreen = (props) => {
         </View>
     }
 
+    const OnHandleLearnCourse = () => {
+        props.navigation.navigate(ScreenKey.CourseDetailVideoScreen, {
+            course: course
+        })
+    }
+
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
     }
@@ -227,7 +251,16 @@ const CourseDetailScreen = (props) => {
                     }
 
                 </View>
-
+                {
+                    isOwnCourse === true
+                        ?
+                        <RoundCornerTag title='Xem Video khóa học' 
+                                        style={{ marginLeft: 10 }}
+                                        onPress={() => OnHandleLearnCourse()}
+                                        />
+                        :
+                        null
+                }
                 <View style={styles.iconContainer}>
                     {
                         isFavorited === false
@@ -257,12 +290,26 @@ const CourseDetailScreen = (props) => {
                     }
 
 
-                    <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
-                        <View style={styles.icon}>
-                            <Entypo name="add-to-list" size={24} color="white" />
-                        </View>
-                        <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Mua ngay</Text>
-                    </TouchableOpacity>
+                    {
+                        isOwnCourse === true
+                            ?
+                            <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
+                                <View style={styles.icon}>
+                                    <Entypo name="add-to-list" size={24} color="red" />
+                                </View>
+                                <Text style={{ ...globalStyles.titleText, color: 'red', marginLeft: 0 }}>Đã đăng ký</Text>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
+                                <View style={styles.icon}>
+                                    <Entypo name="add-to-list" size={24} color="white" />
+                                </View>
+                                <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Mua ngay</Text>
+                            </TouchableOpacity>
+                    }
+
+
+
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleShare}>
                         <View style={styles.icon}>

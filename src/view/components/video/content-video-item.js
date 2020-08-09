@@ -5,6 +5,7 @@ import { globalStyles } from '../../../global/styles'
 import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import { hoursToFormatTime } from '../../../global/utilConverter';
+import Separator from '../separator/separator';
 
 export default function ContentVideoItem(props) {
     const { themes } = useContext(ThemeContext)
@@ -21,7 +22,8 @@ export default function ContentVideoItem(props) {
 
     return (
         <View style={{ ...styles.container, backgroundColor: themes.background.mainColor }}>
-            <View style={{...styles.container, padding: 5}}>
+            <Separator/>
+            <View style={{...styles.contentContainer, padding: 5}}>
                 <Image style={styles.image} source={{ uri: props.image }} />
                 <View style={styles.textContainer}>
                     <Text style={{ ...globalStyles.normalText, 
@@ -36,7 +38,7 @@ export default function ContentVideoItem(props) {
                 </View>
             </View>
 
-            <Menu
+            {/* <Menu
                 style={{marginRight: 10}}
                 visible={visible}
                 onDismiss={_closeMenu}
@@ -49,7 +51,7 @@ export default function ContentVideoItem(props) {
                 <Menu.Item onPress={onHandleBookmarkPress} title="Bookmark" />
                 <Divider />
                 <Menu.Item onPress={() => { }} title="Remove download" />
-            </Menu>
+            </Menu> */}
         </View>
     )
 }
@@ -60,9 +62,12 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     container: {
+        flexDirection: 'column',
+    },
+    contentContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        //justifyContent: 'space-between'
     },
     image: {
         height: 80,
