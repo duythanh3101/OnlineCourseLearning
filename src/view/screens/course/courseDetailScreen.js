@@ -99,13 +99,12 @@ const CourseDetailScreen = (props) => {
         //addFavoriteCourse(course.id)
         courseHomeService.likeCourse(course.id, authReducer.token)
             .then(response => {
-                console.log('like: ', response.data);
-
+                //console.log('like: ', response.data);
+                alert('Đã thêm khóa học yêu thích thành công', 'Thông báo');
             })
             .catch(error => {
-                console.log('like courses error');
+                //console.log('like courses error');
             })
-
     }
 
     const renderVideoContent = (item, index) => {
@@ -115,6 +114,7 @@ const CourseDetailScreen = (props) => {
             title={item.name}
             duration={item.hours}
             key={index}
+            numberOrder={item.numberOrder}
         />
 
         //  return <View></View>
@@ -153,27 +153,24 @@ const CourseDetailScreen = (props) => {
     //console.log('detail info', sectionCourses);
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
-            {/* <View style={styles.imageContainer}> */}
-            {/* <Image source={{ uri: course.imageUrl }} style={styles.topImage} /> */}
-            {/* </View> */}
             {
                 detailInfo.promoVidUrl === null
-                ?
-                <Image source={{ uri: detailInfo.imageUrl }} style={styles.topImage} /> 
-                :
-                <Video
-                source={{ uri: detailInfo.promoVidUrl }}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                //shouldPlay
-                isLooping
-                useNativeControls
-                style={{ height: '40%' }}
-            />
+                    ?
+                    <Image source={{ uri: detailInfo.imageUrl }} style={styles.topImage} />
+                    :
+                    <Video
+                        source={{ uri: detailInfo.promoVidUrl }}
+                        rate={1.0}
+                        volume={1.0}
+                        isMuted={false}
+                        resizeMode="cover"
+                        //shouldPlay
+                        isLooping
+                        useNativeControls
+                        style={{ height: '40%' }}
+                    />
             }
-            
+
 
             <ScrollView styles={styles.mainContainer}>
                 <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{course.title}</Text>
@@ -211,22 +208,17 @@ const CourseDetailScreen = (props) => {
                 <View style={styles.iconContainer}>
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleFavoritePress}>
                         <View style={styles.icon}>
-                            <Feather name="download" size={24} color="white" />
+                            <Entypo name="heart-outlined" size={24} color="white" />
                         </View>
                         <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Favorite</Text>
-                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
 
                     </TouchableOpacity>
-
-
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleAddToChannelPress}>
                         <View style={styles.icon}>
                             <Entypo name="add-to-list" size={24} color="white" />
                         </View>
                         <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Buy</Text>
-                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
-
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconItem} onPress={onHandleShare}>
@@ -234,22 +226,9 @@ const CourseDetailScreen = (props) => {
                             <Entypo name="share" size={24} color="white" />
                         </View>
                         <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor, marginLeft: 0 }}>Share</Text>
-                        {/* <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor }}>Bookmark</Text> */}
                     </TouchableOpacity>
                 </View>
-                {/* <View style={{ flexDirection: 'column' }}>
-                    <RoundCornerButton
-                        backgroundStyle={{
-                            marginTop: 10,
-                            marginBottom: 10
-                        }}
-                        titleStyle={{
-                            fontSize: 18
-                        }}
-                        title='View related paths & courses'
-                    />
 
-                </View> */}
                 <Separator />
                 <View style={{ flexDirection: 'column' }}>
                     <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Bạn sẽ học được?</Text>
@@ -265,30 +244,30 @@ const CourseDetailScreen = (props) => {
                 </View>
                 <Separator />
                 <View style={styles.tabContainer}>
-                {
-                    detailInfo.videoNumber > 1
-                        ?
-                        <Text style={{
-                            ...globalStyles.titleText,
-                            color: themes.fontColor.mainColor,
-                        }}>{detailInfo.videoNumber} videos ({detailInfo.totalHours} giờ)</Text>
-                        :
-                        <Text style={{
-                            ...globalStyles.titleText,
-                            color: themes.fontColor.mainColor,
-                        }}>{detailInfo.videoNumber} video ({detailInfo.totalHours} giờ)</Text>
+                    {
+                        detailInfo.videoNumber > 1
+                            ?
+                            <Text style={{
+                                ...globalStyles.titleText,
+                                color: themes.fontColor.mainColor,
+                            }}>{detailInfo.videoNumber} videos ({detailInfo.totalHours} giờ)</Text>
+                            :
+                            <Text style={{
+                                ...globalStyles.titleText,
+                                color: themes.fontColor.mainColor,
+                            }}>{detailInfo.videoNumber} video ({detailInfo.totalHours} giờ)</Text>
 
-                }
+                    }
 
-                {
-                    sectionCourses.map((item, index) => renderSectionVideo(item, index))
-                }
+                    {
+                        sectionCourses.map((item, index) => renderSectionVideo(item, index))
+                    }
 
-            </View>
+                </View>
 
 
             </ScrollView>
-          
+
         </View >
 
     )

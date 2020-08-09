@@ -4,6 +4,7 @@ import { ThemeContext } from '../../../provider/theme-provider'
 import { globalStyles } from '../../../global/styles'
 import { Menu, Divider } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
+import { hoursToFormatTime } from '../../../global/utilConverter';
 
 export default function ContentVideoItem(props) {
     const { themes } = useContext(ThemeContext)
@@ -23,15 +24,15 @@ export default function ContentVideoItem(props) {
             <View style={{...styles.container, padding: 5}}>
                 <Image style={styles.image} source={{ uri: props.image }} />
                 <View style={styles.textContainer}>
-                    <Text style={{ ...globalStyles.titleText, 
+                    <Text style={{ ...globalStyles.normalText, 
                         color: themes.fontColor.mainColor,
-                        marginLeft: 0,
+                        fontWeight: 'bold',
                         maxWidth: 250
-                    }}>{props.title}</Text>
+                    }}>{props.numberOrder}. {props.title}</Text>
                     <Text style={{ ...globalStyles.normalText, 
                         color: themes.fontColor.mainColor,
                         marginLeft: 0
-                         }}>{props.duration} giờ</Text>
+                         }}> {hoursToFormatTime(props.duration)}</Text>
                 </View>
             </View>
 
