@@ -80,8 +80,13 @@ export default class BaseAPI {
             });
     }
 
-    async put(entity) {
-        return await Axios.put(`${this.endpoint}/${entity.id}`, entity);
+    async put(entity, authorizationToken) {
+        return await Axios.put(`${this.endpoint}`, entity,
+        {
+            headers: {
+                'Authorization': `Bearer ${authorizationToken}`
+            }
+        });
     }
 
     /**
