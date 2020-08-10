@@ -66,6 +66,7 @@ const RegisterScreen = (props) => {
                     //console.log('register success', res.data)
                     setIsError(false);
                     setIsShow(true);
+                    //Alert.alert('Đăng ký thành công. Vui lòng xác nhận qua Email')
                 })
                 .catch(err => {
                     //console.log('register error', err)
@@ -79,6 +80,10 @@ const RegisterScreen = (props) => {
 
         }
 
+    }
+
+    const onHandlePressActiveAccount = () => {
+        props.navigation.navigate(ScreenKey.ActiveAccountScreen);
     }
 
     const showError = () => {
@@ -169,6 +174,9 @@ const RegisterScreen = (props) => {
                     />
                     <TouchableOpacity style={styles.forgot} onPress={loginClick}>
                         <Text style={styles.forgotText}>LOGIN WITH EXISTING ACCOUNT</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.forgot} onPress={onHandlePressActiveAccount}>
+                        <Text style={styles.forgotText}>HAVE NOT RECEIVED AN ACTIVATION EMAIL?</Text>
                     </TouchableOpacity>
                 </View>
 

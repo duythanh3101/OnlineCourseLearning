@@ -9,24 +9,23 @@ import { checkEmail } from '../../../../global/utilConverter';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-const ForgotPasswordScreen = (props) => {
+const ActiveAccountScreen = (props) => {
 
     const { themes } = useContext(ThemeContext);
     const [email, setEmail] = useState('')
 
     const onPressSendEmail = () => {
-        //Alert.alert('Đang cập nhập');
-        console.log('email: ', email)
+        console.log('email: ', email.toLowerCase())
         // if (checkEmail(email)) {
-            userService.sendEmailForgotPassword(email.toLowerCase())
-                .then(response => {
-                    console.log('email: ', response.data.message);
+        userService.sendActiveEmail(email)
+            .then(response => {
+                console.log('email: ', response.data.message);
 
-                    Alert.alert('Vui lòng kiểm tra email để đổi lại mật khẩu');
-                })
-                .catch(error => {
-                    console.log('email error');
-                })
+                Alert.alert('Kiểm tra email để kích hoạt tài khoản');
+            })
+            .catch(error => {
+                console.log('email error', error);
+            })
         // }
         // else {
         //     Alert.alert('Email không hợp lệ');
@@ -40,10 +39,10 @@ const ForgotPasswordScreen = (props) => {
     return (
         <View style={[globalStyles.container, { justifyContent: 'center', backgroundColor: themes.background.mainColor }]}>
             <Text style={{ ...globalStyles.headerText, color: themes.fontColor.mainColor, marginLeft: 10 }}>
-                FORGOT PASSWORD
+                ACTIVE ACCOUNT
             </Text>
             <Text style={[globalStyles.titleText, { marginTop: 10, marginLeft: 20, color: themes.fontColor.mainColor }]}>
-                Enter your email address and we'll send you a link to reset your password
+                Enter your email address and we'll send you a link to active
                 </Text>
             <Input
                 label="Email"
@@ -55,7 +54,7 @@ const ForgotPasswordScreen = (props) => {
                 labelStyle={{ fontSize: 16, marginTop: 5 }}
             />
             <RoundCornerButton
-                title='SEND EMAIL'
+                title='ACTIVE ACCOUNT'
                 backgroundStyle={{ backgroundColor: colors.blue, marginTop: 20 }}
                 onPress={onPressSendEmail}
             />
@@ -69,7 +68,7 @@ const ForgotPasswordScreen = (props) => {
     )
 }
 
-export default ForgotPasswordScreen
+export default ActiveAccountScreen
 
 const styles = StyleSheet.create({
     roundCornerButtonBlue: {

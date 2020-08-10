@@ -27,6 +27,7 @@ export const ScreenKey = {
     SearchCoursesScreen: 'searchCoursesScreen',
     SearchPathsScreen: 'searchPathsScreen',
     SearchAuthorsScreen: 'searchAuthorsScreen',
+    ActiveAccountScreen: 'activeAccountScreen',
 
     MainTab: 'mainTab',
 

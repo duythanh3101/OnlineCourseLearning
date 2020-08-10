@@ -34,4 +34,5 @@ export const getUserInfoEndpoint = rootEndpoint + "/user/me";
 export const updateProfileEndpoint = rootEndpoint + "/user/update-profile";
 export const likeCourseEndpoint = rootEndpoint + "/user/like-course";
 export const sendEmailForgotPassword = rootEndpoint + "/user/forget-pass/send-email";
+export const sendActiveEmail = rootEndpoint + "/user/send-activate-email";
 

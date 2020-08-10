@@ -5,6 +5,7 @@ import { ScreenKey } from '../../global/constants';
 import LoginScreen from '../screens/authentication/login/loginScreen';
 import RegisterScreen from '../screens/authentication/register/registerScreen';
 import ForgotPasswordScreen from '../screens/authentication/forgot-password/forgotPasswordScreen';
+import ActiveAccountScreen from '../screens/authentication/login/activeAccountScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -19,6 +20,11 @@ const AuthenticationStack = () => {
             <AuthStack.Screen
                 name={ScreenKey.RegisterScreen}
                 component={RegisterScreen}
+                options={{ headerShown: false }}
+            />
+              <AuthStack.Screen
+                name={ScreenKey.ActiveAccountScreen}
+                component={ActiveAccountScreen}
                 options={{ headerShown: false }}
             />
             <AuthStack.Screen
