@@ -18,12 +18,14 @@ const ForgotPasswordScreen = () => {
         //Alert.alert('Đang cập nhập');
         console.log('email: ', email)
         // if (checkEmail(email)) {
-            userService.sendEmailForgotPassword(email)
+            userService.sendEmailForgotPassword(email.toLowerCase())
                 .then(response => {
+                    console.log('email: ', response.data.message);
+
                     Alert.alert('Vui lòng kiểm tra email để đổi lại mật khẩu');
                 })
                 .catch(error => {
-                    console.log('is own course error');
+                    console.log('email error');
                 })
         // }
         // else {

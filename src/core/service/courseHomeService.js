@@ -79,7 +79,7 @@ class CourseHomeService {
     }
 
     async getCourseDetailWithLesson(id, token) {
-        console.log('sad' + `${getDeatailWithLessonEndpoint}/${id}`)
+        //console.log('sad' + `${getDeatailWithLessonEndpoint}/${id}`)
         //console.log('sad')
 
         //return await this.resClientDetailWithLesson.get(id, token);

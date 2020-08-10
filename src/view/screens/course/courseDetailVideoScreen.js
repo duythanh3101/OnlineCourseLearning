@@ -35,14 +35,14 @@ const CourseDetailVideoScreen = (props) => {
     const [sectionCourses, setSectionCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const playerRef = useRef(null);
-    const [playing, setPlaying] = useState(true);
+    const [playing, setPlaying] = useState(false);
     const [videoTitle, setVideoTitle] = useState('');
 
     useEffect(() => {
         setIsLoading(true);
-        courseHomeService.getCourseDetail(course.id)
+        courseHomeService.getCourseDetailWithLesson(course.id, authReducer.token)
             .then(response => {
-                //console.log('aaaa: ', response.data.payload.subtitle);
+                //console.log('aaaa: ', response.data.payload.section);
                 setDetailInfo(response.data.payload);
                 setSectionCourses(response.data.payload.section);
 
@@ -55,28 +55,58 @@ const CourseDetailVideoScreen = (props) => {
 
             })
 
-            setVideoTitle(course.title)
+        setVideoTitle(course.title)
     }, [])
 
+    const onPressAttachment = (item) => {
+        console.log('item: ', item);
+        let resource = item.resource;
+        if (resource && resource.length > 0){
+            courseHomeService.getDocumentResource(course.id, item.id, resource[0].id,authReducer.token)
+            .then(response => {
+                handlePress(response.data.payload);
+            })
+            .catch(error => {
+                console.log('onPressAttachment error');
+            })
+        }
+       
+    }
+
+    const handlePress = useCallback(async (url) => {
+        //console.log('url: ', url)
+        // Checking if the link is supported for links with custom URL scheme.
+        const supported = await Linking.canOpenURL(url);
+    
+        if (supported) {
+          await Linking.openURL(url);
+        } else {
+          
+        }
+      }, [url]);
+
     const renderVideoContent = (item, index) => {
+        //console.log('item: ', item);
+        
         return <ContentVideoCanPressItem
             image={course.imageUrl}
             title={item.name}
             duration={item.hours}
             key={index}
             numberOrder={item.numberOrder}
+            isHasAttachment={item.resource.length > 0}
             onPress={() => {
                 courseHomeService.getLessonURL(course.id, item.id, authReducer.token)
-                    .then(response => {
-                        //console.log('aaaa: ', response.data.payload);
-                        setUrl(response.data.payload.videoUrl);
-                        setVideoTitle('Lesson ' + item.numberOrder + '. ' + item.name)
-                    })
-                    .catch(error => {
-                        console.log('renderVideoContent error');
-                    })
-
+                .then(response => {
+                    //console.log('aaaa: ', response.data.payload);
+                    setUrl(response.data.payload.videoUrl);
+                    setVideoTitle('Lesson ' + item.numberOrder + '. ' + item.name)
+                })
+                .catch(error => {
+                    console.log('onPressLessonVideo error');
+                })
             }}
+            onPreessAttachment={() => {onPressAttachment(item)}}
         />
 
     }
