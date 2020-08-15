@@ -379,13 +379,13 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         width: screenWidth - 80,
-        height: '30%',
+        height: 200,
         //justifyContent: 'center',
         backgroundColor: '#fff'
     },
     modalPasswordContent: {
         width: screenWidth - 80,
-        height: '40%',
+        height: 250,
         //justifyContent: 'center',
         backgroundColor: '#fff'
     }
