@@ -18,15 +18,18 @@ const CourseItemInfo = (props) => {
         if (props.authorName) {
             setAuthorName(props.authorName)
         } else {
-            InstructorService.getDetail(props.instructorId)
-                .then(response => {
-                    setAuthorName(response.data.payload.name)
-                    console.log('instructor', response.data.payload.name)
+            //console.log('instructor id: ', props.instructorId)
+            if (props.instructorId) {
+                InstructorService.getDetail(props.instructorId)
+                    .then(response => {
+                        //console.log('instructor id: ', response.data.payload.name)
+                        setAuthorName(response.data.payload.name)
+                    })
+                    .catch(error => {
+                        console.log('error instructor')
+                    })
+            }
 
-                })
-                .catch(error => {
-                    console.log('instructor error')
-                })
         }
 
     }, [])

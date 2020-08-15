@@ -15,33 +15,36 @@ export default function Topic(props) {
 
     useEffect(() => {
         setIsLoading(true);
-        if (props.id && props.id !== null){
+        if (props.id && props.id !== null) {
             courseHomeService.getCoursesByCategoryId(props.id, 10, 1)
-            .then(response => {
-                if (response.data.payload.count > 0) {
-                    //console.log('courses 2: ', courseaaa);
-                    setCourses(response.data.payload.rows)
-                    setIsLoading(false);
+                .then(response => {
+                    if (response.data.payload.count > 0) {
+                        //console.log('courses 2: ', courseaaa);
+                        setCourses(response.data.payload.rows)
+                        setIsLoading(false);
 
-                }
-            })
-            .catch(error => {
-                console.log('courses error: ', error);
+                    }
+                })
+                .catch(error => {
+                    console.log('courses error: ', error);
 
-            })
-        }else if(props.courseData !== null){
+                })
+        } else if (props.courseData !== null) {
             setCourses(props.courseData)
             setIsLoading(false);
         }
-       
+
     }, [])
 
     const renderCourseItem = (item, index) => {
-        //console.log('sadasd: ', item);  
+        //console.log('instructor id: ', props.id)
+        let authorName = item.name
+
         return <CourseItemInfo
             id={item.id}
             courseName={item.title}
-            authorName={item.name}
+            authorName={authorName}
+            instructorId={item.instructorId}
             date={item.updatedAt.substring(0, 10)}
             duration={item.totalHours}
             boughtCount={item.soldNumber}
@@ -53,12 +56,12 @@ export default function Topic(props) {
             onPress={() => {
                 props.onPressItem(item);
             }}
-            />
+        />
     }
 
     if (isLoading === true || courses.length === 0)
         return <View></View>
-           
+
     return (
         <View style={styles.course}>
             <View style={globalStyles.lineText}>
@@ -66,7 +69,7 @@ export default function Topic(props) {
                     color: themes.fontColor.mainColor
                 }]}>{props.title}</Text>
                 <TouchableOpacity onPress={props.onPress}>
-                    <Text style={[globalStyles.normalCenterText,{
+                    <Text style={[globalStyles.normalCenterText, {
                         color: themes.fontColor.mainColor,
                         marginRight: 10
                     }]}>See all {'>'}</Text>
@@ -90,5 +93,5 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10
     },
-    
+
 })

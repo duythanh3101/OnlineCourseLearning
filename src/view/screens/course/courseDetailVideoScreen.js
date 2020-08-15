@@ -37,8 +37,22 @@ const CourseDetailVideoScreen = (props) => {
     const playerRef = useRef(null);
     const [playing, setPlaying] = useState(false);
     const [videoTitle, setVideoTitle] = useState('');
+    const [authorName, setAuthorName] = useState('');
 
     useEffect(() => {
+        if (course.name){
+            setAuthorName(course.name)
+            //console.log('course info 1: ', course.name)
+        }
+        else if (course.instructorName){
+            setAuthorName(course.instructorName)
+            //console.log('course info 2: ', course.instructorName)
+        }
+        else {
+            setAuthorName(course['instructor.user.name'])
+            //console.log('course info 3: ', course['instructor.user.name'])
+        }
+
         setIsLoading(true);
         courseHomeService.getCourseDetailWithLesson(course.id, authReducer.token)
             .then(response => {
@@ -178,7 +192,7 @@ const CourseDetailVideoScreen = (props) => {
                 }}>
                     <RoundCornerWithImageTag
                         image={course.imageUrl}
-                        title={course.name ? course.name : course['instructor.user.name']}
+                        title={authorName}
                     />
                 </View>
 

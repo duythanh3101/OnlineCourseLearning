@@ -37,8 +37,22 @@ const CourseDetailScreen = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isFavorited, setIsFavorited] = useState(false);
     const [isOwnCourse, setIsOwnCourse] = useState(false);
-
+    const [authorName, setAuthorName] = useState('');
+    //console.log('course info: ', props.route.params.course)
     useEffect(() => {
+        if (course.name){
+            setAuthorName(course.name)
+            console.log('course info 1: ', course.name)
+        }
+        else if (course.instructorName){
+            setAuthorName(course.instructorName)
+            console.log('course info 2: ', course.instructorName)
+        }
+        else {
+            setAuthorName(course['instructor.user.name'])
+            console.log('course info 3: ', course['instructor.user.name'])
+        }
+
         setIsLoading(true);
         courseHomeService.getCourseDetail(course.id)
             .then(response => {
@@ -46,7 +60,7 @@ const CourseDetailScreen = (props) => {
                 setDetailInfo(response.data.payload);
                 setSectionCourses(response.data.payload.section);
 
-                setIsLoading(false);
+                //setIsLoading(false);
 
             })
             .catch(error => {
@@ -66,6 +80,7 @@ const CourseDetailScreen = (props) => {
             })
             .catch(error => {
                 console.log('getLikeCourseStatus error');
+                setIsLoading(false);
             })
 
         courseHomeService.isOwnCourse(course.id, authReducer.token)
@@ -75,11 +90,13 @@ const CourseDetailScreen = (props) => {
                 } else {
                     setIsOwnCourse(false);
                 }
-
+                setIsLoading(false);
             })
             .catch(error => {
                 console.log('is own course error');
+                setIsLoading(false);
             })
+            setIsLoading(false);
         //console.log('lesson: ', lessons);
     }, [])
 
@@ -227,7 +244,7 @@ const CourseDetailScreen = (props) => {
                 }}>
                     <RoundCornerWithImageTag
                         image={course.imageUrl}
-                        title={course.name ? course.name : course['instructor.user.name']}
+                        title={authorName}
                     />
                 </View>
 

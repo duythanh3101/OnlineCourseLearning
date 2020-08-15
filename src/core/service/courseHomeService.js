@@ -108,7 +108,7 @@ class CourseHomeService {
     }
 
     async getLikeCourseStatus(id, token) {
-        console.log('ddd: ', id, getlikeCourseStatusEndpoint)
+        //console.log('ddd: ', id, getlikeCourseStatusEndpoint)
 
         return await Axios.get(`${getlikeCourseStatusEndpoint}/${id}`, {
             headers: {

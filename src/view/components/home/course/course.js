@@ -53,19 +53,19 @@ const Course = (props) => {
                     setProcessCourses([])
                     //console.log('getProcessCourses 2: ', response.data.payload.length)
                     response.data.payload.map(a => {
-                        CourseHomeService.getCourseDetail(a.id)
+                        CourseHomeService.getCourseDetailWithLesson(a.id, authReducer.token)
                             .then(res => {
                                 setProcessCourses(prev => [...prev, res.data.payload]);
-                                console.log('getProcessCourses 2: ',  processCourses.length)
+                                //console.log('getProcessCourses 2: ',  processCourses.length)
                             })
                             .catch(er => {
                                 console.log('getProcessCourses error');
                             })
                     })
-                    
+                    setIsLoading(false);
+
                 }
                 //console.log('getProcessCourses: ', processCourses)
-                setIsLoading(false);
             })
             .catch(error => {
                 console.log('getProcessCourses error: ', error)
@@ -111,7 +111,7 @@ const Course = (props) => {
     return (
         <ScrollView style={{ ...styles.courseContainer, backgroundColor: themes.background.mainColor }}>
             {
-                isLoading == false &&  processCourses.length > 0
+                isLoading == false && processCourses.length > 0
                     ?
                     <Topic
                         title='Khóa học của tôi'
@@ -138,12 +138,12 @@ const Course = (props) => {
                     null
             }
             {
-                isLoading === false
-                    ?
+                // isLoading === false
+                //     ?
 
-                    topics.map((item) => renderTopicItem(item))
-                    :
-                    null
+                //     topics.map((item) => renderTopicItem(item))
+                //     :
+                //     null
             }
         </ScrollView>
 
