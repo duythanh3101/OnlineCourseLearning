@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect, useRef, useCallback } from 'react'
-import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList, Linking } from 'react-native'
+import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, Dimensions, Linking, ImageBackground } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey, ScreenKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
 import RoundCornerWithImageTag from '../../components/common/round-corner-with-image-tag'
 import StarRatingImage from '../../components/star-rating/star-rating-image'
 import { Entypo, Feather } from '@expo/vector-icons';
-import { Layout, TabView, Tab, Button } from "@ui-kitten/components";
+import { Layout, TabView, Tab, Button, Input } from "@ui-kitten/components";
 import ProfileScreen from '../profile/profileScreen'
 import LoginScreen from '../authentication/login/loginScreen'
 import { ThemeContext } from '../../../provider/theme-provider'
@@ -23,7 +23,10 @@ import { formatMoney, convertNumberCurrenry } from '../../../global/utilConverte
 import Separator from '../../components/separator/separator'
 import LoadingIndicator from '../../components/loading/loading-indicator'
 import instructorService from '../../../core/service/instructorService'
-import { ProgressBar } from 'react-native-paper'
+import { ProgressBar, TextInput } from 'react-native-paper'
+import Modal from 'react-native-modal';
+
+var screenWidth = Dimensions.get('window').width;
 
 const CourseDetailScreen = (props) => {
     const { themes } = useContext(ThemeContext);
@@ -40,6 +43,12 @@ const CourseDetailScreen = (props) => {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isOwnCourse, setIsOwnCourse] = useState(false);
     const [authorName, setAuthorName] = useState('');
+    const [comment, setComment] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [starContent, setStartContent] = useState(0);
+    const [starFormality, setStarFormality] = useState(0);
+    const [starPresentation, setStarPresentation] = useState(0);
+
     //console.log('course info: ', props.route.params.course)
     useEffect(() => {
         if (course.name) {
@@ -63,12 +72,8 @@ const CourseDetailScreen = (props) => {
         setIsLoading(true);
         courseHomeService.getCourseDetail(course.id)
             .then(response => {
-                //console.log('aaaa: ', response.data.payload.subtitle);
                 setDetailInfo(response.data.payload);
                 setSectionCourses(response.data.payload.section);
-
-                //setIsLoading(false);
-
             })
             .catch(error => {
                 console.log('get courses error');
@@ -103,12 +108,22 @@ const CourseDetailScreen = (props) => {
                 console.log('is own course error');
                 setIsLoading(false);
             })
+        courseHomeService.getRatingCourse(course.id, authReducer.token)
+            .then(response => {
+                if (response.data.message === "OK") {
+                    setStartContent(response.data.payload.contentPoint);
+                    setStarFormality(response.data.payload.formalityPoint);
+                    setStarPresentation(response.data.payload.presentationPoint);
+                    setComment(response.data.payload.content);
+                } 
+            })
+            .catch(error => {
+                console.log('getRatingCourse error');
+            })
         setIsLoading(false);
-        //console.log('lesson: ', lessons);
     }, [])
 
 
-    //console.log('detail props: ', course)
     const onHandleShare = async () => {
         let msg = 'https://itedu.me/course-detail/' + course.id.toString();
         try {
@@ -181,8 +196,6 @@ const CourseDetailScreen = (props) => {
             key={index}
             numberOrder={item.numberOrder}
         />
-
-        //  return <View></View>
     }
 
     const renderSectionVideo = (item, index) => {
@@ -193,9 +206,6 @@ const CourseDetailScreen = (props) => {
                 item.lesson.map((item, i) => renderVideoContent(item, i))
             }
         </View>
-
-
-        //  return <View></View>
     }
 
     const renderLearningWhat = (item, index) => {
@@ -228,6 +238,22 @@ const CourseDetailScreen = (props) => {
         />
     }
 
+    const onPressRatingButton = () => {
+        setModalOpen(true);
+    }
+
+    const onPressRating = () => {
+        courseHomeService.ratingCourse(course.id, starContent, starFormality, starPresentation, comment, authReducer.token)
+            .then(response => {
+                setModalOpen(false);
+                Alert.alert('Thông báo', ' Đánh giá thành công')
+            })
+            .catch(error => {
+                console.log('is own course error');
+                setModalOpen(false);
+            })
+    }
+
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
     }
@@ -251,6 +277,97 @@ const CourseDetailScreen = (props) => {
                         style={{ height: '40%' }}
                     />
             }
+            <Modal isVisible={modalOpen} animationType='slide'
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <View style={styles.modalContent}>
+                    <Text
+                        style={{
+                            marginLeft: 10,
+                            fontSize: 20,
+                            marginBottom: 10
+                        }}
+                    >Đánh giá</Text>
+                    <Separator />
+                    <View style={{ flexDirection: 'column', padding: 20 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>Nội dung</Text>
+                            <StarRatingImage size={24} starCount={starContent}
+                                onPress={setStartContent}
+                            />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>Hình thức</Text>
+                            <StarRatingImage size={24} starCount={starFormality}
+                                onPress={setStarFormality}
+                            />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>Trình bày</Text>
+                            <StarRatingImage size={24} starCount={starPresentation}
+                                onPress={setStarPresentation}
+                            />
+                        </View>
+
+                    </View>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ justifyContent: 'flex-end', flex: 1, alignItems: 'center' }}>
+                            <Image style={styles.imageProfile} source={{ uri: authReducer.userInfo.avatar }} />
+                        </View>
+                        <View style={{ flex: 4 }}>
+                            <Input
+                                label="Comment"
+                                maxLength={1000}
+                                onChangeText={setComment}
+                                value={comment}
+                                placeholder='Comment'
+                                //width={200}
+                                style={{ width: '90%' }}
+                            />
+
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: 'red',
+                                borderRadius: 5,
+                                width: 100,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginLeft: 10
+                            }}
+
+                            onPress={onPressRating}
+                        >
+                            <Text>Đánh giá</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: 'grey',
+                                borderRadius: 5,
+                                width: 100,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginLeft: 10
+                            }}
+                            onPress={() => setModalOpen(false)}
+                        >
+                            <Text>Đóng</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+            </Modal>
 
 
             <ScrollView styles={styles.mainContainer}>
@@ -377,10 +494,19 @@ const CourseDetailScreen = (props) => {
 
                 </View>
                 <View style={{ flexDirection: 'column' }}>
-                   {/* <CommentContent detailInfo={detailInfo}/> */}
-                   {
-                       detailInfo.ratings.ratingList.map((item, index) => renderCommentItem(item, index))
-                   }
+                    {
+                        isOwnCourse === true
+                            ?
+                            <RoundCornerButton title='Đánh giá' onPress={onPressRatingButton}
+                                backgroundStyle={{ backgroundColor: 'red' }} />
+                            :
+                            null
+
+                    }
+
+                    {
+                        detailInfo.ratings.ratingList.map((item, index) => renderCommentItem(item, index))
+                    }
 
                 </View>
                 <Separator />
@@ -431,8 +557,15 @@ const CommentContent = (props) => {
     return (
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', marginLeft: 0 }}>
-                <Image style={styles.imageProfile} source={{ uri: props.avatar }} />
 
+                {
+                    props.avatar.startsWith('file')
+                        ?
+                        //<ImageBackground style={styles.imageProfile} backgroundColor='grey' />
+                        <View style={{ ...styles.imageProfile, backgroundColor: '#D3D3D3' }} />
+                        :
+                        <Image style={styles.imageProfile} source={{ uri: props.avatar }} />
+                }
             </View>
             <View style={{ flex: 4, flexDirection: 'column' }}>
                 <View style={{ width: 30 }}>
@@ -442,8 +575,6 @@ const CommentContent = (props) => {
 
                 <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 12, marginLeft: 0 }}>{props.content}</Text>
                 <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 12, marginLeft: 0 }}>{props.name}</Text>
-
-
             </View>
 
         </View>
@@ -510,5 +641,11 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50,
+    },
+    modalContent: {
+        width: screenWidth - 80,
+        height: 300,
+        //justifyContent: 'center',
+        backgroundColor: '#fff'
     },
 })

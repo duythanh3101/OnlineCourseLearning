@@ -39,3 +39,5 @@ export const changePasswordEndpoint = rootEndpoint + "/user/change-password";
 // course
 export const getRecommendCoursesEndpoint = rootEndpoint + "​/user/recommend-course";
 export const getProcessCoursesEndpoint = rootEndpoint + "​/user/get-process-courses";
+export const ratingCourseEndpoint = rootEndpoint + "​/course/rating-course";
+export const getRatingCourseEndpoint = rootEndpoint + "/course/get-rating";

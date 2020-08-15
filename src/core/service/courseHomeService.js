@@ -10,7 +10,9 @@ import {
     checkOwnCourse,
     getLessonURL,
     getDocumentResource,
-    getRecommendCoursesEndpoint
+    getRecommendCoursesEndpoint,
+    ratingCourseEndpoint,
+    getRatingCourseEndpoint
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -127,12 +129,6 @@ class CourseHomeService {
     }
 
     async getFreeCourse(id, token) {
-        //console.log(id, getFreeCourseEndpoint, token)
-
-        // return await this.resClientFreeCourse.post({
-        //     courseId: id
-        // });
-
         return await Axios.post('https://api.itedu.me/payment/get-free-courses',
             {
                 courseId: '9f3d46fa-61d2-4d4c-a392-a8e79ca7f335'
@@ -145,6 +141,33 @@ class CourseHomeService {
                 }
             }
         );
+    }
+
+    async ratingCourse(courseId, contentPoint, formalityPoint, presentationPoint, comment, token) {
+        return await Axios.post(`${ratingCourseEndpoint}`,
+            {
+                courseId: courseId,
+                formalityPoint: formalityPoint,
+                contentPoint: contentPoint,
+                presentationPoint: presentationPoint,
+                content: comment
+            }
+            ,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-type': 'application/json'
+                }
+            }
+        );
+    }
+
+    async getRatingCourse(courseId, token) {
+        return await Axios.get(`${getRatingCourseEndpoint}/${courseId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     }
 
     async getFavoriteCourses(token) {
