@@ -15,7 +15,7 @@ export default function StarRatingImage(props) {
           disabled={true}
           maxStars={5}
           rating={props.starCount}
-          fullStarColor={'yellow'}
+          fullStarColor={'gold'}
           selectedStar={(rating) => onStarRatingPress(rating)}
           starSize={16}
         />

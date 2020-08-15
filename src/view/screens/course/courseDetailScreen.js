@@ -218,6 +218,16 @@ const CourseDetailScreen = (props) => {
         })
     }
 
+    const renderCommentItem = (item, index) => {
+        return <CommentContent
+            key={index}
+            avatar={item.user.avatar}
+            content={item.content}
+            averagePoint={item.averagePoint}
+            name={item.user.name}
+        />
+    }
+
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
     }
@@ -358,13 +368,20 @@ const CourseDetailScreen = (props) => {
                 </View>
                 <Separator />
                 <View style={{ flexDirection: 'column' }}>
-                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Đánh giá</Text>
-                    <ProgressStar detailInfo={detailInfo} number={1}/>
-                    <ProgressStar detailInfo={detailInfo} number={2}/>
-                    <ProgressStar detailInfo={detailInfo} number={3}/>
-                    <ProgressStar detailInfo={detailInfo} number={4}/>
-                    <ProgressStar detailInfo={detailInfo} number={5}/>
-                   
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Đánh giá của học viên</Text>
+                    <ProgressStar detailInfo={detailInfo} number={1} />
+                    <ProgressStar detailInfo={detailInfo} number={2} />
+                    <ProgressStar detailInfo={detailInfo} number={3} />
+                    <ProgressStar detailInfo={detailInfo} number={4} />
+                    <ProgressStar detailInfo={detailInfo} number={5} />
+
+                </View>
+                <View style={{ flexDirection: 'column' }}>
+                   {/* <CommentContent detailInfo={detailInfo}/> */}
+                   {
+                       detailInfo.ratings.ratingList.map((item, index) => renderCommentItem(item, index))
+                   }
+
                 </View>
                 <Separator />
                 <View style={styles.tabContainer}>
@@ -404,9 +421,33 @@ const ProgressStar = (props) => {
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ ...globalStyles.normalText, color: 'gold', fontWeight: 'bold', fontSize: 18 }}>{props.number}</Text>
             <Entypo name="star" size={18} color="gold" />
-            <ProgressBar progress={props.detailInfo.ratings.stars[props.number - 1] / 100} color='gray' width={250} />
+            <ProgressBar style={{ borderRadius: 5, height: 10 }} progress={props.detailInfo.ratings.stars[props.number - 1] / 100} color='gray' width={250} />
             <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>{props.detailInfo.ratings.stars[props.number - 1]}%</Text>
         </View>
+    )
+}
+
+const CommentContent = (props) => {
+    return (
+        <View style={{ flexDirection: 'row', marginTop: 5 }}>
+            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', marginLeft: 0 }}>
+                <Image style={styles.imageProfile} source={{ uri: props.avatar }} />
+
+            </View>
+            <View style={{ flex: 4, flexDirection: 'column' }}>
+                <View style={{ width: 30 }}>
+
+                    <StarRatingImage starCount={props.averagePoint} />
+                </View>
+
+                <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 12, marginLeft: 0 }}>{props.content}</Text>
+                <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 12, marginLeft: 0 }}>{props.name}</Text>
+
+
+            </View>
+
+        </View>
+
     )
 }
 
@@ -464,5 +505,10 @@ const styles = StyleSheet.create({
     topImage: {
         width: '100%',
         height: '40%',
-    }
+    },
+    imageProfile: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+    },
 })
