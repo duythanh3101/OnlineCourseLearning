@@ -7,7 +7,7 @@ const SearchAuthorItem = (props) => {
     const { themes } = useContext(ThemeContext);
 
     return (
-        <TouchableOpacity style={{...styles.container, backgroundColor: themes.background.foreground}}>
+        <TouchableOpacity style={{...styles.container, backgroundColor: themes.background.foreground}} onPress={props.onPress}>
             <View style={styles.imageContainer}>
                 <Image source={{ uri: props.source }} style={styles.image} />
             </View>

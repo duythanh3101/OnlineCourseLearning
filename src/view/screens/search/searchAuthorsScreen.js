@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View, SectionList, Alert, TouchableOpacity } from 'react-native'
 import { globalStyles } from '../../../global/styles'
 import ListCourseItem from '../../components/course/listCourseItem/list-course-item'
@@ -8,11 +8,13 @@ import { ThemeContext } from '../../../provider/theme-provider'
 import { AuthorDataContext } from '../../../provider/author-data/author-data-provider'
 import { PathDataContext } from '../../../provider/path-data/path-data-provider'
 import { CourseDataContext } from '../../../provider/course-data/course-data-provider'
+import { ScreenKey } from '../../../global/constants'
 
 const SearchAuthorsScreen = (props) => {
     const { themes } = useContext(ThemeContext);
     const { authorData } = useContext(AuthorDataContext);
     const { getCourseCountByAuthorId } = useContext(CourseDataContext);
+    const [authors, setAuthors] = useState([]);
 
     const searchResults = [
         {
@@ -22,16 +24,29 @@ const SearchAuthorsScreen = (props) => {
         },
     ]
 
-    const renderItem = (item, index, ) => {
-        let numCourses = getCourseCountByAuthorId(item.id);
+    useEffect(() => {
+        if (props.authors !== undefined && props.authors !== null) {
+            setAuthors(props.authors)
+        }
+    }, [props.authors])
 
+    const renderAuthor = (item, index) => {
+        //console.log('author', item)
         return <SearchAuthorItem
-            source={item.image}
+            source={item.avatar}
             authorName={item.name}
-            course={numCourses}
-            onPress={onPressPathItem}
+            course={item.numcourses}
+            onPress={() => {
+                onPressAuthor(item)
+            }}
             key={index}
         />
+    }
+
+    const onPressAuthor = (item) => {
+        props.navigation.navigate(ScreenKey.AuthorScreen, {
+            item: item
+        })
     }
 
     const renderSectionHeader = (section) => {
@@ -54,14 +69,26 @@ const SearchAuthorsScreen = (props) => {
 
     return (
         <View style={{...globalStyles.container, backgroundColor: themes.background.mainColor}}>
-            <SectionList
+            {/* <SectionList
                 sections={searchResults}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item, index }) => renderItem(item, index)}
                 renderSectionHeader={({ section }) => (
                     renderSectionHeader(section)
                 )}
-            />
+            /> */}
+             {
+                    authors && authors.length > 0
+                        ?
+                        <View>
+                            <Text style={[globalStyles.headerText, { marginTop: 20, marginLeft: 20, color: themes.fontColor.mainColor }]}>Tác giả</Text>
+                            {
+                                authors.map(( item, index ) => renderAuthor(item, index))
+                            }
+                        </View>
+                        :
+                        null
+                }
         </View>
     )
 }

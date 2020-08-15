@@ -10,27 +10,40 @@ import SearchAuthorsScreen from '../screens/search/searchAuthorsScreen';
 const Tab = createMaterialTopTabNavigator();
 
 const SearchTab = (props) => {
+    console.log('props tab', props.courses.length)
+
+    const courses = props.courses;
+    const authors = props.authors;
     return (
-        <Tab.Navigator {...props}>
+        <Tab.Navigator>
             <Tab.Screen
                 name={ScreenKey.SearchAllSectionsScreen}
-                component={SearchAllSectionsScreen}
-                options={{ title: 'All' }} 
+                options={{ title: 'All' }}
+            >
+                {props => <SearchAllSectionsScreen {...props}
+                    courses={courses}
+                    authors={authors}
                 />
+                }
+            </Tab.Screen>
             <Tab.Screen
                 name={ScreenKey.SearchCoursesScreen}
-                component={SearchCoursesScreen}
-                options={{ title: 'COURSES' }} />
-            <Tab.Screen
-                name={ScreenKey.SearchPathsScreen}
-                component={SearchPathsScreen}
-                options={{ title: 'PATHS' }} />
+                options={{ title: 'COURSES' }}
+            >
+                {props => <SearchCoursesScreen {...props}
+                    courses={courses}
+                />}
+            </Tab.Screen>
+
             <Tab.Screen
                 name={ScreenKey.SearchAuthorsScreen}
-                component={SearchAuthorsScreen}
-                options={{ title: 'AUTHORS' }} />
+                options={{ title: 'AUTHORS' }}
+            >
+                {props => <SearchAuthorsScreen {...props}
+                    authors={authors}
+                />}
+            </Tab.Screen>
 
-            {/* <Tab.Screen name={ScreenKey.} component={SettingsScreen} /> */}
         </Tab.Navigator>
     )
 }

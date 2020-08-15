@@ -12,7 +12,8 @@ import {
     getDocumentResource,
     getRecommendCoursesEndpoint,
     ratingCourseEndpoint,
-    getRatingCourseEndpoint
+    getRatingCourseEndpoint,
+    searchV2Endpoint
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -24,6 +25,7 @@ class CourseHomeService {
         this.restClientNew = new BaseAPI(topNewEndpoint);
         this.restClientRate = new BaseAPI(topRateEndpoint);
         this.restClientSearch = new BaseAPI(searchEndpoint);
+        this.restClientSearchV2 = new BaseAPI(searchV2Endpoint);
         this.resClientAllCategory = new BaseAPI(getAllCategoryEndpoint);
         this.resClientCourseDetail = new BaseAPI(getCourseDetailEndpoint);
         this.resClientCourseInfo = new BaseAPI(getCourseInfoEndpoint);
@@ -178,12 +180,22 @@ class CourseHomeService {
         return await this.resClientMyCourse.getByToken(token);
     }
 
-    async search(keyword, limit = 10, offset = 1) {
+    async search(keyword, limit = 10, offset = 0) {
         return await this.restClientSearch.post({
             keyword: keyword,
 
             limit: limit,
             offset: offset
+        })
+    }
+
+    async searchV2(keyword, limit, offset, token) {
+        //console.log(`${searchV2Endpoint}/${keyword}/${limit}/${offset}`)
+        return await this.restClientSearchV2.post({
+            //token: token,
+            keyword: keyword,
+            limit: 10,
+            offset: 0
         })
     }
 

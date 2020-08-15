@@ -13,6 +13,7 @@ import HomeStack from './homeStack';
 import DownloadStack from './downloadStack';
 import BrowseStack from './browseStack';
 import FavoriteStack from './favoriteStack';
+import SearchStack from './searchStack';
 
 const MainTab = createBottomTabNavigator();
 
@@ -67,8 +68,8 @@ const MainBottomTab = (props) => {
                     />
                 <MainTab.Screen
                     {...props}
-                    name={ScreenKey.SearchScreen}
-                    component={SearchScreen}
+                    name={ScreenKey.SearchStack}
+                    component={SearchStack}
                     />
             </MainTab.Navigator>
         </SafeAreaView>

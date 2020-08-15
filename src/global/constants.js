@@ -36,6 +36,7 @@ export const ScreenKey = {
     DownloadStack: 'downloadStack',
     BrowseStack: 'browseStack',
     FavoriteStack: 'favoriteStack',
+    SearchStack: 'searchStack'
 
 
 }

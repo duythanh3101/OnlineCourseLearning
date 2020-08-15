@@ -559,7 +559,7 @@ const CommentContent = (props) => {
             <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', marginLeft: 0 }}>
 
                 {
-                    props.avatar.startsWith('file')
+                    props.avatar.startsWith('file') || props.avatar === '' || props.avatar === undefined
                         ?
                         //<ImageBackground style={styles.imageProfile} backgroundColor='grey' />
                         <View style={{ ...styles.imageProfile, backgroundColor: '#D3D3D3' }} />

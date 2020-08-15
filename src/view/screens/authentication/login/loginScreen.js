@@ -38,7 +38,7 @@ const LoginScreen = (props) => {
 
     const onHandleSigninPress = async () => {
         authDispatch(loginRequest());
-        await AuthenticationService.login('duythanh3101@gmail.com', '123456')
+        await AuthenticationService.login('duythanh3101@gmail.com', '12345678')
             .then(response => {
                 if (response && response.data.message && response.data.message === 'OK') {
                     console.log('Login token: ', response.data.token);
@@ -52,7 +52,7 @@ const LoginScreen = (props) => {
                 }
             })
             .catch(error => {
-                setErrorText('Đăng ký không thành công')
+                setErrorText('Đăng nhập không thành công')
                 setIsError(true);
                 authDispatch(loginFailed());
             })

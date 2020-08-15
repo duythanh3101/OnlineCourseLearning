@@ -33,9 +33,9 @@ const RegisterScreen = (props) => {
             return "Email không được để trống"
         }
 
-        if (!checkEmail(email)) {
-            return "Email không hợp lệ"
-        }
+        // if (!checkEmail(email)) {
+        //     return "Email không hợp lệ"
+        // }
 
         if (phone === "") {
             return "Số điện thoại không được để trống"
