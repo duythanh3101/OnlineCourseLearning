@@ -7,30 +7,31 @@ import { PathDataContext } from '../../../../provider/path-data/path-data-provid
 import Topic from './topic'
 import { ThemeContext } from '../../../../provider/theme-provider'
 import CourseHomeService from '../../../../core/service/courseHomeService'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
-import ImageButtonTwoLines from '../../common/image-button-two-lines'
+import { useIsFocused } from '@react-navigation/native'
 
 const Course = (props) => {
     const { courseData } = useContext(CourseDataContext);
     const { topicData } = useContext(PathDataContext);
     const { themes } = useContext(ThemeContext);
+    const isFocused = useIsFocused();
 
     const [topics, setTopics] = useState([]);
     const [recommendCourses, setRecommendCourses] = useState([]);
     const [processCourses, setProcessCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingMyCourse, setIsLoadingMyCourse] = useState(false);
     const authReducer = useSelector(state => state.authReducer);
 
     useEffect(() => {
         setIsLoading(true);
+        setIsLoadingMyCourse(true);
         CourseHomeService.getAllCategory()
             .then(response => {
+                console.log('tops co', response.data.payload.length)
                 if (response.data.message === 'OK') {
                     setTopics(response.data.payload);
-                    //console.log('topic 2: ', response.data.payload)
                 }
-                //console.log('Home: ', response.data)
             })
             .catch(error => {
                 console.log('Home error: ', error)
@@ -41,36 +42,14 @@ const Course = (props) => {
             .then(response => {
                 if (response.data.message === 'OK') {
                     setRecommendCourses(response.data.payload)
-                    //console.log('getRecommendCourses 2: ', response.data.payload.length)
                 }
+                setIsLoading(false);
             })
             .catch(error => {
                 console.log('getRecommendCourses error: ', error)
-            });
-        CourseHomeService.getProcessCourses(authReducer.token)
-            .then(response => {
-                if (response.data.message === 'OK') {
-                    setProcessCourses([])
-                    //console.log('getProcessCourses 2: ', response.data.payload.length)
-                    response.data.payload.map(a => {
-                        CourseHomeService.getCourseDetailWithLesson(a.id, authReducer.token)
-                            .then(res => {
-                                setProcessCourses(prev => [...prev, res.data.payload]);
-                                //console.log('getProcessCourses 2: ',  processCourses.length)
-                            })
-                            .catch(er => {
-                                console.log('getProcessCourses error');
-                            })
-                    })
-                    setIsLoading(false);
-
-                }
-                //console.log('getProcessCourses: ', processCourses)
-            })
-            .catch(error => {
-                console.log('getProcessCourses error: ', error)
                 setIsLoading(false);
             });
+        setProcessCourses([])
     }, [])
 
     const onPressSeeAllTopic = (topic) => {
@@ -98,31 +77,23 @@ const Course = (props) => {
             id={item.id}
             onPressItem={onPressItem}
         />
-
-        // return <Text key={item.id}>hahaha</Text>
-    }
-
-    const onPressMyCourses = () => {
-        // props.navigation.navigate(ScreenKey.CourseListScreen, {
-        //     courses: processCourses
-        // })
     }
 
     return (
         <ScrollView style={{ ...styles.courseContainer, backgroundColor: themes.background.mainColor }}>
-            {
-                isLoading == false && processCourses.length > 0
+            {/* {
+                isLoadingMyCourse == false
                     ?
                     <Topic
+                        aaa='sss'
                         title='Khóa học của tôi'
                         courseData={processCourses}
                         //onPress={(item) => onPressSeeAllTopic(item)}
-                        //key={item.id}
                         onPressItem={onPressItem}
                     />
                     :
                     null
-            }
+            } */}
             {
                 isLoading == false
                     ?

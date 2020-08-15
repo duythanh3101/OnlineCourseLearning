@@ -16,10 +16,11 @@ export default function Topic(props) {
     useEffect(() => {
         setIsLoading(true);
         if (props.id && props.id !== null) {
-            courseHomeService.getCoursesByCategoryId(props.id, 10, 1)
+            //console.log('cate id: ', props.id)
+            courseHomeService.getCoursesByCategoryId(props.id, 10, 0)
                 .then(response => {
+                    //console.log('courses 2: ', response.data.payload.count);
                     if (response.data.payload.count > 0) {
-                        //console.log('courses 2: ', courseaaa);
                         setCourses(response.data.payload.rows)
                         setIsLoading(false);
 
@@ -59,8 +60,8 @@ export default function Topic(props) {
         />
     }
 
-    if (isLoading === true || courses.length === 0)
-        return <View></View>
+    if (courses.length === 0)
+        return null;
 
     return (
         <View style={styles.course}>

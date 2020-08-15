@@ -54,9 +54,9 @@ class CourseHomeService {
         })
     }
 
-    async getCoursesByCategoryId(categoryId, limit = 10, offset = 1) {
+    async getCoursesByCategoryId(categoryId, limit, offset) {
         return await this.restClientSearch.post({
-            keyword: "",
+            keyword: '',
             opt: {
                 category: [
                     categoryId
@@ -68,7 +68,7 @@ class CourseHomeService {
     }
 
     async getRecommendCourses(userId, limit = 10, offset = 1) {
-        console.log(`${getRecommendCoursesEndpoint}/${userId}/${limit}/${offset}`)
+        //console.log(`${getRecommendCoursesEndpoint}/${userId}/${limit}/${offset}`)
 
         return await Axios.get(`${getRecommendCoursesEndpoint}/${userId}/${limit}/${offset}`);
     }
