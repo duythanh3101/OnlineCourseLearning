@@ -24,6 +24,7 @@ import Separator from '../../components/separator/separator'
 import LoadingIndicator from '../../components/loading/loading-indicator'
 import ContentVideoCanPressItem from '../../components/video/content-video-can-press-item'
 import YoutubePlayer from 'react-native-youtube-iframe';
+import instructorService from '../../../core/service/instructorService'
 
 const CourseDetailVideoScreen = (props) => {
     const { themes } = useContext(ThemeContext);
@@ -42,15 +43,20 @@ const CourseDetailVideoScreen = (props) => {
     useEffect(() => {
         if (course.name){
             setAuthorName(course.name)
-            //console.log('course info 1: ', course.name)
         }
         else if (course.instructorName){
             setAuthorName(course.instructorName)
-            //console.log('course info 2: ', course.instructorName)
         }
-        else {
+        else if(course['instructor.user.name']){
             setAuthorName(course['instructor.user.name'])
-            //console.log('course info 3: ', course['instructor.user.name'])
+        }else if (course.instructorId){
+            instructorService.getDetail(course.instructorId)
+            .then(response => {
+                setAuthorName(response.data.payload.name)
+            })
+            .catch(error => {
+                console.log('error instructor')
+            })
         }
 
         setIsLoading(true);

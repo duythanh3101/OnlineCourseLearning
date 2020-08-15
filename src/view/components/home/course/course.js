@@ -138,12 +138,12 @@ const Course = (props) => {
                     null
             }
             {
-                // isLoading === false
-                //     ?
+                isLoading === false
+                    ?
 
-                //     topics.map((item) => renderTopicItem(item))
-                //     :
-                //     null
+                    topics.map((item) => renderTopicItem(item))
+                    :
+                    null
             }
         </ScrollView>
 
