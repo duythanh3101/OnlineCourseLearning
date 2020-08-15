@@ -23,6 +23,7 @@ import { formatMoney, convertNumberCurrenry } from '../../../global/utilConverte
 import Separator from '../../components/separator/separator'
 import LoadingIndicator from '../../components/loading/loading-indicator'
 import instructorService from '../../../core/service/instructorService'
+import { ProgressBar } from 'react-native-paper'
 
 const CourseDetailScreen = (props) => {
     const { themes } = useContext(ThemeContext);
@@ -41,22 +42,22 @@ const CourseDetailScreen = (props) => {
     const [authorName, setAuthorName] = useState('');
     //console.log('course info: ', props.route.params.course)
     useEffect(() => {
-        if (course.name){
+        if (course.name) {
             setAuthorName(course.name)
         }
-        else if (course.instructorName){
+        else if (course.instructorName) {
             setAuthorName(course.instructorName)
         }
-        else if(course['instructor.user.name']){
+        else if (course['instructor.user.name']) {
             setAuthorName(course['instructor.user.name'])
-        }else if (course.instructorId){
+        } else if (course.instructorId) {
             instructorService.getDetail(course.instructorId)
-            .then(response => {
-                setAuthorName(response.data.payload.name)
-            })
-            .catch(error => {
-                console.log('error instructor')
-            })
+                .then(response => {
+                    setAuthorName(response.data.payload.name)
+                })
+                .catch(error => {
+                    console.log('error instructor')
+                })
         }
 
         setIsLoading(true);
@@ -102,7 +103,7 @@ const CourseDetailScreen = (props) => {
                 console.log('is own course error');
                 setIsLoading(false);
             })
-            setIsLoading(false);
+        setIsLoading(false);
         //console.log('lesson: ', lessons);
     }, [])
 
@@ -277,10 +278,10 @@ const CourseDetailScreen = (props) => {
                 {
                     isOwnCourse === true
                         ?
-                        <RoundCornerTag title='Xem Video khóa học' 
-                                        style={{ marginLeft: 10 }}
-                                        onPress={() => OnHandleLearnCourse()}
-                                        />
+                        <RoundCornerTag title='Xem Video khóa học'
+                            style={{ marginLeft: 10 }}
+                            onPress={() => OnHandleLearnCourse()}
+                        />
                         :
                         null
                 }
@@ -356,6 +357,16 @@ const CourseDetailScreen = (props) => {
                     }
                 </View>
                 <Separator />
+                <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ ...globalStyles.titleText, color: themes.fontColor.mainColor }}>Đánh giá</Text>
+                    <ProgressStar detailInfo={detailInfo} number={1}/>
+                    <ProgressStar detailInfo={detailInfo} number={2}/>
+                    <ProgressStar detailInfo={detailInfo} number={3}/>
+                    <ProgressStar detailInfo={detailInfo} number={4}/>
+                    <ProgressStar detailInfo={detailInfo} number={5}/>
+                   
+                </View>
+                <Separator />
                 <View style={styles.tabContainer}>
                     {
                         detailInfo.videoNumber > 1
@@ -387,6 +398,18 @@ const CourseDetailScreen = (props) => {
 }
 
 export default CourseDetailScreen
+
+const ProgressStar = (props) => {
+    return (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ ...globalStyles.normalText, color: 'gold', fontWeight: 'bold', fontSize: 18 }}>{props.number}</Text>
+            <Entypo name="star" size={18} color="gold" />
+            <ProgressBar progress={props.detailInfo.ratings.stars[props.number - 1] / 100} color='gray' width={250} />
+            <Text style={{ ...globalStyles.normalText, color: themes.fontColor.mainColor, fontSize: 16 }}>{props.detailInfo.ratings.stars[props.number - 1]}%</Text>
+        </View>
+    )
+}
+
 
 const styles = StyleSheet.create({
     tabContainer: {
