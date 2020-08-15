@@ -9,7 +9,8 @@ import {
     getlikeCourseStatusEndpoint,
     checkOwnCourse,
     getLessonURL,
-    getDocumentResource
+    getDocumentResource,
+    getRecommendCoursesEndpoint
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -29,6 +30,7 @@ class CourseHomeService {
         this.resClientFavoriteCourse = new BaseAPI(getFavoriteCourseEndpoint);
         this.resClientMyCourse = new BaseAPI(getProcessCoursesEndpoint);
         this.resClientDetailWithLesson = new BaseAPI(getDeatailWithLessonEndpoint);
+
     }
 
     async getTopSellCourses(limit, page) {
@@ -63,6 +65,12 @@ class CourseHomeService {
             limit: limit,
             offset: offset
         })
+    }
+
+    async getRecommendCourses(userId, limit = 10, offset = 1) {
+        console.log(`${getRecommendCoursesEndpoint}/${userId}/${limit}/${offset}`)
+
+        return await Axios.get(`${getRecommendCoursesEndpoint}/${userId}/${limit}/${offset}`);
     }
 
     async getAllCategory() {
@@ -119,7 +127,7 @@ class CourseHomeService {
     }
 
     async getFreeCourse(id, token) {
-        console.log(id, getFreeCourseEndpoint, token)
+        //console.log(id, getFreeCourseEndpoint, token)
 
         // return await this.resClientFreeCourse.post({
         //     courseId: id

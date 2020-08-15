@@ -54,7 +54,7 @@ const FavoriteScreen = (props) => {
         })
         .catch(error => {
             console.log('favorite courses error');
-            setIsLoading(true);
+            setIsLoading(false);
         })
 
     }, [isFocused])
@@ -94,7 +94,7 @@ const FavoriteScreen = (props) => {
     return (
         <View style={{ ...globalStyles.container, backgroundColor: themes.background.mainColor }}>
             {
-                courses && courses.length == 0
+                courses && courses.length == 0 && !isLoading
                     ?
                     (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>

@@ -5,6 +5,7 @@ import CourseItemInfo from './course-item-info'
 import { ThemeContext } from '../../../../provider/theme-provider';
 import { ScreenKey } from '../../../../global/constants';
 import courseHomeService from '../../../../core/service/courseHomeService';
+import instructorService from '../../../../core/service/instructorService';
 
 export default function Topic(props) {
     const { themes } = useContext(ThemeContext);
@@ -14,7 +15,8 @@ export default function Topic(props) {
 
     useEffect(() => {
         setIsLoading(true);
-        courseHomeService.getCoursesByCategoryId(props.id, 10, 1)
+        if (props.id && props.id !== null){
+            courseHomeService.getCoursesByCategoryId(props.id, 10, 1)
             .then(response => {
                 if (response.data.payload.count > 0) {
                     //console.log('courses 2: ', courseaaa);
@@ -27,10 +29,15 @@ export default function Topic(props) {
                 console.log('courses error: ', error);
 
             })
+        }else if(props.courseData !== null){
+            setCourses(props.courseData)
+            setIsLoading(false);
+        }
+       
     }, [])
 
     const renderCourseItem = (item, index) => {
-        //console.log('sadasd: ', item);
+        //console.log('sadasd: ', item);  
         return <CourseItemInfo
             id={item.id}
             courseName={item.title}

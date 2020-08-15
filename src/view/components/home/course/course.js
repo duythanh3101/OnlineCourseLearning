@@ -8,6 +8,8 @@ import Topic from './topic'
 import { ThemeContext } from '../../../../provider/theme-provider'
 import CourseHomeService from '../../../../core/service/courseHomeService'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
+import ImageButtonTwoLines from '../../common/image-button-two-lines'
 
 const Course = (props) => {
     const { courseData } = useContext(CourseDataContext);
@@ -15,7 +17,10 @@ const Course = (props) => {
     const { themes } = useContext(ThemeContext);
 
     const [topics, setTopics] = useState([]);
+    const [recommendCourses, setRecommendCourses] = useState([]);
+    const [processCourses, setProcessCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const authReducer = useSelector(state => state.authReducer);
 
     useEffect(() => {
         setIsLoading(true);
@@ -23,7 +28,6 @@ const Course = (props) => {
             .then(response => {
                 if (response.data.message === 'OK') {
                     setTopics(response.data.payload);
-                    setIsLoading(false);
                     //console.log('topic 2: ', response.data.payload)
                 }
                 //console.log('Home: ', response.data)
@@ -32,6 +36,41 @@ const Course = (props) => {
                 console.log('Home error: ', error)
             });
 
+        let userId = authReducer.userInfo.id;
+        CourseHomeService.getRecommendCourses(userId, 10, 1)
+            .then(response => {
+                if (response.data.message === 'OK') {
+                    setRecommendCourses(response.data.payload)
+                    //console.log('getRecommendCourses 2: ', response.data.payload.length)
+                }
+            })
+            .catch(error => {
+                console.log('getRecommendCourses error: ', error)
+            });
+        CourseHomeService.getProcessCourses(authReducer.token)
+            .then(response => {
+                if (response.data.message === 'OK') {
+                    setProcessCourses([])
+                    //console.log('getProcessCourses 2: ', response.data.payload.length)
+                    response.data.payload.map(a => {
+                        CourseHomeService.getCourseDetail(a.id)
+                            .then(res => {
+                                setProcessCourses(prev => [...prev, res.data.payload]);
+                                console.log('getProcessCourses 2: ',  processCourses.length)
+                            })
+                            .catch(er => {
+                                console.log('getProcessCourses error');
+                            })
+                    })
+                    
+                }
+                //console.log('getProcessCourses: ', processCourses)
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.log('getProcessCourses error: ', error)
+                setIsLoading(false);
+            });
     }, [])
 
     const onPressSeeAllTopic = (topic) => {
@@ -63,19 +102,45 @@ const Course = (props) => {
         // return <Text key={item.id}>hahaha</Text>
     }
 
+    const onPressMyCourses = () => {
+        // props.navigation.navigate(ScreenKey.CourseListScreen, {
+        //     courses: processCourses
+        // })
+    }
+
     return (
         <ScrollView style={{ ...styles.courseContainer, backgroundColor: themes.background.mainColor }}>
-            {/* <Topic
-                title='Khóa học bán chạy'
-                courseData={courseFilter}
-                onPress={() => onPressSeeAllTopic(item)}
-                key={item.id}
-                onPressItem={onPressItem}
+            {
+                isLoading == false &&  processCourses.length > 0
+                    ?
+                    <Topic
+                        title='Khóa học của tôi'
+                        courseData={processCourses}
+                        //onPress={(item) => onPressSeeAllTopic(item)}
+                        //key={item.id}
+                        onPressItem={onPressItem}
+                    />
+                    :
+                    null
+            }
+            {
+                isLoading == false
+                    ?
+                    <Topic
+                        title='Khóa học nổi bật'
+                        courseData={recommendCourses}
+                        //onPress={(item) => onPressSeeAllTopic(item)}
+                        //key={item.id}
+                        onPressItem={onPressItem}
 
-            /> */}
+                    />
+                    :
+                    null
+            }
             {
                 isLoading === false
                     ?
+
                     topics.map((item) => renderTopicItem(item))
                     :
                     null

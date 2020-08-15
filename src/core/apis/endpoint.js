@@ -18,7 +18,6 @@ export const getlikeCourseStatusEndpoint = rootEndpoint + "/user/get-course-like
 export const getFavoriteCourseEndpoint = rootEndpoint + "/user/get-favorite-courses";
 export const getFreeCourseEndpoint = rootEndpoint + "/payment/get-free-courses";
 export const payCourseEndpoint = rootEndpoint + "/payment/get-course-info";
-export const getProcessCoursesEndpoint = rootEndpoint + "/user/get-process-courses";
 
 export const getDeatailWithLessonEndpoint = rootEndpoint + "/course/detail-with-lesson";
 export const checkOwnCourse = rootEndpoint + "/user/check-own-course";
@@ -37,3 +36,6 @@ export const sendEmailForgotPassword = rootEndpoint + "/user/forget-pass/send-em
 export const sendActiveEmail = rootEndpoint + "/user/send-activate-email";
 export const changePasswordEndpoint = rootEndpoint + "/user/change-password";
 
+// course
+export const getRecommendCoursesEndpoint = rootEndpoint + "​/user/recommend-course";
+export const getProcessCoursesEndpoint = rootEndpoint + "​/user/get-process-courses";

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { ScreenKey } from '../../global/constants';
 import HomeScreen from '../screens/home/homeScreen';
@@ -12,6 +12,7 @@ import { Entypo } from '@expo/vector-icons';
 import SettingScreen from '../screens/setting/settingScreen';
 import CourseDetailScreen from '../screens/course/courseDetailScreen';
 import CourseDetailVideoScreen from '../screens/course/courseDetailVideoScreen';
+import CourseListScreen from '../screens/course/courseListScreen';
 
 const Stack = createStackNavigator();
 
@@ -88,6 +89,14 @@ const HomeStack = (props) => {
             />
 
             <Stack.Screen
+                name={ScreenKey.CourseListScreen}
+                component={CourseListScreen}
+                options={{
+                    title: 'Khóa học của tôi'
+                }}
+            />
+
+            <Stack.Screen
                 name={ScreenKey.CourseDetailVideoScreen}
                 component={CourseDetailVideoScreen}
                 options={{
@@ -117,5 +126,10 @@ const HomeStack = (props) => {
 
 export default HomeStack
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    myCourseText: {
+        color: 'red',
+        marginTop: 2
+    }
+})
 

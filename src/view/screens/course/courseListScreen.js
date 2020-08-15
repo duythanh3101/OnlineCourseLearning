@@ -17,6 +17,8 @@ const CourseListScreen = (props) => {
     useEffect(() => {
         let type = props.route.params.type;
         setIsLoading(true);
+        console.log('type: ', type)
+
         switch (type) {
             case 0:
                 setTitle('Top Sell');
@@ -52,10 +54,13 @@ const CourseListScreen = (props) => {
                 break;
             default:
                 break;
-
-
-
         }
+        // else if (props.route.params.courses && props.route.params.courses.length > 0){
+        //     console.log('courses: ', props.route.params.courses.length)
+        //     setTitle('Khóa học của tôi');
+        //     setCourses(props.route.params.courses);
+        // }
+        //console.log('props: ', props.route.params.courses)
         setIsLoading(false);
 
 
