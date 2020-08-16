@@ -13,7 +13,9 @@ import {
     getRecommendCoursesEndpoint,
     ratingCourseEndpoint,
     getRatingCourseEndpoint,
-    searchV2Endpoint
+    searchV2Endpoint,
+    getSearchHistoryEndpoint,
+    deleteSearchHistoryEndpoint
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -34,6 +36,8 @@ class CourseHomeService {
         this.resClientFavoriteCourse = new BaseAPI(getFavoriteCourseEndpoint);
         this.resClientMyCourse = new BaseAPI(getProcessCoursesEndpoint);
         this.resClientDetailWithLesson = new BaseAPI(getDeatailWithLessonEndpoint);
+        this.resClientSearchHistory = new BaseAPI(getSearchHistoryEndpoint);
+        this.resClientDeleteSearchHistory = new BaseAPI(deleteSearchHistoryEndpoint);
 
     }
 
@@ -189,13 +193,12 @@ class CourseHomeService {
         })
     }
 
-    async searchV2(keyword, limit, offset, token) {
+    async searchV2(keyword, limit, offset) {
         //console.log(`${searchV2Endpoint}/${keyword}/${limit}/${offset}`)
         return await this.restClientSearchV2.post({
-            //token: token,
             keyword: keyword,
-            limit: 10,
-            offset: 0
+            limit: limit,
+            offset: offset
         })
     }
 
@@ -217,6 +220,16 @@ class CourseHomeService {
             }
         });
     }
+
+    // search
+    async getSearchHistory(token) {
+        return await this.resClientSearchHistory.getByToken(token);
+    }
+
+    async deleteSearchHistory(searchId, token) {
+        return await this.resClientDeleteSearchHistory.deleteByToken(searchId, token);
+    }
+
 }
 
 export default new CourseHomeService();

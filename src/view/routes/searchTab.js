@@ -10,7 +10,7 @@ import SearchAuthorsScreen from '../screens/search/searchAuthorsScreen';
 const Tab = createMaterialTopTabNavigator();
 
 const SearchTab = (props) => {
-    console.log('props tab', props.courses.length)
+    //console.log('props tab', props.courses.length)
 
     const courses = props.courses;
     const authors = props.authors;

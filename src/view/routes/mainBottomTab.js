@@ -39,7 +39,7 @@ const TabBarComponent = ({ navigation, state }) => {
                 <BottomNavigationTab icon={(style) => tabIcon(style, "map-outline")} title="Home" />
                 <BottomNavigationTab icon={(style) => tabIcon(style, "book-outline")} title="Favorite" />
                 <BottomNavigationTab icon={(style) => tabIcon(style, "recording-outline")} title="Browse" />
-                <BottomNavigationTab icon={(style) => tabIcon(style, "settings-2-outline")} title="Search" />
+                <BottomNavigationTab icon={(style) => tabIcon(style, "search-outline")} title="Search" />
             </BottomNavigation>
         </SafeAreaView>
     );

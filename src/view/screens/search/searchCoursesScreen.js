@@ -39,7 +39,7 @@ const SearchCoursesScreen = (props) => {
         //     }
         // }
         // aaa();
-        console.log('aaas', props.courses.length)
+        //console.log('aaas', props.courses.length)
         setCourses(props.courses)
         //console.log('aa', props.datas);
     }, [isFocus])

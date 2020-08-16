@@ -95,4 +95,18 @@ export default class BaseAPI {
     async delete(id) {
         return await Axios.delete(`${this.endpoint}/${id}`);
     }
+
+    /**
+     * @param {string} id 
+     */
+    async deleteByToken(id, authorizationToken) {
+        console.log(`${this.endpoint}/${id}`);
+
+        return await Axios.delete(`${this.endpoint}/${id}`,
+        {
+            headers: {
+                'Authorization': `Bearer ${authorizationToken}`
+            }
+        });
+    }
 }

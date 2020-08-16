@@ -8,8 +8,7 @@ export const topRateEndpoint = rootEndpoint + "​/course​/top-rate";
 export const getCourseInfoEndpoint = rootEndpoint + "/course/get-course-info";
 export const getCourseDetailEndpoint = rootEndpoint + "/course/get-course-detail";
 export const detailWithLessonEndpoint = rootEndpoint + "/course/detail-with-lesson";
-export const searchEndpoint = rootEndpoint + "/course/search";
-export const searchV2Endpoint = rootEndpoint + "/course/searchV2";
+
 export const getAllCategoryEndpoint = rootEndpoint + "/category/all";
 export const getAllInstructorEndpoint = rootEndpoint + "/instructor";
 export const getInstructorDetailEndpoint = rootEndpoint + "/instructor/detail";
@@ -42,3 +41,11 @@ export const getRecommendCoursesEndpoint = rootEndpoint + "​/user/recommend-co
 export const getProcessCoursesEndpoint = rootEndpoint + "​/user/get-process-courses";
 export const ratingCourseEndpoint = rootEndpoint + "​/course/rating-course";
 export const getRatingCourseEndpoint = rootEndpoint + "/course/get-rating";
+
+// search
+export const searchEndpoint = rootEndpoint + "/course/search";
+export const searchV2Endpoint = rootEndpoint + "/course/searchV2";
+export const getSearchHistoryEndpoint = rootEndpoint + "/course/search-history";
+export const deleteSearchHistoryEndpoint = rootEndpoint + "/course/delete-search-history";
+
+
