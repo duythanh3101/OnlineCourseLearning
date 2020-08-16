@@ -27,6 +27,8 @@ export const checkOwnCourse = rootEndpoint + "/user/check-own-course";
 export const getLessonURL = rootEndpoint + "/lesson/video";
 export const updateLessonStatus = rootEndpoint + "/lesson/update-status";
 export const getDocumentResource = rootEndpoint + "/resource/get-url";
+export const updateCurrentTimeLearnVideoEndpoint = rootEndpoint + "/lesson/update-current-time-learn-video";
+export const getCurrentTimeLearnVideoEndpoint = rootEndpoint + "/course/last-watched-lesson";
 
 // user
 export const getUserInfoEndpoint = rootEndpoint + "/user/me";

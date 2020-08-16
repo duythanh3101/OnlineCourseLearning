@@ -84,7 +84,8 @@ const HomeStack = (props) => {
                 name={ScreenKey.CourseDetailScreen}
                 component={CourseDetailScreen}
                 options={{
-                    title: 'Course Detail'
+                    title: 'Course Detail',
+                    headerShown: false
                 }}
             />
 
@@ -100,7 +101,8 @@ const HomeStack = (props) => {
                 name={ScreenKey.CourseDetailVideoScreen}
                 component={CourseDetailVideoScreen}
                 options={{
-                    title: 'Course Detail'
+                    title: 'Course Detail',
+                    headerShown: false
                 }}
             />
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef, useCallback } from 'react'
-import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList, Linking } from 'react-native'
+import { StyleSheet, View, Image, Text, TouchableOpacity, Alert, Share, SectionList, Linking, BackHandler } from 'react-native'
 import { globalStyles, colors } from '../../../global/styles'
 import { ImageKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
@@ -30,33 +30,35 @@ const CourseDetailVideoScreen = (props) => {
     const { themes } = useContext(ThemeContext);
 
     const course = props.route.params.course;
-    const [url, setUrl] = useState('https://storage.googleapis.com/itedu-bucket/Courses/856457a1-8008-4c35-956a-c9975cd8cc22/promo/2fc49c1c-e948-4bad-b8ab-50a1f7da0a1e.mp4');
+    const [url, setUrl] = useState('');
     const authReducer = useSelector(state => state.authReducer);
     const [detailInfo, setDetailInfo] = useState(null);
     const [sectionCourses, setSectionCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const playerRef = useRef(null);
+    const playerVideoRef = useRef(null);
     const [playing, setPlaying] = useState(false);
     const [videoTitle, setVideoTitle] = useState('');
     const [authorName, setAuthorName] = useState('');
+    const [lessonId, setLessonId] = useState('');
 
     useEffect(() => {
-        if (course.name){
+        if (course.name) {
             setAuthorName(course.name)
         }
-        else if (course.instructorName){
+        else if (course.instructorName) {
             setAuthorName(course.instructorName)
         }
-        else if(course['instructor.user.name']){
+        else if (course['instructor.user.name']) {
             setAuthorName(course['instructor.user.name'])
-        }else if (course.instructorId){
+        } else if (course.instructorId) {
             instructorService.getDetail(course.instructorId)
-            .then(response => {
-                setAuthorName(response.data.payload.name)
-            })
-            .catch(error => {
-                console.log('error instructor')
-            })
+                .then(response => {
+                    setAuthorName(response.data.payload.name)
+                })
+                .catch(error => {
+                    console.log('error instructor')
+                })
         }
 
         setIsLoading(true);
@@ -75,59 +77,127 @@ const CourseDetailVideoScreen = (props) => {
 
             })
 
-        setVideoTitle(course.title)
-    }, [])
-
-    const onPressAttachment = (item) => {
-        console.log('item: ', item);
-        let resource = item.resource;
-        if (resource && resource.length > 0){
-            courseHomeService.getDocumentResource(course.id, item.id, resource[0].id,authReducer.token)
+        courseHomeService.CurrentTimeLearning(course.id, authReducer.token)
             .then(response => {
-                handlePress(response.data.payload);
+                console.log('CurrentTimeLearning success: ', response.data.payload);
+                if (response.data.message === 'OK') {
+                    setUrl(response.data.payload.videoUrl)
+                    if (isYoutubeURL(response.data.payload.videoUrl)) {
+                        //playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
+                    } else {
+                        //playerVideoRef.current.seekTo(response.data.payload.currentTime)   
+                    }
+                }
+
             })
             .catch(error => {
-                console.log('onPressAttachment error');
+                console.log('CurrentTimeLearning error');
+
             })
+
+        setVideoTitle(course.title)
+
+    }, [])
+
+
+
+    const onPressAttachment = (item) => {
+        //console.log('item: ', item);
+        let resource = item.resource;
+        if (resource && resource.length > 0) {
+            courseHomeService.getDocumentResource(course.id, item.id, resource[0].id, authReducer.token)
+                .then(response => {
+                    handlePress(response.data.payload);
+                })
+                .catch(error => {
+                    console.log('onPressAttachment error');
+                })
         }
-       
+
     }
 
     const handlePress = useCallback(async (url) => {
         //console.log('url: ', url)
         // Checking if the link is supported for links with custom URL scheme.
         const supported = await Linking.canOpenURL(url);
-    
+
         if (supported) {
-          await Linking.openURL(url);
+            await Linking.openURL(url);
         } else {
-          
+
         }
-      }, [url]);
+    }, [url]);
 
     const renderVideoContent = (item, index) => {
         //console.log('item: ', item);
-        
+
         return <ContentVideoCanPressItem
             image={course.imageUrl}
             title={item.name}
             duration={item.hours}
             key={index}
             numberOrder={item.numberOrder}
+            //lessonId={item.id}
             isHasAttachment={item.resource.length > 0}
             onPress={() => {
+                if (lessonId && lessonId !== '') {
+                    updateCurrentTime(lessonId)
+                    
+
+                }
+                console.log('lesson id:', lessonId);
+
                 courseHomeService.getLessonURL(course.id, item.id, authReducer.token)
+                    .then(response => {
+                        console.log('new id:', response.data.payload.currentTime);
+                        setLessonId(item.id);
+                        //setUrl(response.data.payload.videoUrl);
+                        //playerRef.current.seekTo(Math.round(response.data.payload.currentTime));
+                        setVideoTitle('Lesson ' + item.numberOrder + '. ' + item.name)
+                        
+
+                        if (isYoutubeURL(response.data.payload.videoUrl)) {
+                            playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
+                        } else {
+                            // playerVideoRef.current.loadAsync({uri: response.data.payload.videoUrl},
+                            //     {
+                            //         progressUpdateIntervalMillis: 500,
+                            //         positionMillis: Math.round(response.data.payload.currentTime),
+                            //         shouldPlay: false,
+                            //         rate: 1.0,
+                            //         shouldCorrectPitch: false,
+                            //         volume: 1.0,
+                            //         isMuted: false,
+                            //         isLooping: false,
+                            //       }
+                                
+                            //     )  
+                        }
+                    })
+                    .catch(error => {
+                        console.log('onPressLessonVideo error');
+                    })
+            }}
+            onPreessAttachment={() => { onPressAttachment(item) }}
+        />
+
+    }
+
+    const updateCurrentTime = (lessonId) => {
+        playerRef?.current?.getCurrentTime().then(currentTime => {
+            console.log('current time', lessonId, currentTime)
+            courseHomeService.updateCurrentTimeLearning(lessonId, currentTime, authReducer.token)
                 .then(response => {
-                    //console.log('aaaa: ', response.data.payload);
-                    setUrl(response.data.payload.videoUrl);
-                    setVideoTitle('Lesson ' + item.numberOrder + '. ' + item.name)
+                    if (response.data.message === 'OK') {
+                        console.log('getCurrentTime success');
+                    }
                 })
                 .catch(error => {
-                    console.log('onPressLessonVideo error');
+                    console.log('getCurrentTime error');
+
                 })
-            }}
-            onPreessAttachment={() => {onPressAttachment(item)}}
-        />
+        });
+
 
     }
 
@@ -149,6 +219,8 @@ const CourseDetailVideoScreen = (props) => {
         </View>
     }
 
+
+
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
     }
@@ -164,19 +236,20 @@ const CourseDetailVideoScreen = (props) => {
                         height={'30%'}
                         videoId={getYoutubeVideoId(url)}
                         play={playing}
-                        onChangeState={event => console.log(event)}
-                        onReady={() => console.log("ready")}
-                        onError={e => console.log(e)}
-                        onPlaybackQualityChange={q => console.log(q)}
+                        //onChangeState={event => console.log(event)}
+                        //onReady={() => console.log("ready")}
+                        //onError={e => console.log(e)}
+                        //onPlaybackQualityChange={q => console.log(q)}
                         volume={50}
                         playbackRate={1}
                         initialPlayerParams={{
                             cc_lang_pref: "us",
-                            showClosedCaptions: true
+                            showClosedCaptions: true,
                         }}
                     />
                     :
                     <Video
+                        ref={playerVideoRef}
                         source={{ uri: url }}
                         rate={1.0}
                         volume={1.0}

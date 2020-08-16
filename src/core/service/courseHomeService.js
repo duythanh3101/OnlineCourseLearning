@@ -15,7 +15,9 @@ import {
     getRatingCourseEndpoint,
     searchV2Endpoint,
     getSearchHistoryEndpoint,
-    deleteSearchHistoryEndpoint
+    deleteSearchHistoryEndpoint,
+    getCurrentTimeLearnVideoEndpoint,
+    updateCurrentTimeLearnVideoEndpoint
 } from "../apis/endpoint";
 import BaseAPI from "../apis/baseAPI";
 import Axios from "axios";
@@ -221,6 +223,28 @@ class CourseHomeService {
         });
     }
 
+    async CurrentTimeLearning(courseId, token) {
+        console.log(`${getCurrentTimeLearnVideoEndpoint}/${courseId}`)
+        return await Axios.get(`${getCurrentTimeLearnVideoEndpoint}/${courseId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
+    async updateCurrentTimeLearning(lessonId, currentTime,token) {
+        console.log(`${updateCurrentTimeLearnVideoEndpoint}/${lessonId}/${currentTime}`)
+        return await Axios.put(`${updateCurrentTimeLearnVideoEndpoint}` ,{
+            lessonId: lessonId,
+            currentTime: currentTime
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+    }
+
     // search
     async getSearchHistory(token) {
         return await this.resClientSearchHistory.getByToken(token);
@@ -229,6 +253,8 @@ class CourseHomeService {
     async deleteSearchHistory(searchId, token) {
         return await this.resClientDeleteSearchHistory.deleteByToken(searchId, token);
     }
+
+
 
 }
 
