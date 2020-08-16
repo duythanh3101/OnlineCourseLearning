@@ -38,7 +38,7 @@ const LoginScreen = (props) => {
 
     const onHandleSigninPress = async () => {
         authDispatch(loginRequest());
-        await AuthenticationService.login('duythanh3101@gmail.com', '12345678')
+        await AuthenticationService.login(username, password)
             .then(response => {
                 if (response && response.data.message && response.data.message === 'OK') {
                     console.log('Login token: ', response.data.token);
