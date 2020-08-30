@@ -5,7 +5,7 @@ import { ImageKey } from '../../../global/constants'
 import RoundCornerTag from '../../components/common/round-corner-tag'
 import RoundCornerWithImageTag from '../../components/common/round-corner-with-image-tag'
 import StarRatingImage from '../../components/star-rating/star-rating-image'
-import { Entypo, Feather } from '@expo/vector-icons';
+import { Entypo, Feather, AntDesign } from '@expo/vector-icons';
 import { Layout, TabView, Tab, Button } from "@ui-kitten/components";
 import ProfileScreen from '../profile/profileScreen'
 import LoginScreen from '../authentication/login/loginScreen'
@@ -41,6 +41,11 @@ const CourseDetailVideoScreen = (props) => {
     const [videoTitle, setVideoTitle] = useState('');
     const [authorName, setAuthorName] = useState('');
     const [lessonId, setLessonId] = useState('');
+    const [initYoutubeParams, setInitYoutubeParams] = useState({
+        cc_lang_pref: "us",
+        showClosedCaptions: true,
+        start: 0
+    });
 
     useEffect(() => {
         if (course.name) {
@@ -76,6 +81,7 @@ const CourseDetailVideoScreen = (props) => {
                 setIsLoading(false);
 
             })
+        setVideoTitle(course.title)
 
         courseHomeService.CurrentTimeLearning(course.id, authReducer.token)
             .then(response => {
@@ -83,6 +89,11 @@ const CourseDetailVideoScreen = (props) => {
                 if (response.data.message === 'OK') {
                     setUrl(response.data.payload.videoUrl)
                     if (isYoutubeURL(response.data.payload.videoUrl)) {
+                        setInitYoutubeParams({
+                            cc_lang_pref: "us",
+                            showClosedCaptions: true,
+                            start: Math.round(response.data.payload.currentTime)
+                        })
                         //playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
                     } else {
                         //playerVideoRef.current.seekTo(response.data.payload.currentTime)   
@@ -95,8 +106,23 @@ const CourseDetailVideoScreen = (props) => {
 
             })
 
-        setVideoTitle(course.title)
+        //console.log('course Id: ', course.id);
+        // const backAction = () => {
+        //     if (lessonId && lessonId !== '') {
+        //         updateCurrentTime(lessonId)
+        //         console.log('backAction: ', lessonId);
+        //         props.navigation.goBack();
+        //     }
 
+        //     return true;
+        // };
+
+        // const backHandler = BackHandler.addEventListener(
+        //     "hardwareBackPress",
+        //     backAction
+        // );
+
+        // return () => backHandler.remove();
     }, [])
 
 
@@ -140,24 +166,22 @@ const CourseDetailVideoScreen = (props) => {
             //lessonId={item.id}
             isHasAttachment={item.resource.length > 0}
             onPress={() => {
-                if (lessonId && lessonId !== '') {
-                    updateCurrentTime(lessonId)
-                    
-
-                }
-                console.log('lesson id:', lessonId);
-
                 courseHomeService.getLessonURL(course.id, item.id, authReducer.token)
                     .then(response => {
-                        console.log('new id:', response.data.payload.currentTime);
-                        setLessonId(item.id);
-                        //setUrl(response.data.payload.videoUrl);
+                        console.log('new id:', item.id, response.data.payload.currentTime);
+
+                        setUrl(response.data.payload.videoUrl);
                         //playerRef.current.seekTo(Math.round(response.data.payload.currentTime));
                         setVideoTitle('Lesson ' + item.numberOrder + '. ' + item.name)
-                        
+
 
                         if (isYoutubeURL(response.data.payload.videoUrl)) {
-                            playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
+                            //playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
+                            setInitYoutubeParams({
+                                cc_lang_pref: "us",
+                                showClosedCaptions: true,
+                                start: Math.round(response.data.payload.currentTime)
+                            })
                         } else {
                             // playerVideoRef.current.loadAsync({uri: response.data.payload.videoUrl},
                             //     {
@@ -170,13 +194,18 @@ const CourseDetailVideoScreen = (props) => {
                             //         isMuted: false,
                             //         isLooping: false,
                             //       }
-                                
+
                             //     )  
                         }
                     })
                     .catch(error => {
                         console.log('onPressLessonVideo error');
                     })
+
+                if (lessonId && lessonId !== '') {
+                    updateCurrentTime(lessonId)
+                }
+                setLessonId(item.id);
             }}
             onPreessAttachment={() => { onPressAttachment(item) }}
         />
@@ -188,12 +217,10 @@ const CourseDetailVideoScreen = (props) => {
             console.log('current time', lessonId, currentTime)
             courseHomeService.updateCurrentTimeLearning(lessonId, currentTime, authReducer.token)
                 .then(response => {
-                    if (response.data.message === 'OK') {
-                        console.log('getCurrentTime success');
-                    }
+                    console.log('updateCurrentTime success', response.data, currentTime);
                 })
                 .catch(error => {
-                    console.log('getCurrentTime error');
+                    console.log('updateCurrentTime error');
 
                 })
         });
@@ -219,7 +246,13 @@ const CourseDetailVideoScreen = (props) => {
         </View>
     }
 
-
+    const onGoBackPress = () => {
+        if (lessonId && lessonId !== '') {
+            updateCurrentTime(lessonId)
+            console.log('backAction: ', lessonId);
+            props.navigation.goBack();
+        }
+    }
 
     if (isLoading || detailInfo === null) {
         return <LoadingIndicator />
@@ -227,7 +260,7 @@ const CourseDetailVideoScreen = (props) => {
 
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
-
+           
             {
                 isYoutubeURL(url)
                     ?
@@ -242,10 +275,7 @@ const CourseDetailVideoScreen = (props) => {
                         //onPlaybackQualityChange={q => console.log(q)}
                         volume={50}
                         playbackRate={1}
-                        initialPlayerParams={{
-                            cc_lang_pref: "us",
-                            showClosedCaptions: true,
-                        }}
+                        initialPlayerParams={initYoutubeParams}
                     />
                     :
                     <Video
@@ -261,7 +291,10 @@ const CourseDetailVideoScreen = (props) => {
                         style={{ height: '40%' }}
                     />
             }
+             <TouchableOpacity style={{position:'absolute', marginTop: 50, marginLeft: 10}} onPress={onGoBackPress}>
+                <AntDesign name="arrowleft" size={30} color="white" />
 
+            </TouchableOpacity>
 
             <ScrollView styles={styles.mainContainer}>
                 <Text style={[globalStyles.headerText, styles.titleText, { color: themes.fontColor.mainColor }]}>{videoTitle}</Text>

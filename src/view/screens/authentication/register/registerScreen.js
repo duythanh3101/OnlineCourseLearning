@@ -66,10 +66,10 @@ const RegisterScreen = (props) => {
                     //console.log('register success', res.data)
                     setIsError(false);
                     setIsShow(true);
-                    //Alert.alert('Đăng ký thành công. Vui lòng xác nhận qua Email')
+                    Alert.alert('Đăng ký thành công. Vui lòng xác nhận qua Email')
                 })
                 .catch(err => {
-                    //console.log('register error', err)
+                    console.log('register error', err)
                     setIsError(true);
                     setIsShow(true);
                 })

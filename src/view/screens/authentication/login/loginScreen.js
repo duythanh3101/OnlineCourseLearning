@@ -52,7 +52,7 @@ const LoginScreen = (props) => {
                 }
             })
             .catch(error => {
-                setErrorText('Đăng nhập không thành công')
+                setErrorText('Tài khoản hoặc mật khẩu không đúng')
                 setIsError(true);
                 authDispatch(loginFailed());
             })

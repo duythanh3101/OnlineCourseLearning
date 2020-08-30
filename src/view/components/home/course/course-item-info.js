@@ -43,7 +43,7 @@ const CourseItemInfo = (props) => {
                     <Text style={[globalStyles.titleText, {
                         margin: 5,
                         color: themes.fontColor.mainColor
-                    }]}>{props.courseName}</Text>
+                    }]}>{props.courseName.length > 48 ? props.courseName.substring(0, 45) + '...' : props.courseName}</Text>
                     <Text style={[globalStyles.normalText, { color: themes.fontColor.mainColor }]}>{authorName ? authorName : ''}</Text>
                     <View style={styles.inLine}>
                         {/* <Text style={{...globalStyles.normalText,color: themes.fontColor.mainColor}}>{props.level} -</Text> */}

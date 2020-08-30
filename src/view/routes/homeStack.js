@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ScreenKey } from '../../global/constants';
 import HomeScreen from '../screens/home/homeScreen';
 import { navigationStyle, colors } from '../../global/styles';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import ProfileScreen from '../screens/profile/profileScreen';
 import CourseListByTopicScreen from '../screens/course/courseListByTopicScreen';
 import { Menu, Divider } from 'react-native-paper';
@@ -101,8 +101,11 @@ const HomeStack = (props) => {
                 name={ScreenKey.CourseDetailVideoScreen}
                 component={CourseDetailVideoScreen}
                 options={{
-                    title: 'Course Detail',
+                    title: '',
                     headerShown: false
+                    // headerTransparent: true,
+                    // headerBackImage: () => <AntDesign name="arrowleft" size={24} color="black" />
+                    
                 }}
             />
 

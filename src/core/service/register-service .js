@@ -8,7 +8,7 @@ class RegisterService extends BaseService {
     }
 
     async register(username, email, phone, password) {
-        console.log('aaaaaaaaaaaaaaa');
+        //console.log('aaaaaaaaaaaaaaa');
         return await this.create({ username, email, phone, password });
     }
 
