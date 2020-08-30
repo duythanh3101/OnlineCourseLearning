@@ -85,10 +85,10 @@ const CourseDetailVideoScreen = (props) => {
 
         courseHomeService.CurrentTimeLearning(course.id, authReducer.token)
             .then(response => {
-                console.log('CurrentTimeLearning success: ', response.data.payload);
+
                 if (response.data.message === 'OK') {
-                    setUrl(response.data.payload.videoUrl)
                     if (isYoutubeURL(response.data.payload.videoUrl)) {
+                        setUrl(response.data.payload.videoUrl)
                         setInitYoutubeParams({
                             cc_lang_pref: "us",
                             showClosedCaptions: true,
@@ -97,6 +97,21 @@ const CourseDetailVideoScreen = (props) => {
                         //playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
                     } else {
                         //playerVideoRef.current.seekTo(response.data.payload.currentTime)   
+                        console.log('CurrentTimeLearning success: ', response.data.payload.currentTime);
+                        //console.log('CurrentTimeLearning: ', playerVideoRef.current.getStatusAsync());
+                        setUrl(response.data.payload.videoUrl)
+                        // playerVideoRef.current.loadAsync({ uri: response.data.payload.videoUrl },
+                        //     {
+                        //         positionMillis: Math.round(response.data.payload.currentTime * 1000),
+                        //         shouldPlay: false,
+                        //         rate: 1.0,
+                        //         shouldCorrectPitch: false,
+                        //         volume: 1.0,
+                        //         isMuted: false,
+                        //         isLooping: false,
+                        //     },
+                        //     true
+                        // )
                     }
                 }
 
@@ -106,23 +121,6 @@ const CourseDetailVideoScreen = (props) => {
 
             })
 
-        //console.log('course Id: ', course.id);
-        // const backAction = () => {
-        //     if (lessonId && lessonId !== '') {
-        //         updateCurrentTime(lessonId)
-        //         console.log('backAction: ', lessonId);
-        //         props.navigation.goBack();
-        //     }
-
-        //     return true;
-        // };
-
-        // const backHandler = BackHandler.addEventListener(
-        //     "hardwareBackPress",
-        //     backAction
-        // );
-
-        // return () => backHandler.remove();
     }, [])
 
 
@@ -168,34 +166,38 @@ const CourseDetailVideoScreen = (props) => {
             onPress={() => {
                 courseHomeService.getLessonURL(course.id, item.id, authReducer.token)
                     .then(response => {
-                        console.log('new id:', item.id, response.data.payload.currentTime);
+                        //console.log('new id:', item.id, response.data.payload.currentTime);
 
-                        setUrl(response.data.payload.videoUrl);
+                       
                         //playerRef.current.seekTo(Math.round(response.data.payload.currentTime));
                         setVideoTitle('Lesson ' + item.numberOrder + '. ' + item.name)
 
 
                         if (isYoutubeURL(response.data.payload.videoUrl)) {
                             //playerRef.current.seekTo(Math.round(response.data.payload.currentTime))
+                            setUrl(response.data.payload.videoUrl);
                             setInitYoutubeParams({
                                 cc_lang_pref: "us",
                                 showClosedCaptions: true,
                                 start: Math.round(response.data.payload.currentTime)
                             })
                         } else {
-                            // playerVideoRef.current.loadAsync({uri: response.data.payload.videoUrl},
-                            //     {
-                            //         progressUpdateIntervalMillis: 500,
-                            //         positionMillis: Math.round(response.data.payload.currentTime),
-                            //         shouldPlay: false,
-                            //         rate: 1.0,
-                            //         shouldCorrectPitch: false,
-                            //         volume: 1.0,
-                            //         isMuted: false,
-                            //         isLooping: false,
-                            //       }
-
-                            //     )  
+                            console.log('new id:', item.id, response.data.payload.currentTime, Math.round(response.data.payload.currentTime * 1000));
+                            setUrl(response.data.payload.videoUrl);
+                            // playerVideoRef.current.loadAsync({ uri: response.data.payload.videoUrl }
+                            //     // ,
+                            //     // {
+                            //     //     positionMillis: Math.round(response.data.payload.currentTime * 1000),
+                            //     //     //shouldPlay: false,
+                            //     //     rate: 1.0,
+                            //     //     shouldCorrectPitch: false,
+                            //     //     volume: 1.0,
+                            //     //     isMuted: false,
+                            //     //     isLooping: false
+                            //     // }
+                            //     // true
+                            // )
+                            //playerVideoRef.current.setStatusAsync({positionMillis: Math.round(response.data.payload.currentTime * 1000)})
                         }
                     })
                     .catch(error => {
@@ -213,17 +215,23 @@ const CourseDetailVideoScreen = (props) => {
     }
 
     const updateCurrentTime = (lessonId) => {
-        playerRef?.current?.getCurrentTime().then(currentTime => {
-            console.log('current time', lessonId, currentTime)
-            courseHomeService.updateCurrentTimeLearning(lessonId, currentTime, authReducer.token)
-                .then(response => {
-                    console.log('updateCurrentTime success', response.data, currentTime);
-                })
-                .catch(error => {
-                    console.log('updateCurrentTime error');
+        // if (isYoutubeURL(url)){
+            playerRef?.current?.getCurrentTime().then(currentTime => {
+                //console.log('current time', lessonId, currentTime)
+                courseHomeService.updateCurrentTimeLearning(lessonId, currentTime, authReducer.token)
+                    .then(response => {
+                        console.log('updateCurrentTime success', response.data, currentTime);
+                    })
+                    .catch(error => {
+                        console.log('updateCurrentTime error 2');
+    
+                    })
+            });
+        // }else{
 
-                })
-        });
+        // }
+
+        
 
 
     }
@@ -249,9 +257,9 @@ const CourseDetailVideoScreen = (props) => {
     const onGoBackPress = () => {
         if (lessonId && lessonId !== '') {
             updateCurrentTime(lessonId)
-            console.log('backAction: ', lessonId);
-            props.navigation.goBack();
         }
+        //console.log('backAction: ', lessonId);
+        props.navigation.goBack();
     }
 
     if (isLoading || detailInfo === null) {
@@ -260,7 +268,7 @@ const CourseDetailVideoScreen = (props) => {
 
     return (
         <View style={[globalStyles.container, styles.container, { backgroundColor: themes.background.mainColor }]}>
-           
+
             {
                 isYoutubeURL(url)
                     ?
@@ -289,9 +297,10 @@ const CourseDetailVideoScreen = (props) => {
                         isLooping
                         useNativeControls
                         style={{ height: '40%' }}
+                        //positionMillis={{}}
                     />
             }
-             <TouchableOpacity style={{position:'absolute', marginTop: 50, marginLeft: 10}} onPress={onGoBackPress}>
+            <TouchableOpacity style={{ position: 'absolute', marginTop: 50, marginLeft: 10 }} onPress={onGoBackPress}>
                 <AntDesign name="arrowleft" size={30} color="white" />
 
             </TouchableOpacity>

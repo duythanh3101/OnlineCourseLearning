@@ -224,7 +224,7 @@ class CourseHomeService {
     }
 
     async CurrentTimeLearning(courseId, token) {
-        console.log(`${getCurrentTimeLearnVideoEndpoint}/${courseId}`)
+        //console.log(`${getCurrentTimeLearnVideoEndpoint}/${courseId}`)
         return await Axios.get(`${getCurrentTimeLearnVideoEndpoint}/${courseId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
